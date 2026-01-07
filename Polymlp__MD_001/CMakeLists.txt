@@ -38,7 +38,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 if(NOT DEFINED CMAKE_CXX_FLAGS_RELEASE)
-    set(CMAKE_CXX_FLAGS_RELEASE "-O2 -Wno-deprecated -DNDEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O2 -Wno-deprecated -Wsign-compare -DNDEBUG")
 endif()
 
 add_kim_api_model_driver_library(
@@ -49,29 +49,28 @@ add_kim_api_model_driver_library(
 
 
 target_sources(${PROJECT_NAME} PRIVATE
-  polymlp_api.cpp
-  polymlp_basis_function.cpp
-  polymlp_features.cpp
-  polymlp_features_polynomial.cpp
-  polymlp_features_mapping_utils.cpp
-  polymlp_features_utils.cpp
-  polymlp_functions_interface.cpp
-  polymlp_mapping.cpp
-  polymlp_mlipkk_spherical_harmonics.cpp
-  polymlp_model_params.cpp
-  polymlp_model_params_gtinv.cpp
-  polymlp_model_params_polynomial.cpp
-  polymlp_potential.cpp
-  polymlp_products.cpp
-  polymlp_read_gtinv.cpp
-  polymlp_gtinv_data.cpp
-  polymlp_gtinv_data_order1.cpp
-  polymlp_gtinv_data_order2.cpp
-  polymlp_gtinv_data_order3.cpp
-  polymlp_gtinv_data_order4.cpp
-  polymlp_gtinv_data_order5.cpp
-  polymlp_gtinv_data_order6.cpp
-  polymlp_eval.cpp
-#  model_driver_polymlp.cpp
-#  pair_polymlp.cpp
+  polymlp/polymlp_api.cpp
+  polymlp/polymlp_basis_function.cpp
+  polymlp/polymlp_features.cpp
+  polymlp/polymlp_features_polynomial.cpp
+  polymlp/polymlp_features_mapping_utils.cpp
+  polymlp/polymlp_features_utils.cpp
+  polymlp/polymlp_functions_interface.cpp
+  polymlp/polymlp_mapping.cpp
+  polymlp/polymlp_mlipkk_spherical_harmonics.cpp
+  polymlp/polymlp_model_params.cpp
+  polymlp/polymlp_model_params_gtinv.cpp
+  polymlp/polymlp_model_params_polynomial.cpp
+  polymlp/polymlp_potential.cpp
+  polymlp/polymlp_products.cpp
+  polymlp/polymlp_read_gtinv.cpp
+  polymlp/polymlp_gtinv_data.cpp
+  polymlp/polymlp_gtinv_data_order1.cpp
+  polymlp/polymlp_gtinv_data_order2.cpp
+  polymlp/polymlp_gtinv_data_order3.cpp
+  polymlp/polymlp_gtinv_data_order4.cpp
+  polymlp/polymlp_gtinv_data_order5.cpp
+  polymlp/polymlp_gtinv_data_order6.cpp
+  polymlp_kim.cpp
+  model_driver_polymlp.cpp
 )
