@@ -22,33 +22,40 @@
 
 #include "polymlp_kim.h"
 
+using namespace model_driver_Tersoff;
+
 //#include <omp.h>
 
+PolymlpKIM::PolymlpKIM(){}
 
 PolymlpKIM::PolymlpKIM(
     const std::string& polymlp_file,
-    int n_spec,
-    std::map<std::string, int> type_map,
     // Conversion factors.
     double energy_conv,
     double, // unused inv_energy_conv
     double length_conv,
     double inv_length_conv,
-    double // unused charge_conv
-){
-    parse_polymlp_file(polymlp_file);
-    // Prepare index -> element name mapping.
-    for (auto i = type_map.begin(); i != type_map.end(); ++i) {
-        to_spec[i->second] = i->first;
-    }
+    double // unused charge_conv)
+{
+    parse_polymlp_file(polymlp_file, energy_conv, length_conv, inv_length_conv);
 
+    // TODO: Is to_spec needed?
+    const int n_spec = ele_strings.size();
+    for (int i = 0; i < n_spec; ++i){
+        to_spec[i] = ele_strings[i];
+    }
 }
 
 PolymlpKIM::~PolymlpKIM(){}
 
 
-void PolymlpKIM::parse_polymlp(const std::string& polymlp_file){
-    /* Parse polymlp file. */
+void PolymlpKIM::parse_polymlp(
+    const std::string& polymlp_file,
+    double energy_conv,
+    double length_conv,
+    double inv_length_conv)
+{
+    // Parse polymlp file.
 
     // TODO: Unit conversion.
     polymlp.parse_polymlp_file(polymlp_file, ele_strings, mass);
@@ -56,24 +63,14 @@ void PolymlpKIM::parse_polymlp(const std::string& polymlp_file){
     const auto& fp = polymlp.get_fp();
     cutoff = fp.cutoff;
 
-/*
-    // read args that map atom types to elements in potential file
-    // map[i] = which element the Ith atom type is, -1 if NULL
-    std::vector<int> map(atom->ntypes);
-    for (int i = 3; i < narg; i++) {
-        for (int j = 0; j < ele.size(); j++){
-            if (strcmp(arg[i],ele[j].c_str()) == 0){
-                map[i-3] = j;
-                break;
-            }
-        }
-    }
 
-    for (int i = 1; i <= atom->ntypes; ++i){
-        atom->set_mass(FLERR,i,mass[map[i-1]]);
-        for (int j = 1; j <= atom->ntypes; ++j) setflag[i][j] = 1;
-    }
+    // TODO: How to set mass values ?
+    // for (int i = 1; i <= atom->ntypes; ++i){
+    //     atom->set_mass(FLERR,i,mass[map[i-1]]);
+    //     for (int j = 1; j <= atom->ntypes; ++j) setflag[i][j] = 1;
+    // }
 
+    /*
     for (int i = 0; i < atom->natoms; ++i){
         types.emplace_back(map[(atom->type)[i]-1]);
     }
@@ -132,8 +129,9 @@ void PolymlpKIM::compute_gtinv(
     Array2D<double>* forces,
     double* virial,
     Array2D<double>* particle_virial,
-    bool compute_process_dEdr
-){
+    bool compute_process_dEdr)
+{
+    // Compute properties using polymlp with polynomial invariants.
     int error;       // KIM error code.
     int n_neigh;     // Number of neighbors of i.
     const int * neighbors;  // The indices of the neighbors.

@@ -10,6 +10,7 @@
 #include "polymlp/polymlp_functions_interface.h"
 
 #include "KIM_ModelDriverHeaders.hpp"
+#include "ndarray.hpp"
 
 
 class PolymlpKIM {
@@ -23,7 +24,11 @@ class PolymlpKIM {
     // Parse polymlp file.
     std::vector<std::string> ele_strings;
     vector1d mass;
-    void parse_polymlp(const std::string& parse_polymlp);
+    void parse_polymlp(
+        const std::string& parse_polymlp,
+        double energy_conv,
+        double length_conv,
+        double inv_length_conv);
 
     // Compute properties using polymlp with pairwise features.
     void compute_pair();
@@ -55,7 +60,14 @@ class PolymlpKIM {
 
     public:
 
-    PolymlpKIM(const std::string& parse_polymlp);
+    PolymlpKIM();
+    PolymlpKIM(
+        const std::string& parse_polymlp,
+        double energy_conv,
+        double, 
+        double length_conv,
+        double inv_length_conv,
+        double);
     ~PolymlpKIM();
     void compute();
  
