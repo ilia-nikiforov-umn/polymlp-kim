@@ -34,6 +34,7 @@ class PolymlpKIM {
         double inv_length_conv);
 
     // Compute properties using polymlp with pairwise features.
+    /*
     void compute_pair();
     void compute_antp(vector2d& antp);
     void compute_sum_of_prod_antp(
@@ -41,20 +42,44 @@ class PolymlpKIM {
         vector2d& prod_sum_e, 
         vector2d& prod_sum_f
     );
+    */
 
     // Compute properties using polymlp with polynomial invariants.
-    void compute_gtinv();
-    void compute_anlmtp(vector2dc& anlmtp);
+    void compute_gtinv(
+        const KIM::ModelComputeArguments& model_compute_arguments,
+        int n_atoms,
+        const int * const atom_types,
+        const int * const contributing,
+        const Array2D<const double>& atom_coords,
+        double* energy,
+        double* atom_energy,
+        Array2D<double>* forces,
+        double* virial,
+        Array2D<double>* particle_virial,
+        bool compute_process_dEdr);
+
+    void compute_anlmtp(
+        const KIM::ModelComputeArguments& model_compute_arguments,
+        int n_atoms, 
+        const int * const atom_types,
+        const int * const contributing,
+        const Array2D<const double>& atom_coords,
+        vector2dc& anlmtp);
+
     void compute_anlmtp_conjugate(
+        int n_atoms, 
+        const int * const atom_types,
+        const int * const contributing,
         const vector2d& anlmtp_r, 
         const vector2d& anlmtp_i, 
-        vector2dc& anlmtp
-    );
+        vector2dc& anlmtp);
+    /*
     void compute_sum_of_prod_anlmtp(
         const vector2dc& anlmtp, 
         vector2dc& prod_sum_e, 
         vector2dc& prod_sum_f
     );
+    */
 
     protected:
 
