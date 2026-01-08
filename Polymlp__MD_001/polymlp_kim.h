@@ -2,6 +2,7 @@
    Contributing author: Atsuto Seko
 ------------------------------------------------------------------------- */
 
+#ifndef POLYMLP_KIM
 #define POLYMLP_KIM
 
 #include "polymlp/polymlp_mlpcpp.h"
@@ -12,6 +13,8 @@
 #include "KIM_ModelDriverHeaders.hpp"
 #include "ndarray.hpp"
 
+
+using namespace model_driver_Tersoff;
 
 class PolymlpKIM {
 
@@ -69,7 +72,24 @@ class PolymlpKIM {
         double inv_length_conv,
         double);
     ~PolymlpKIM();
-    void compute();
+
+    void compute(
+        const KIM::ModelComputeArguments& model_compute_arguments,
+        int n_atoms, 
+        const int * const atom_types,
+        const int * const contributing,
+        const Array2D<const double>& atom_coords,
+        double* energy, 
+        double* atom_energy,
+        Array2D<double>* forces,
+        double* virial,
+        Array2D<double>* particle_virial,
+        bool compute_process_dEdr
+    );
+
+    double const * cutoff_ptr() const {
+        return &cutoff;
+    }
  
 };
 

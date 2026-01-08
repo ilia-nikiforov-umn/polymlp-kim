@@ -199,7 +199,7 @@ compute(
 
     // Do the compute.
     try {
-      polymlp_kim.compute(
+      polymlp_kim->compute(
           *model_compute_arguments,
           *n_atoms,
           atom_types,
@@ -377,9 +377,7 @@ finish_create(KIM::ModelDriverCreate * const,
               const KIM::ChargeUnit,
               const KIM::TemperatureUnit,
               const KIM::TimeUnit,
-              const std::string&,
-              const int,
-              std::map<std::string, int>&);
+              const std::string&);
 
 
 int
@@ -395,7 +393,7 @@ model_driver_create(KIM::ModelDriverCreate * const model_driver_create,
   int n_param_files;
   model_driver_create->GetNumberOfParameterFiles(&n_param_files);
   if (n_param_files != 1) {
-    LOG_ERROR("This model driver requires exactly one parameter file")
+    LOG_ERROR("This model driver requires exactly one parameter file");
     return 1;
   }
 
@@ -426,9 +424,7 @@ model_driver_create(KIM::ModelDriverCreate * const model_driver_create,
                        charge_unit,
                        temperature_unit,
                        time_unit,
-                       *param_filename,
-                       n_spec,
-                       type_map);
+                       *param_filename);
 }
 
 static int
@@ -438,9 +434,7 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
               const KIM::ChargeUnit charge_unit,
               const KIM::TemperatureUnit temperature_unit,
               const KIM::TimeUnit time_unit,
-              const string& param_filename,
-              const int n_spec,
-              map<string,int>& type_map) {
+              const string& param_filename){
   int error;
 
   // Init unit conversion factors. /////////////////////////////////////
@@ -465,7 +459,6 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
     return error; // already logged.
   }
 
-
   // Init the core class. //////////////////////////////////////////////
   PolymlpKIM* polymlp_kim;
   try {
@@ -483,14 +476,13 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
 
   // Pass stuff to KIM. ////////////////////////////////////////////////
   model_driver_create->SetModelBufferPointer(static_cast<void *>(polymlp_kim));
-  // TODO: How to set cutoff_ptr.
-  model_driver_create->SetInfluenceDistancePointer(tersoff->cutoff_ptr());
-  model_driver_create->SetNeighborListPointers(1, tersoff->cutoff_ptr(),
+  model_driver_create->SetInfluenceDistancePointer(polymlp_kim->cutoff_ptr());
+  model_driver_create->SetNeighborListPointers(1, polymlp_kim->cutoff_ptr(),
                                                &doesnt_use_ghost_neighbors);
   error = model_driver_create->SetModelNumbering(KIM::NUMBERING::zeroBased);
   if (error) {
     LOG_ERROR("Error returned by KIM's SetModelNumbering().");
-    delete tersoff;
+    delete polymlp_kim;
     return 1;
   }
 
@@ -506,10 +498,12 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
   // Use function pointer definitions to statically verify correct prototypes.
   KIM::ModelComputeArgumentsCreateFunction * kim_ca_create
     = &compute_arguments_create;
-  KIM::ModelComputeFunction * kim_compute = &compute<T>;
-  // KIM::ModelRefreshFunction * kim_refresh = &refresh<T>;
-  // KIM::ModelWriteParameterizedModelFunction * kim_write_params
-  //   = &write_parameterized_model<T>;
+  KIM::ModelComputeFunction * kim_compute = &compute;
+  /*
+  KIM::ModelRefreshFunction * kim_refresh = &refresh<T>;
+  KIM::ModelWriteParameterizedModelFunction * kim_write_params
+    = &write_parameterized_model<T>;
+  */
   KIM::ModelComputeArgumentsDestroyFunction * kim_ca_destroy
     = &compute_arguments_destroy;
   KIM::ModelDestroyFunction * kim_destroy = &destroy;
@@ -549,7 +543,7 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
       reinterpret_cast<KIM::Function *>(kim_destroy));
   if (error) {
     LOG_ERROR("Error returned by KIM's SetRoutinePointer().");
-    delete tersoff;
+    delete polymlp_kim;
     return 1;
   }
 

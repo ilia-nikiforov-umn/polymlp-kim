@@ -72,5 +72,5 @@ target_sources(${PROJECT_NAME} PRIVATE
   polymlp/polymlp_gtinv_data_order5.cpp
   polymlp/polymlp_gtinv_data_order6.cpp
 #  polymlp_kim.cpp
-#  model_driver_polymlp.cpp
+  model_driver_polymlp.cpp
 )
