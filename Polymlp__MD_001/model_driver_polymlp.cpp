@@ -34,11 +34,10 @@
 #include "KIM_LogMacros.hpp"
 #include "KIM_ModelDriverHeaders.hpp"
 
-#include "pair_polymlp.hpp"
-#include "ndarray.hpp"
+#include "polymlp_kim.h"
 
 using namespace std;
-using namespace model_driver_polymlp;
+// using namespace model_driver_polymlp;
 
 
 extern "C" {

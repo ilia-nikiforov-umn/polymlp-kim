@@ -4,22 +4,29 @@
 
 #define POLYMLP_KIM
 
-#include "polymlp_mlpcpp.h"
-#include "polymlp_structs.h"
-#include "polymlp_api.h"
-#include "polymlp_functions_interface.h"
+#include "polymlp/polymlp_mlpcpp.h"
+#include "polymlp/polymlp_structs.h"
+#include "polymlp/polymlp_api.h"
+#include "polymlp/polymlp_functions_interface.h"
+
+#include "KIM_ModelDriverHeaders.hpp"
 
 
 class PolymlpKIM {
 
     PolymlpAPI polymlp;
-    double cutmax;
+    double cutoff;
     vector1i types;
 
-    void compute_pair(int eflag, int vflag);
-    void compute_gtinv(int eflag, int vflag);
+    int n_atoms_contrib;
 
-    // for pair
+    // Parse polymlp file.
+    std::vector<std::string> ele_strings;
+    vector1d mass;
+    void parse_polymlp(const std::string& parse_polymlp);
+
+    // Compute properties using polymlp with pairwise features.
+    void compute_pair();
     void compute_antp(vector2d& antp);
     void compute_sum_of_prod_antp(
         const vector2d& antp, 
@@ -27,7 +34,8 @@ class PolymlpKIM {
         vector2d& prod_sum_f
     );
 
-    // for gtinv
+    // Compute properties using polymlp with polynomial invariants.
+    void compute_gtinv();
     void compute_anlmtp(vector2dc& anlmtp);
     void compute_anlmtp_conjugate(
         const vector2d& anlmtp_r, 
@@ -40,12 +48,16 @@ class PolymlpKIM {
         vector2dc& prod_sum_f
     );
 
-    public:
-    PolymlpKIM(class LAMMPS *);
-    virtual ~PolymlpKIM();
-    void compute(int, int);
+    protected:
 
-    void parse_polymlp(int, char **);
+    // map element index to element name, needed for user-friendly error messages
+    std::map<int, std::string> to_spec;
+
+    public:
+
+    PolymlpKIM(const std::string& parse_polymlp);
+    ~PolymlpKIM();
+    void compute();
  
 };
 
