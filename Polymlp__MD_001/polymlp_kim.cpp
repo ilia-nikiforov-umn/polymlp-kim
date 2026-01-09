@@ -37,6 +37,7 @@ PolymlpKIM::PolymlpKIM(
     double inv_length_conv,
     double // unused charge_conv
 ){
+    std::cout << "Start using PolymlpKIM" << std::endl;
     parse_polymlp(polymlp_file, energy_conv, length_conv, inv_length_conv);
 
     // TODO: Is to_spec needed?
@@ -64,6 +65,7 @@ void PolymlpKIM::parse_polymlp(
     const auto& fp = polymlp.get_fp();
     cutoff = fp.cutoff;
 
+    std::cout << "Parsing polymlp finished." << std::endl;
     // TODO: How to set mass values ? 
 
     /*
@@ -91,6 +93,7 @@ void PolymlpKIM::compute(
     bool compute_process_dEdr
 ){
     // Compute properties.
+    std::cout << "Starting compute." << std::endl;
     const auto& fp = polymlp.get_fp();
 
     // If requested, reset energy.
@@ -121,6 +124,7 @@ void PolymlpKIM::compute(
     //if (fp.feature_type == "pair"){
     //    compute_pair();
     //}
+    std::cout << "Initialize finished." << std::endl;
 
     n_atoms_contrib = 0;
     for (int i = 0; i != n_atoms; ++i) {
@@ -152,6 +156,8 @@ void PolymlpKIM::compute_anlmtp(
     const int * const contributing,
     const Array2D<const double>& atom_coords,
     vector2dc& anlmtp){
+
+    std::cout << "Start computing anlmtp." << std::endl;
 
     const auto& fp = polymlp.get_fp();
     const auto& maps = polymlp.get_maps();

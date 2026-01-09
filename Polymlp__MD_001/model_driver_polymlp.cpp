@@ -254,10 +254,11 @@ static int destroy(KIM::ModelDestroy * const model_destroy) {
 #define KIM_LOGGER_OBJECT_NAME model_driver_create
 
 static int
-read_settings(KIM::ModelDriverCreate * const model_driver_create,
-              const std::string& settings_filename){
+read_settings(
+    KIM::ModelDriverCreate * const model_driver_create,
+    const std::string& settings_filename){
   std::ifstream settings_file(settings_filename.c_str()); // passing the std::string
-                                                     // is C++11
+                                                          // is C++11
   bool getline_error;
 
   // Get the list of species. //////////////////////////////////////////
@@ -275,16 +276,6 @@ read_settings(KIM::ModelDriverCreate * const model_driver_create,
   std::string species_name;
   int species_id = 0;
   while (iss >> species_name) {
-    /*
-    // Collect in map.
-    std::pair<std::map<std::string,int>::iterator, bool> insertion_result =
-      type_map.insert(pair<string,int>(species_name, species_id));
-    if (!insertion_result.second) {
-      LOG_ERROR("Particle type \"" + species_name + "\" occurs twice in file "
-                + settings_filename);
-      return 1;
-    }
-    */
     // Register to KIM.
     const KIM::SpeciesName kim_spec(species_name);
     const int error = model_driver_create->SetSpeciesCode(kim_spec, species_id);
@@ -292,7 +283,6 @@ read_settings(KIM::ModelDriverCreate * const model_driver_create,
       LOG_ERROR("Error returned by KIM's SetSpeciesCode().");
       return error;
     }
-    //
     ++species_id;
   }
   return 0;
