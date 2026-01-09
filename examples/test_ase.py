@@ -16,9 +16,10 @@ calc = KIM("Polymlp_Seko_2022_AgAu__MO_000000111111_000")
 atoms.set_calculator(calc)
 
 # Compute energy/pressure
-ecoh = -atoms.get_potential_energy() / len(atoms)
+# ecoh = -atoms.get_potential_energy() / len(atoms)
+ecoh = -atoms.get_potential_energy() 
 stress = atoms.get_stress()
 pressure_MPa = (-sum(stress[:3]) / 3.0) * 1e3 / GPa
 
-print("Computed cohesive energy of {:.3f} eV/atom".format(ecoh))
+print("Computed cohesive energy of {:.10f} eV/atom".format(ecoh))
 print("Computed pressure of {} MPa".format(pressure_MPa))

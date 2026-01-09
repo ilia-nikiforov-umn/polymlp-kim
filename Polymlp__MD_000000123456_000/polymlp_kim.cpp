@@ -348,16 +348,23 @@ void PolymlpKIM::compute_gtinv(
                         valx = - (d1 * delx + fn[nlmtp.n_id] * ylm_dx[ylmkey]);
                         valy = - (d1 * dely + fn[nlmtp.n_id] * ylm_dy[ylmkey]);
                         valz = - (d1 * delz + fn[nlmtp.n_id] * ylm_dz[ylmkey]);
+
+                        dc sum_e, sum_f;
                         const auto& prod_ei = prod_sum_e[i][idx_i];
-                        //TODO: How to treat compute from atom j
-                        // const auto& prod_ej = prod_sum_e[tagj][idx_j];
-                        const auto& prod_ej = prod_sum_e[i][idx_j];
                         const auto& prod_fi = prod_sum_f[i][idx_i];
-                        //TODO: How to treat compute from atom j
-                        // const auto& prod_fj = prod_sum_f[tagj][idx_j];
-                        const auto& prod_fj = prod_sum_e[i][idx_j];
-                        const dc sum_e = prod_ei + prod_ej * lm_attr.sign_j;
-                        const dc sum_f = prod_fi + prod_fj * lm_attr.sign_j;
+                        if (contributing[j]){
+                            const auto& prod_ej = prod_sum_e[j][idx_i];
+                            const auto& prod_fj = prod_sum_f[j][idx_i];
+                            sum_e = 0.5 * (prod_ei + prod_ej * lm_attr.sign_j);
+                            sum_f = 0.5 * (prod_fi + prod_fj * lm_attr.sign_j);
+                        }
+                        else {
+                            sum_e = prod_ei;
+                            sum_f = prod_fi;
+                        }
+                        // Original version
+                        //const dc sum_e = prod_ei + prod_ej * lm_attr.sign_j;
+                        //const dc sum_f = prod_fi + prod_fj * lm_attr.sign_j;
                         if (lm_attr.m == 0){
                             evdwl += 0.5 * prod_real(val, sum_e);
                             fx += 0.5 * prod_real(valx, sum_f);
@@ -373,6 +380,48 @@ void PolymlpKIM::compute_gtinv(
                     }
                 }
                 *energy += evdwl;
+                (*forces)(i, 0) += fx; 
+                (*forces)(i, 1) += fy; 
+                (*forces)(i, 2) += fz;
+                if (contributing[j]){
+                    (*forces)(j, 0) -= fx; 
+                    (*forces)(j, 1) -= fy; 
+                    (*forces)(j, 2) -= fz;
+                }
+                // lammps convension
+                // virial[0] += delx * fx;
+                // virial[1] += dely * fy;
+                // virial[2] += delz * fz;
+                // virial[3] += delx * fy;
+                // virial[4] += delx * fz;
+                // virial[5] += dely * fz;
+                virial[0] += delx * fx;
+                virial[1] += dely * fy;
+                virial[2] += delz * fz;
+                virial[3] += dely * fz;
+                virial[4] += delx * fz;
+                virial[5] += delx * fy;
+                /*
+                if (vflag_atom) {
+                    if (newton_pair || i < nlocal) {
+                        vatom[i][0] += 0.5*v[0];
+                        vatom[i][1] += 0.5*v[1];
+                        vatom[i][2] += 0.5*v[2];
+                        vatom[i][3] += 0.5*v[3];
+                        vatom[i][4] += 0.5*v[4];
+                        vatom[i][5] += 0.5*v[5];
+                    }
+                    if (newton_pair || j < nlocal) {
+                        vatom[j][0] += 0.5*v[0];
+                        vatom[j][1] += 0.5*v[1];
+                        vatom[j][2] += 0.5*v[2];
+                        vatom[j][3] += 0.5*v[3];
+                        vatom[j][4] += 0.5*v[4];
+                        vatom[j][5] += 0.5*v[5];
+                    }
+                }
+                */
+
                 // std::cout << evdwl << std::endl;
                 // std::cout << fx << " " << fy << " " << fz << std::endl;
 
@@ -385,6 +434,14 @@ void PolymlpKIM::compute_gtinv(
             }
         }
     }
+    /*
+    std::cout << virial[0] << std::endl;
+    std::cout << virial[1] << std::endl;
+    std::cout << virial[2] << std::endl;
+    std::cout << virial[3] << std::endl;
+    std::cout << virial[4] << std::endl;
+    std::cout << virial[5] << std::endl;
+    */
 
 /*
     int i,j,jnum,*jlist;
