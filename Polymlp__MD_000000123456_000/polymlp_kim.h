@@ -33,17 +33,6 @@ class PolymlpKIM {
         double length_conv,
         double inv_length_conv);
 
-    // Compute properties using polymlp with pairwise features.
-    /*
-    void compute_pair();
-    void compute_antp(vector2d& antp);
-    void compute_sum_of_prod_antp(
-        const vector2d& antp, 
-        vector2d& prod_sum_e, 
-        vector2d& prod_sum_f
-    );
-    */
-
     // Compute properties using polymlp with polynomial invariants.
     void compute_gtinv(
         const KIM::ModelComputeArguments& model_compute_arguments,
@@ -66,20 +55,23 @@ class PolymlpKIM {
         const Array2D<const double>& atom_coords,
         vector2dc& anlmtp);
 
-    /*
-    void compute_anlmtp_conjugate(
+    void compute_sum_of_prod_anlmtp(
+        const vector2dc& anlmtp, 
         int n_atoms, 
         const int * const atom_types,
         const int * const contributing,
-        const vector2d& anlmtp_r, 
-        const vector2d& anlmtp_i, 
-        vector2dc& anlmtp);
-    */
-    /*
-    void compute_sum_of_prod_anlmtp(
-        const vector2dc& anlmtp, 
         vector2dc& prod_sum_e, 
         vector2dc& prod_sum_f
+    );
+
+    // Compute properties using polymlp with pairwise features.
+    /*
+    void compute_pair();
+    void compute_antp(vector2d& antp);
+    void compute_sum_of_prod_antp(
+        const vector2d& antp, 
+        vector2d& prod_sum_e, 
+        vector2d& prod_sum_f
     );
     */
 

@@ -49,6 +49,8 @@ add_kim_api_model_driver_library(
 
 
 target_sources(${PROJECT_NAME} PRIVATE
+    polymlp_kim.cpp
+    model_driver_polymlp.cpp
     polymlp/polymlp_api.cpp
     polymlp/polymlp_basis_function.cpp
     polymlp/polymlp_features.cpp
@@ -74,6 +76,4 @@ target_sources(${PROJECT_NAME} PRIVATE
     polymlp/polymlp_gtinv_data_order4.cpp
     polymlp/polymlp_gtinv_data_order5.cpp
     polymlp/polymlp_gtinv_data_order6.cpp
-    polymlp_kim.cpp
-    model_driver_polymlp.cpp
 )

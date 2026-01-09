@@ -144,14 +144,13 @@ void PolymlpKIM::compute(
 
 void PolymlpKIM::compute_anlmtp(
     const KIM::ModelComputeArguments& model_compute_arguments,
-    int n_atoms, // Actual number of atoms (including ghost atoms?)
+    int n_atoms, // Actual number of atoms including ghost atoms
     const int * const atom_types,
     const int * const contributing,
     const Array2D<const double>& atom_coords,
     vector2dc& anlmtp){
 
     std::cout << "Start computing anlmtp." << std::endl;
-
     const auto& fp = polymlp.get_fp();
     const auto& maps = polymlp.get_maps();
     const auto& type_pairs = maps.type_pairs;
@@ -163,22 +162,6 @@ void PolymlpKIM::compute_anlmtp(
     int n_neigh;     // Number of neighbors of i.
     const int * neighbors;  // The indices of the neighbors.
 
-/*    
-    //vector2d anlmtp_r(n_atoms_contrib), anlmtp_i(n_atoms_contrib);
-    for (int i = 0; i != n_atoms; ++i) {
-    // Skip central ghost atoms.
-        if (!contributing[i]) continue;
-
-        int itype = atom_types[i];
-        const auto& maps_type = maps.maps_type[itype];
-        const auto& nlmtp_attrs_noconj = maps_type.nlmtp_attrs_noconj;
-        // TODO: How to specify only indices of non-ghost atoms
-        anlmtp_r[i] = vector1d(nlmtp_attrs_noconj.size(), 0.0);
-        anlmtp_i[i] = vector1d(nlmtp_attrs_noconj.size(), 0.0);
-    }
-    std::cout << "Start computing anlmtp5." << std::endl;
-*/
-
     /*
     #ifdef _OPENMP
     #pragma omp parallel for schedule(guided)
@@ -189,8 +172,8 @@ void PolymlpKIM::compute_anlmtp(
         if (!contributing[i]) continue;
         // Get neighbors.
         error = model_compute_arguments.GetNeighborList(0, i, &n_neigh, &neighbors);
-        std::cout << "iInfo:" << i 
-            << " " << contributing[i] << " " << n_neigh << std::endl;
+        // std::cout << "iInfo:" << i 
+        //     << " " << contributing[i] << " " << n_neigh << std::endl;
         if (error) {
             throw std::runtime_error(
                 "Error in KIM::ModelComputeArguments.GetNeighborList");
@@ -200,26 +183,19 @@ void PolymlpKIM::compute_anlmtp(
         const double ytmp = atom_coords(i, 1);
         const double ztmp = atom_coords(i, 2);
 
-        // int i,j,type1,type2,tp,jnum,*ilist,*jlist;
         int tp;
         double delx, dely, delz, dis;
+        vector1d fn; vector1dc ylm; dc val;
+
         const auto& maps_type = maps.maps_type[itype];
         const auto& nlmtp_attrs_noconj = maps_type.nlmtp_attrs_noconj;
-
         vector1d anlmtp_r(nlmtp_attrs_noconj.size(), 0.0);
         vector1d anlmtp_i(nlmtp_attrs_noconj.size(), 0.0);
-
-        vector1d fn; vector1dc ylm; dc val;
         for (int jj = 0; jj != n_neigh; ++jj) {
             int j = neighbors[jj];
-            std::cout << "J: " << j << std::endl;
-            // delx = x[i][0]-x[j][0];
-            // dely = x[i][1]-x[j][1];
-            // delz = x[i][2]-x[j][2];
             delx = xtmp - atom_coords(j, 0);
             dely = ytmp - atom_coords(j, 1);
             delz = ztmp - atom_coords(j, 2);
-
             dis = sqrt(delx*delx + dely*dely + delz*delz);
             if (dis < fp.cutoff){
                 const int jtype = atom_types[j];
@@ -240,9 +216,35 @@ void PolymlpKIM::compute_anlmtp(
                 }
             }
         }
-        polymlp_api.compute_anlmtp_conjugate(
+        polymlp.compute_anlmtp_conjugate(
             anlmtp_r, anlmtp_i, atom_types[i], anlmtp[i]
         );
+    }
+}
+
+void PolymlpKIM::compute_sum_of_prod_anlmtp(
+    const vector2dc& anlmtp, 
+    int n_atoms, // Actual number of atoms including ghost atoms
+    const int * const atom_types,
+    const int * const contributing,
+    vector2dc& prod_sum_e, 
+    vector2dc& prod_sum_f){
+
+    prod_sum_e = vector2dc(n_atoms_contrib);
+    prod_sum_f = vector2dc(n_atoms_contrib);
+
+    /*
+    #ifdef _OPENMP
+    #pragma omp parallel for schedule(guided)
+    #endif
+    */
+    for (int i = 0; i != n_atoms; ++i) {
+        // Skip central ghost atoms.
+        if (!contributing[i]) continue;
+ 
+        const int itype = atom_types[i];
+        polymlp.compute_sum_of_prod_anlmtp(
+            anlmtp[i], itype, prod_sum_e[i], prod_sum_f[i]);
     }
 }
 
@@ -266,8 +268,6 @@ void PolymlpKIM::compute_gtinv(
     const int * neighbors;  // The indices of the neighbors.
     const bool eflag = energy || atom_energy; // Calculate energy?
 
-    // loop over full neighbor list of my atoms
-
     vector2dc anlmtp, prod_sum_e, prod_sum_f;
     compute_anlmtp(
         model_compute_arguments,
@@ -278,65 +278,63 @@ void PolymlpKIM::compute_gtinv(
         anlmtp);
     std::cout << "Finish computing anlmtp." << std::endl;
 
-/*
-    compute_sum_of_prod_anlmtp(anlmtp, prod_sum_e, prod_sum_f);
-
-    vector2d evdwl_array(inum), fx_array(inum), fy_array(inum), fz_array(inum);
-    for (int ii = 0; ii < inum; ii++) {
-        int i = list->ilist[ii];
-        int jnum = list->numneigh[i];
-        evdwl_array[ii].resize(jnum);
-        fx_array[ii].resize(jnum);
-        fy_array[ii].resize(jnum);
-        fz_array[ii].resize(jnum);
-    }
+    compute_sum_of_prod_anlmtp(
+        anlmtp, 
+        n_atoms,
+        atom_types,
+        contributing,
+        prod_sum_e, 
+        prod_sum_f);
+    std::cout << "Finish sum_of_prod_anlmtp." << std::endl;
 
     const auto& fp = polymlp.get_fp();
     const auto& maps = polymlp.get_maps();
     const auto& type_pairs = maps.type_pairs;
     const auto& tp_to_params = maps.tp_to_params;
-*/
+
     /*
     #ifdef _OPENMP
     #pragma omp parallel for schedule(guided)
     #endif
     */
-/*
-    for (int ii = 0; ii < inum; ii++) {
-        int i,j,jnum,*jlist,type1,type2,tp,tagi,tagj;
+
+    for (int i = 0; i != n_atoms; ++i) {
+        // Skip central ghost atoms.
+        if (!contributing[i]) continue;
+
+        // Get neighbors.
+        error = model_compute_arguments.GetNeighborList(0, i, &n_neigh, &neighbors);
+        if (error) {
+            throw std::runtime_error(
+                "Error in KIM::ModelComputeArguments.GetNeighborList");
+        }
+        const int itype = atom_types[i];
+        const double xtmp = atom_coords(i, 0);
+        const double ytmp = atom_coords(i, 1);
+        const double ztmp = atom_coords(i, 2);
+
+        int tp;
         double delx,dely,delz,dis,evdwl,fx,fy,fz;
         dc val,valx,valy,valz,d1;
         vector1d fn,fn_d;
         vector1dc ylm,ylm_dx,ylm_dy,ylm_dz;
 
-        double **x = atom->x;
-        tagint *tag = atom->tag;
-
-        i = list->ilist[ii];
-        tagi = tag[i]-1;
-        type1 = types[tagi];
-        jnum = list->numneigh[i];
-        jlist = list->firstneigh[i];
-
-        const auto& maps_type = maps.maps_type[type1];
+        const auto& maps_type = maps.maps_type[itype];
         const auto& nlmtp_attrs_noconj = maps_type.nlmtp_attrs_noconj;
-
-        for (int jj = 0; jj < jnum; jj++) {
-            j = jlist[jj];
-            tagj = tag[j]-1;
-            type2 = types[tagj];
-            delx = x[i][0]-x[j][0];
-            dely = x[i][1]-x[j][1];
-            delz = x[i][2]-x[j][2];
+        for (int jj = 0; jj != n_neigh; ++jj) {
+            int j = neighbors[jj];
+            delx = xtmp - atom_coords(j, 0);
+            dely = ytmp - atom_coords(j, 1);
+            delz = ztmp - atom_coords(j, 2);
             dis = sqrt(delx*delx + dely*dely + delz*delz);
             if (dis < fp.cutoff){
-                tp = type_pairs[type1][type2];
+                const int jtype = atom_types[j];
+                tp = type_pairs[itype][jtype];
                 const auto& params = tp_to_params[tp];
                 const vector1d diff = {delx,dely,delz};
                 const vector1d &sph = cartesian_to_spherical_(diff);
                 get_fn_(dis, fp, params, fn, fn_d);
-                get_ylm_(dis, sph[0], sph[1], fp.maxl, 
-                         ylm, ylm_dx, ylm_dy, ylm_dz);
+                get_ylm_(dis, sph[0], sph[1], fp.maxl, ylm, ylm_dx, ylm_dy, ylm_dz);
 
                 evdwl = 0.0, fx = 0.0, fy = 0.0, fz = 0.0;
                 for (const auto& nlmtp: nlmtp_attrs_noconj){
@@ -350,10 +348,14 @@ void PolymlpKIM::compute_gtinv(
                         valx = - (d1 * delx + fn[nlmtp.n_id] * ylm_dx[ylmkey]);
                         valy = - (d1 * dely + fn[nlmtp.n_id] * ylm_dy[ylmkey]);
                         valz = - (d1 * delz + fn[nlmtp.n_id] * ylm_dz[ylmkey]);
-                        const auto& prod_ei = prod_sum_e[tagi][idx_i];
-                        const auto& prod_ej = prod_sum_e[tagj][idx_j];
-                        const auto& prod_fi = prod_sum_f[tagi][idx_i];
-                        const auto& prod_fj = prod_sum_f[tagj][idx_j];
+                        const auto& prod_ei = prod_sum_e[i][idx_i];
+                        //TODO: How to treat compute from atom j
+                        // const auto& prod_ej = prod_sum_e[tagj][idx_j];
+                        const auto& prod_ej = prod_sum_e[i][idx_j];
+                        const auto& prod_fi = prod_sum_f[i][idx_i];
+                        //TODO: How to treat compute from atom j
+                        // const auto& prod_fj = prod_sum_f[tagj][idx_j];
+                        const auto& prod_fj = prod_sum_e[i][idx_j];
                         const dc sum_e = prod_ei + prod_ej * lm_attr.sign_j;
                         const dc sum_f = prod_fi + prod_fj * lm_attr.sign_j;
                         if (lm_attr.m == 0){
@@ -370,14 +372,21 @@ void PolymlpKIM::compute_gtinv(
                         }
                     }
                 }
+                *energy += evdwl;
+                // std::cout << evdwl << std::endl;
+                // std::cout << fx << " " << fy << " " << fz << std::endl;
+
+                /*
                 evdwl_array[ii][jj] = evdwl;
                 fx_array[ii][jj] = fx;
                 fy_array[ii][jj] = fy;
                 fz_array[ii][jj] = fz;
+                */
             }
         }
     }
 
+/*
     int i,j,jnum,*jlist;
     double fx,fy,fz,evdwl,dis,delx,dely,delz;
     double **f = atom->f;
@@ -409,29 +418,6 @@ void PolymlpKIM::compute_gtinv(
 */
 }
 
-
-// void PolymlpKIM::compute_sum_of_prod_anlmtp(
-//     const vector2dc& anlmtp, vector2dc& prod_sum_e, vector2dc& prod_sum_f
-// ){
-// 
-//     const int inum = list->inum;
-//     prod_sum_e = vector2dc(inum);
-//     prod_sum_f = vector2dc(inum);
-// 
-//     /*
-//     #ifdef _OPENMP
-//     #pragma omp parallel for schedule(guided)
-//     #endif
-//     */
-//     for (int ii = 0; ii < inum; ii++) {
-//         tagint *tag = atom->tag;
-//         const int i = list->ilist[ii];
-//         const int type1 = types[tag[i]-1];
-//         polymlp.compute_sum_of_prod_anlmtp(
-//             anlmtp[tag[i]-1], type1, prod_sum_e[tag[i]-1], prod_sum_f[tag[i]-1]
-//         );
-//     }
-// }
 
 
 // void PolymlpKIM::compute_pair(){

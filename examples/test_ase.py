@@ -20,5 +20,5 @@ ecoh = -atoms.get_potential_energy() / len(atoms)
 stress = atoms.get_stress()
 pressure_MPa = (-sum(stress[:3]) / 3.0) * 1e3 / GPa
 
-print("Computed cohesive energy of {:.3f} eV/atom (experiment: 3.39 eV/atom)".format(ecoh))
+print("Computed cohesive energy of {:.3f} eV/atom".format(ecoh))
 print("Computed pressure of {} MPa".format(pressure_MPa))
