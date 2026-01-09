@@ -249,6 +249,56 @@ static int destroy(KIM::ModelDestroy * const model_destroy) {
 }
 #undef KIM_LOGGER_OBJECT_NAME
 
+// Init stuff must be last, so that the other functions are already defined.
+
+#define KIM_LOGGER_OBJECT_NAME model_driver_create
+
+static int
+read_settings(KIM::ModelDriverCreate * const model_driver_create,
+              const std::string& settings_filename){
+  std::ifstream settings_file(settings_filename.c_str()); // passing the std::string
+                                                     // is C++11
+  bool getline_error;
+
+  // Get the list of species. //////////////////////////////////////////
+  std::string species_line;
+  getline_error = std::getline(settings_file, species_line).fail();
+  if (getline_error) {
+    LOG_ERROR("The settings file ("
+              + settings_filename
+              + ") does not contain a line with supported particle types.");
+    return 1;
+  }
+
+  // Parse the list.
+  std::istringstream iss(species_line);
+  std::string species_name;
+  int species_id = 0;
+  while (iss >> species_name) {
+    /*
+    // Collect in map.
+    std::pair<std::map<std::string,int>::iterator, bool> insertion_result =
+      type_map.insert(pair<string,int>(species_name, species_id));
+    if (!insertion_result.second) {
+      LOG_ERROR("Particle type \"" + species_name + "\" occurs twice in file "
+                + settings_filename);
+      return 1;
+    }
+    */
+    // Register to KIM.
+    const KIM::SpeciesName kim_spec(species_name);
+    const int error = model_driver_create->SetSpeciesCode(kim_spec, species_id);
+    if (error) {
+      LOG_ERROR("Error returned by KIM's SetSpeciesCode().");
+      return error;
+    }
+    //
+    ++species_id;
+  }
+  return 0;
+}
+#undef KIM_LOGGER_OBJECT_NAME
+
 
 #define KIM_LOGGER_OBJECT_NAME model_driver_create
 
@@ -392,31 +442,31 @@ model_driver_create(KIM::ModelDriverCreate * const model_driver_create,
   // Get parameter files. //////////////////////////////////////////////
   int n_param_files;
   model_driver_create->GetNumberOfParameterFiles(&n_param_files);
-  if (n_param_files != 1) {
+  if (n_param_files != 2) {
     LOG_ERROR("This model driver requires exactly one parameter file");
     return 1;
   }
 
-  const string * param_filename;
-  error = model_driver_create->GetParameterFileName(0, &param_filename);
+  const string * settings_filename;
+  error = model_driver_create->GetParameterFileName(0, &settings_filename);
   if (error) {
     LOG_ERROR("Error returned by KIM's GetParameterFileName() "
               "for the first parameter file.");
     return 1;
   }
 
-  // Get number and name of species. ///////////////////////////////////
-  /*
-  int n_spec = 0;
-  std::map<std::string, int> type_map;
-  PotentialVariant potential_variant;
-  error =
-    read_settings(model_driver_create, *settings_filename,
-                  n_spec, type_map, potential_variant);
+  const string * param_filename;
+  error = model_driver_create->GetParameterFileName(1, &param_filename);
+  if (error) {
+    LOG_ERROR("Error returned by KIM's GetParameterFileName() "
+              "for the first parameter file.");
+    return 1;
+  }
+  error = read_settings(model_driver_create, *settings_filename);
+
   if (error) {
     return error; // already logged.
   }
-  */
 
   return finish_create(model_driver_create,
                        length_unit,

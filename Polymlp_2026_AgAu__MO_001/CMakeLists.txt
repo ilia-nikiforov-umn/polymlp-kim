@@ -14,5 +14,6 @@ kim_api_items_setup_after_project(ITEM_TYPE "portableModel")
 add_kim_api_model_library(
   NAME            ${PROJECT_NAME}
   DRIVER_NAME     "Polymlp__MD_001"
-  PARAMETER_FILES "polymlp.Ag-Au"
+  PARAMETER_FILES "polymlp.settings"
+                  "polymlp.Ag-Au"
   )

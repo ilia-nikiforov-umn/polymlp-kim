@@ -213,6 +213,7 @@ void PolymlpKIM::compute_anlmtp(
             delz = ztmp - atom_coords(j,2);
 
             dis = sqrt(delx*delx + dely*dely + delz*delz);
+            std::cout << dis << std::endl;
             if (dis < fp.cutoff){
                 const int jtype = atom_types[j];
                 tp = type_pairs[itype][jtype];
