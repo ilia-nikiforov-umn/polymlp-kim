@@ -30,7 +30,7 @@ def create_neigh(coords_in, cutoff, neigh_in):
 
 
 
-modelname = "Polymlp_Seko_2022_AgAu__MO_000000111111_000"
+modelname = "Tersoff_LAMMPS_Tersoff_1989_SiC__MO_171585019474_004"
 units_accepted, kim_model = kimpy.model.create(
     kimpy.numbering.zeroBased,
     kimpy.length_unit.A,
@@ -45,8 +45,8 @@ N = 4
 coords = np.zeros((N, 3), dtype=np.double)
 forces = np.zeros((N, 3), dtype=np.double)
 energy = np.array([0.0], dtype=np.double)
-num_particles = np.array([2, 2], dtype=np.intc)
-species_code = np.zeros(num_particles, dtype=np.intc)
+num_particles = np.array([N], dtype=np.intc)
+species_code = np.array([0, 0, 1, 1], dtype=np.intc)
 particle_contributing = np.zeros(num_particles, dtype=np.intc)
 
 # Set KIM API pointers to simulation arguments

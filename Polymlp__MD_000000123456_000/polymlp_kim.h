@@ -66,6 +66,7 @@ class PolymlpKIM {
         const Array2D<const double>& atom_coords,
         vector2dc& anlmtp);
 
+    /*
     void compute_anlmtp_conjugate(
         int n_atoms, 
         const int * const atom_types,
@@ -73,6 +74,7 @@ class PolymlpKIM {
         const vector2d& anlmtp_r, 
         const vector2d& anlmtp_i, 
         vector2dc& anlmtp);
+    */
     /*
     void compute_sum_of_prod_anlmtp(
         const vector2dc& anlmtp, 

@@ -1,17 +1,4 @@
 /* ----------------------------------------------------------------------
-   LAMMPS - Large-scale Atomic/Molecular Massively Parallel Simulator
-   http://lammps.sandia.gov, Sandia National Laboratories
-   Steve Plimpton, sjplimp@sandia.gov
-
-   Copyright (2003) Sandia Corporation.  Under the terms of Contract
-   DE-AC04-94AL85000 with Sandia Corporation, the U.S. Government retains
-   certain rights in this software.  This software is distributed under
-   the GNU General Public License.
-
-   See the README file in the top-level LAMMPS directory.
-------------------------------------------------------------------------- */
-
-/* ----------------------------------------------------------------------
    Contributing author: Atsuto Seko
 ------------------------------------------------------------------------- */
 
@@ -21,6 +8,7 @@
 #include <string.h>
 
 #include "polymlp_kim.h"
+
 
 using namespace model_driver_Tersoff;
 
@@ -121,6 +109,11 @@ void PolymlpKIM::compute(
             for (int j = 0; j != 6; ++j)
                 (*particle_virial)(i, j) = 0.0;
 
+    std::cout << "N: " << n_atoms << std::endl;
+    for (int i = 0; i != n_atoms; ++i) {
+        std::cout << contributing[i] << std::endl;
+    }
+
     //if (fp.feature_type == "pair"){
     //    compute_pair();
     //}
@@ -164,12 +157,14 @@ void PolymlpKIM::compute_anlmtp(
     const auto& type_pairs = maps.type_pairs;
     const auto& tp_to_params = maps.tp_to_params;
 
-    vector2d anlmtp_r(n_atoms_contrib), anlmtp_i(n_atoms_contrib);
+    anlmtp = vector2dc(n_atoms_contrib);
 
     int error;       // KIM error code.
     int n_neigh;     // Number of neighbors of i.
     const int * neighbors;  // The indices of the neighbors.
 
+/*    
+    //vector2d anlmtp_r(n_atoms_contrib), anlmtp_i(n_atoms_contrib);
     for (int i = 0; i != n_atoms; ++i) {
     // Skip central ghost atoms.
         if (!contributing[i]) continue;
@@ -181,6 +176,8 @@ void PolymlpKIM::compute_anlmtp(
         anlmtp_r[i] = vector1d(nlmtp_attrs_noconj.size(), 0.0);
         anlmtp_i[i] = vector1d(nlmtp_attrs_noconj.size(), 0.0);
     }
+    std::cout << "Start computing anlmtp5." << std::endl;
+*/
 
     /*
     #ifdef _OPENMP
@@ -192,6 +189,8 @@ void PolymlpKIM::compute_anlmtp(
         if (!contributing[i]) continue;
         // Get neighbors.
         error = model_compute_arguments.GetNeighborList(0, i, &n_neigh, &neighbors);
+        std::cout << "iInfo:" << i 
+            << " " << contributing[i] << " " << n_neigh << std::endl;
         if (error) {
             throw std::runtime_error(
                 "Error in KIM::ModelComputeArguments.GetNeighborList");
@@ -207,19 +206,21 @@ void PolymlpKIM::compute_anlmtp(
         const auto& maps_type = maps.maps_type[itype];
         const auto& nlmtp_attrs_noconj = maps_type.nlmtp_attrs_noconj;
 
+        vector1d anlmtp_r(nlmtp_attrs_noconj.size(), 0.0);
+        vector1d anlmtp_i(nlmtp_attrs_noconj.size(), 0.0);
+
         vector1d fn; vector1dc ylm; dc val;
         for (int jj = 0; jj != n_neigh; ++jj) {
             int j = neighbors[jj];
-            // TODO: Check neighbor atoms in half-neighbor list.
+            std::cout << "J: " << j << std::endl;
             // delx = x[i][0]-x[j][0];
             // dely = x[i][1]-x[j][1];
             // delz = x[i][2]-x[j][2];
-            delx = xtmp - atom_coords(j,0);
-            dely = ytmp - atom_coords(j,1);
-            delz = ztmp - atom_coords(j,2);
+            delx = xtmp - atom_coords(j, 0);
+            dely = ytmp - atom_coords(j, 1);
+            delz = ztmp - atom_coords(j, 2);
 
             dis = sqrt(delx*delx + dely*dely + delz*delz);
-            std::cout << dis << std::endl;
             if (dis < fp.cutoff){
                 const int jtype = atom_types[j];
                 tp = type_pairs[itype][jtype];
@@ -233,59 +234,15 @@ void PolymlpKIM::compute_anlmtp(
                         const int idx_i = nlmtp.ilocal_noconj_id;
                         const int idx_j = nlmtp.jlocal_noconj_id;
                         val = fn[nlmtp.n_id] * ylm[lm_attr.ylmkey];
-                        /*
-                        #ifdef _OPENMP
-                        #pragma omp atomic
-                        #endif
-                        */
-                        anlmtp_r[i][idx_i] += val.real();
-                        /*
-                        #ifdef _OPENMP
-                        #pragma omp atomic
-                        #endif
-                        */
-                        anlmtp_r[j][idx_j] += val.real() * lm_attr.sign_j;
-                        /*
-                        #ifdef _OPENMP
-                        #pragma omp atomic
-                        #endif
-                        */
-                        anlmtp_i[i][idx_i] += val.imag();
-                        /*
-                        #ifdef _OPENMP
-                        #pragma omp atomic
-                        #endif
-                        */
-                        anlmtp_i[j][idx_j] += val.imag() * lm_attr.sign_j;
+                        anlmtp_r[idx_i] += val.real();
+                        anlmtp_i[idx_i] += val.imag();
                     }
                 }
             }
         }
-    }
-    compute_anlmtp_conjugate(
-        n_atoms, atom_types, contributing, anlmtp_r, anlmtp_i, anlmtp);
-}
-
-void PolymlpKIM::compute_anlmtp_conjugate(
-    int n_atoms, // Actual number of atoms (including ghost atoms?)
-    const int * const atom_types,
-    const int * const contributing,
-    const vector2d& anlmtp_r, 
-    const vector2d& anlmtp_i, 
-    vector2dc& anlmtp
-){
-
-    anlmtp = vector2dc(n_atoms_contrib);
-
-    /*
-    #ifdef _OPENMP
-    #pragma omp parallel for schedule(guided)
-    #endif
-    */
-    for (int i = 0; i != n_atoms; ++i) {
-        if (!contributing[i]) continue;
-        const int itype = atom_types[i];
-        polymlp.compute_anlmtp_conjugate(anlmtp_r[i], anlmtp_i[i], itype, anlmtp[i]);
+        polymlp_api.compute_anlmtp_conjugate(
+            anlmtp_r, anlmtp_i, atom_types[i], anlmtp[i]
+        );
     }
 }
 
@@ -319,6 +276,7 @@ void PolymlpKIM::compute_gtinv(
         contributing,
         atom_coords,
         anlmtp);
+    std::cout << "Finish computing anlmtp." << std::endl;
 
 /*
     compute_sum_of_prod_anlmtp(anlmtp, prod_sum_e, prod_sum_f);
