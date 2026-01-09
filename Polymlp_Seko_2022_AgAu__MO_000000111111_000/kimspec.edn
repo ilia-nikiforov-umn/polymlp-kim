@@ -1,0 +1,13 @@
+{"contributor-id" "e09f947f-5c51-4bda-a096-580e239f6064"
+ "description" "Tersoff's silicon carbide potential (PRB 39, 1989). A general form is proposed for an empirical interatomic potential for multicomponent systems. This form interpolates between potentials for the respective elements to treat heteronuclear bonds. The approach is applied to C-Si and Si-Ge systems. In particular, the properties of SiC and its defects are well described."
+ "developer" ["aff409ad-1c1f-4fc6-9f5d-1762d013b915"]
+ "doi" "10.25950/4bbc5883"
+ "domain" "openkim.org"
+ "extended-id" "Polymlp_Seko_2022_AgAu__MO_000000111111_000"
+ "implementer" ["e09f947f-5c51-4bda-a096-580e239f6064"]
+ "kim-api-version" "2.4"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Ag" "Au"]
+ "title" "Tersoff-style three-body potential for SiC developed by Tersoff (1989) v004"}

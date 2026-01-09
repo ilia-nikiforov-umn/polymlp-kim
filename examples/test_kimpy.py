@@ -30,7 +30,7 @@ def create_neigh(coords_in, cutoff, neigh_in):
 
 
 
-modelname = "Polymlp_2026_AgAu__MO_001"
+modelname = "Polymlp_Seko_2022_AgAu__MO_000000111111_000"
 units_accepted, kim_model = kimpy.model.create(
     kimpy.numbering.zeroBased,
     kimpy.length_unit.A,
