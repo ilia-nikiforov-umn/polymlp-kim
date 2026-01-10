@@ -1,0 +1,9 @@
+{"domain" "openkim.org"
+ "extended-id" "Polymlp_Seko_2024_In__MO_010024300253_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2024"
+ "species" ["In"]
+ "title" "Polynomial machine learning potential for In developed by Seko (2024) v000"
+ }

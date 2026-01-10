@@ -5,6 +5,7 @@ import os
 import shutil
 
 import numpy as np
+import tarfile
 
 from pypolymlp.core.io_polymlp import convert_to_yaml, load_mlp
 
@@ -24,7 +25,12 @@ def convert_polymlp_to_kim_model(
     os.makedirs(tmp_path, exist_ok=True)
 
     polymlp_yaml = tmp_path + "polymlp.yaml"
-    if ".lammps" in polymlp_file:
+    if ".lammps.tar.gz" in polymlp_file:
+        tarpath = "/".join(polymlp_file.split("/")[:-1])
+        with tarfile.open(polymlp_file) as tar:
+            tar.extractall(path=tarpath)
+        convert_to_yaml(polymlp_file.replace(".tar.gz",""), yaml=polymlp_yaml)
+    elif ".lammps" in polymlp_file:
         convert_to_yaml(polymlp_file, yaml=polymlp_yaml)
     else:
         shutil.copy(polymlp_file, polymlp_yaml)
@@ -80,8 +86,6 @@ def convert_polymlp_to_kim_model(
         print(" }", file=f)
 
     shutil.move(tmp_path, project)
-
-    # TODO: change directory name.
 
 
 if __name__ == "__main__":
