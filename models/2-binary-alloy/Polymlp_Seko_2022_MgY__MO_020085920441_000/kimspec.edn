@@ -1,0 +1,9 @@
+{"domain" "openkim.org"
+ "extended-id" "Polymlp_Seko_2022_MgY__MO_020085920441_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Mg" "Y"]
+ "title" "Polynomial machine learning potential for Mg-Y developed by Seko (2022) v000"
+ }

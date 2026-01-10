@@ -1,0 +1,9 @@
+{"domain" "openkim.org"
+ "extended-id" "Polymlp_Seko_2022_LiMg__MO_020067020725_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Li" "Mg"]
+ "title" "Polynomial machine learning potential for Li-Mg developed by Seko (2022) v000"
+ }

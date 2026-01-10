@@ -1,0 +1,9 @@
+{"domain" "openkim.org"
+ "extended-id" "Polymlp_Seko_2022_ZnSn__MO_020114120725_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Zn" "Sn"]
+ "title" "Polynomial machine learning potential for Zn-Sn developed by Seko (2022) v000"
+ }
