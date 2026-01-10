@@ -63,17 +63,35 @@ class PolymlpKIM {
     );
 
     // Compute properties using polymlp with pairwise features.
-    /*
-    void compute_pair();
-    void compute_antp(vector2d& antp);
+    void compute_pair(
+        const KIM::ModelComputeArguments& model_compute_arguments,
+        int n_atoms,
+        const int * const atom_types,
+        const int * const contributing,
+        const Array2D<const double>& atom_coords,
+        double* energy,
+        double* atom_energy,
+        Array2D<double>* forces,
+        double* virial,
+        Array2D<double>* particle_virial,
+        bool compute_process_dEdr);
+
+    void compute_antp(
+        const KIM::ModelComputeArguments& model_compute_arguments,
+        int n_atoms, 
+        const int * const atom_types,
+        const int * const contributing,
+        const Array2D<const double>& atom_coords,
+        vector2d& antp);
+
     void compute_sum_of_prod_antp(
         const vector2d& antp, 
+        int n_atoms, 
+        const int * const atom_types,
+        const int * const contributing,
         vector2d& prod_sum_e, 
         vector2d& prod_sum_f
     );
-    */
-
-    // protected:
 
     public:
 
