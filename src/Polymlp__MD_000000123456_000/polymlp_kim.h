@@ -23,8 +23,6 @@ class PolymlpKIM {
     int n_atoms_contrib;
 
     // Parse polymlp file.
-    std::vector<std::string> ele_strings;
-    vector1d mass;
     void parse_polymlp(
         const std::string& parse_polymlp,
         double energy_conv,
@@ -95,7 +93,6 @@ class PolymlpKIM {
 
     public:
 
-    PolymlpKIM();
     PolymlpKIM(
         const std::string& parse_polymlp,
         double energy_conv,

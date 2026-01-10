@@ -2,19 +2,11 @@
    Contributing author: Atsuto Seko
 ------------------------------------------------------------------------- */
 
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "polymlp_kim.h"
 
 
+// TODO: Avoid to use model_driver_Tersoff::ndarray.
 using namespace model_driver_Tersoff;
-
-//#include <omp.h>
-
-PolymlpKIM::PolymlpKIM(){}
 
 PolymlpKIM::PolymlpKIM(
     const std::string& polymlp_file,
@@ -28,6 +20,7 @@ PolymlpKIM::PolymlpKIM(
     parse_polymlp(polymlp_file, energy_conv, length_conv, inv_length_conv);
 }
 
+
 PolymlpKIM::~PolymlpKIM(){}
 
 
@@ -38,16 +31,14 @@ void PolymlpKIM::parse_polymlp(
     double inv_length_conv)
 {
     // Parse polymlp file.
+    std::vector<std::string> ele_strings;
+    vector1d mass;
     polymlp.parse_polymlp_file(polymlp_file.c_str(), ele_strings, mass);
     const auto& fp = polymlp.get_fp();
     cutoff = fp.cutoff;
 
     // TODO: Unit conversion.
-
     // TODO: Is it needed to set mass values ? 
-    // for (int i = 1; i <= atom->ntypes; ++i){
-    //     atom->set_mass(FLERR,i,mass[map[i-1]]);
-    // }
 }
 
 void PolymlpKIM::compute(
