@@ -34,7 +34,6 @@
 #include "KIM_LogMacros.hpp"
 #include "KIM_ModelDriverHeaders.hpp"
 
-#include "polymlp/polymlp_mlpcpp.h"
 #include "polymlp_kim.h"
 #include "ndarray.hpp"
 
@@ -62,24 +61,6 @@ extern "C" {
 // copying a bool. So be it, I'll define a constant, which is false
 // since we do use ghost particles' neighbors.
 static const int doesnt_use_ghost_neighbors = 0;
-
-// LOCAL DEFINITIONS ///////////////////////////////////////////////////
-
-// Helper to trim a string. For some reason C++ doesn't provide this.
-/*
-static string trim(const string &s)
-{
-    string::const_iterator it = s.begin();
-    while (it != s.end() && isspace(*it))
-        it++;
-
-    string::const_reverse_iterator rit = s.rbegin();
-    while (rit.base() != it && isspace(*rit))
-        rit++;
-
-    return string(it, rit.base());
-}
-*/
 
 
 // WRAPPERS AND INTERFACE TO KIM ///////////////////////////////////////
@@ -526,24 +507,10 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
     return 1;
   }
 
-  // Register parameters.
-  /*
-  error = reg_params(model_driver_create, tersoff);
-  if (error) {
-    delete tersoff;
-    return error; // logging already done in reg_params()
-  }
-  */
-
   // Use function pointer definitions to statically verify correct prototypes.
   KIM::ModelComputeArgumentsCreateFunction * kim_ca_create
     = &compute_arguments_create;
   KIM::ModelComputeFunction * kim_compute = &compute;
-  /*
-  KIM::ModelRefreshFunction * kim_refresh = &refresh<T>;
-  KIM::ModelWriteParameterizedModelFunction * kim_write_params
-    = &write_parameterized_model<T>;
-  */
   KIM::ModelComputeArgumentsDestroyFunction * kim_ca_destroy
     = &compute_arguments_destroy;
   KIM::ModelDestroyFunction * kim_destroy = &destroy;
@@ -560,18 +527,6 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
       KIM::LANGUAGE_NAME::cpp, true,
       reinterpret_cast<KIM::Function *>(kim_compute))
     ||
-    /*
-    model_driver_create->SetRoutinePointer(
-      KIM::MODEL_ROUTINE_NAME::Refresh,
-      KIM::LANGUAGE_NAME::cpp, false,
-      reinterpret_cast<KIM::Function *>(kim_refresh))
-    ||
-    model_driver_create->SetRoutinePointer(
-      KIM::MODEL_ROUTINE_NAME::WriteParameterizedModel,
-      KIM::LANGUAGE_NAME::cpp, false,
-      reinterpret_cast<KIM::Function *>(kim_write_params))
-    ||
-    */
     model_driver_create->SetRoutinePointer(
       KIM::MODEL_ROUTINE_NAME::ComputeArgumentsDestroy,
       KIM::LANGUAGE_NAME::cpp, true,
