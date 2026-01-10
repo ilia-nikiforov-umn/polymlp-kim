@@ -28,11 +28,10 @@ PolymlpKIM::PolymlpKIM(
     std::cout << "Start using PolymlpKIM" << std::endl;
     parse_polymlp(polymlp_file, energy_conv, length_conv, inv_length_conv);
 
-    // TODO: Is to_spec needed?
-    const int n_spec = ele_strings.size();
-    for (int i = 0; i < n_spec; ++i){
-        to_spec[i] = ele_strings[i];
-    }
+    // const int n_spec = ele_strings.size();
+    // for (int i = 0; i < n_spec; ++i){
+    //     to_spec[i] = ele_strings[i];
+    // }
 }
 
 PolymlpKIM::~PolymlpKIM(){}
@@ -45,31 +44,21 @@ void PolymlpKIM::parse_polymlp(
     double inv_length_conv)
 {
     // Parse polymlp file.
-
     polymlp.parse_polymlp_file(polymlp_file.c_str(), ele_strings, mass);
-
-    // TODO: Unit conversion.
-
     const auto& fp = polymlp.get_fp();
     cutoff = fp.cutoff;
 
-    std::cout << "Parsing polymlp finished." << std::endl;
-    // TODO: How to set mass values ? 
+    // TODO: Unit conversion.
 
-    /*
-    for (int i = 1; i <= atom->ntypes; ++i){
-        atom->set_mass(FLERR,i,mass[map[i-1]]);
-        for (int j = 1; j <= atom->ntypes; ++j) setflag[i][j] = 1;
-    }
-    for (int i = 0; i < atom->natoms; ++i){
-        types.emplace_back(map[(atom->type)[i]-1]);
-    }
-    */
+    // TODO: Is it needed to set mass values ? 
+    // for (int i = 1; i <= atom->ntypes; ++i){
+    //     atom->set_mass(FLERR,i,mass[map[i-1]]);
+    // }
 }
 
 void PolymlpKIM::compute(
     const KIM::ModelComputeArguments& model_compute_arguments,
-    int n_atoms, // Actual number of atoms (including ghost atoms?)
+    int n_atoms, // Actual number of atoms including ghost atoms
     const int * const atom_types,
     const int * const contributing,
     const Array2D<const double>& atom_coords,
@@ -78,53 +67,54 @@ void PolymlpKIM::compute(
     Array2D<double>* forces,
     double* virial,
     Array2D<double>* particle_virial,
-    bool compute_process_dEdr
-){
+    bool compute_process_dEdr)
+{
     // Compute properties.
-    std::cout << "Starting compute." << std::endl;
-    const auto& fp = polymlp.get_fp();
 
-    // If requested, reset energy.
-    if (energy)
-        *energy = 0.0;
-    if (atom_energy)
-        for (int i = 0; i != n_atoms; ++i) {
-            atom_energy[i] = 0.0;
-        }
-
-    // Reset forces.
-    if (forces)
-        for (int i = 0; i != n_atoms; ++i) {
-            (*forces)(i, 0) = 0.0;
-            (*forces)(i, 1) = 0.0;
-            (*forces)(i, 2) = 0.0;
-        }
-
-    // Reset virial.
-    if (virial)
-        for (int i = 0; i != 6; ++i)
-            virial[i] = 0.0;
-    if (particle_virial)
-        for (int i = 0; i != n_atoms; ++i)
-            for (int j = 0; j != 6; ++j)
-                (*particle_virial)(i, j) = 0.0;
-
-    std::cout << "N: " << n_atoms << std::endl;
-    for (int i = 0; i != n_atoms; ++i) {
-        std::cout << contributing[i] << std::endl;
-    }
-
-    //if (fp.feature_type == "pair"){
-    //    compute_pair();
-    //}
-    std::cout << "Initialize finished." << std::endl;
-
+    // Set number of contributing atoms.
     n_atoms_contrib = 0;
     for (int i = 0; i != n_atoms; ++i) {
         if (contributing[i]) 
             ++n_atoms_contrib;
     }
+    // If requested, reset energy.
+    if (energy){
+        *energy = 0.0;
+    }
+    // Reset atomic energy.
+    if (atom_energy){
+        for (int i = 0; i != n_atoms; ++i) {
+            atom_energy[i] = 0.0;
+        }
+    }
+    // Reset forces.
+    if (forces){
+        for (int i = 0; i != n_atoms; ++i) {
+            (*forces)(i, 0) = 0.0;
+            (*forces)(i, 1) = 0.0;
+            (*forces)(i, 2) = 0.0;
+        }
+    }
+    // Reset virial.
+    if (virial){
+        std::cout << "Virial option." << std::endl;
+        for (int i = 0; i != 6; ++i)
+            virial[i] = 0.0;
+    }
+    // Reset partial virial.
+    if (particle_virial){
+        for (int i = 0; i != n_atoms; ++i)
+            for (int j = 0; j != 6; ++j)
+                (*particle_virial)(i, j) = 0.0;
+    }
+    std::cout << "Initialize finished." << std::endl;
 
+    // std::cout << "N: " << n_atoms << std::endl;
+    // for (int i = 0; i != n_atoms; ++i) {
+    //     std::cout << contributing[i] << std::endl;
+    // }
+
+    const auto& fp = polymlp.get_fp();
     if (fp.feature_type == "gtinv"){
         compute_gtinv(
             model_compute_arguments,
@@ -138,6 +128,9 @@ void PolymlpKIM::compute(
             virial,
             particle_virial,
             compute_process_dEdr);
+    }
+    else if (fp.feature_type == "pair"){
+    //    compute_pair();
     }
 }
 
@@ -251,7 +244,7 @@ void PolymlpKIM::compute_sum_of_prod_anlmtp(
 
 void PolymlpKIM::compute_gtinv(
     const KIM::ModelComputeArguments& model_compute_arguments,
-    int n_atoms, // Actual number of atoms
+    int n_atoms, // Actual number of atoms including ghost atoms
     const int * const atom_types,
     const int * const contributing,
     const Array2D<const double>& atom_coords,
@@ -379,100 +372,46 @@ void PolymlpKIM::compute_gtinv(
                         }
                     }
                 }
-                *energy += evdwl;
-                (*forces)(i, 0) += fx; 
-                (*forces)(i, 1) += fy; 
-                (*forces)(i, 2) += fz;
-                if (contributing[j]){
+                if (energy)
+                    *energy += evdwl;
+                if (forces){
+                    (*forces)(i, 0) += fx; 
+                    (*forces)(i, 1) += fy; 
+                    (*forces)(i, 2) += fz;
                     (*forces)(j, 0) -= fx; 
                     (*forces)(j, 1) -= fy; 
                     (*forces)(j, 2) -= fz;
                 }
-                // lammps convension
-                // virial[0] += delx * fx;
-                // virial[1] += dely * fy;
-                // virial[2] += delz * fz;
-                // virial[3] += delx * fy;
-                // virial[4] += delx * fz;
-                // virial[5] += dely * fz;
-                virial[0] += delx * fx;
-                virial[1] += dely * fy;
-                virial[2] += delz * fz;
-                virial[3] += dely * fz;
-                virial[4] += delx * fz;
-                virial[5] += delx * fy;
-                /*
-                if (vflag_atom) {
-                    if (newton_pair || i < nlocal) {
-                        vatom[i][0] += 0.5*v[0];
-                        vatom[i][1] += 0.5*v[1];
-                        vatom[i][2] += 0.5*v[2];
-                        vatom[i][3] += 0.5*v[3];
-                        vatom[i][4] += 0.5*v[4];
-                        vatom[i][5] += 0.5*v[5];
-                    }
-                    if (newton_pair || j < nlocal) {
-                        vatom[j][0] += 0.5*v[0];
-                        vatom[j][1] += 0.5*v[1];
-                        vatom[j][2] += 0.5*v[2];
-                        vatom[j][3] += 0.5*v[3];
-                        vatom[j][4] += 0.5*v[4];
-                        vatom[j][5] += 0.5*v[5];
+                vector1d val_tmp(6);
+                if (virial || particle_virial){
+                    val_tmp[0] = delx * fx;
+                    val_tmp[1] = dely * fy;
+                    val_tmp[2] = delz * fz;
+                    val_tmp[3] = dely * fz;
+                    val_tmp[4] = delx * fz;
+                    val_tmp[5] = delx * fy;
+                    // lammps convension
+                    // virial[0] += delx * fx;
+                    // virial[1] += dely * fy;
+                    // virial[2] += delz * fz;
+                    // virial[3] += delx * fy;
+                    // virial[4] += delx * fz;
+                    // virial[5] += dely * fz;
+                }
+                if (virial){
+                    for (int k = 0; k < 6; ++k){
+                        virial[k] += val_tmp[k];
                     }
                 }
-                */
-
-                // std::cout << evdwl << std::endl;
-                // std::cout << fx << " " << fy << " " << fz << std::endl;
-
-                /*
-                evdwl_array[ii][jj] = evdwl;
-                fx_array[ii][jj] = fx;
-                fy_array[ii][jj] = fy;
-                fz_array[ii][jj] = fz;
-                */
-            }
-        }
-    }
-    /*
-    std::cout << virial[0] << std::endl;
-    std::cout << virial[1] << std::endl;
-    std::cout << virial[2] << std::endl;
-    std::cout << virial[3] << std::endl;
-    std::cout << virial[4] << std::endl;
-    std::cout << virial[5] << std::endl;
-    */
-
-/*
-    int i,j,jnum,*jlist;
-    double fx,fy,fz,evdwl,dis,delx,dely,delz;
-    double **f = atom->f;
-    double **x = atom->x;
-    for (int ii = 0; ii < inum; ii++) {
-        i = list->ilist[ii];
-        jnum = list->numneigh[i], jlist = list->firstneigh[i];
-        for (int jj = 0; jj < jnum; jj++) {
-            j = jlist[jj];
-            delx = x[i][0]-x[j][0];
-            dely = x[i][1]-x[j][1];
-            delz = x[i][2]-x[j][2];
-            dis = sqrt(delx*delx + dely*dely + delz*delz);
-            if (dis < fp.cutoff){
-                evdwl = evdwl_array[ii][jj];
-                fx = fx_array[ii][jj]; 
-                fy = fy_array[ii][jj]; 
-                fz = fz_array[ii][jj]; 
-                f[i][0] += fx, f[i][1] += fy, f[i][2] += fz;
-                // if (newton_pair || j < nlocal)
-                f[j][0] -= fx, f[j][1] -= fy, f[j][2] -= fz;
-                if (evflag) {
-                    ev_tally_xyz(i,j,nlocal,newton_pair,
-                            evdwl,0.0,fx,fy,fz,delx,dely,delz);
+                if (particle_virial){
+                    for (int k = 0; k < 6; ++k){
+                        (*particle_virial)(i, k) += 0.5 * val_tmp[k];
+                        (*particle_virial)(j, k) += 0.5 * val_tmp[k];
+                    }
                 }
             }
         }
     }
-*/
 }
 
 

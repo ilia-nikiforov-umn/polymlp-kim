@@ -20,8 +20,6 @@ class PolymlpKIM {
 
     PolymlpAPI polymlp;
     double cutoff;
-    vector1i types;
-
     int n_atoms_contrib;
 
     // Parse polymlp file.
@@ -75,10 +73,7 @@ class PolymlpKIM {
     );
     */
 
-    protected:
-
-    // map element index to element name, needed for user-friendly error messages
-    std::map<int, std::string> to_spec;
+    // protected:
 
     public:
 
@@ -113,4 +108,3 @@ class PolymlpKIM {
 };
 
 #endif
-
