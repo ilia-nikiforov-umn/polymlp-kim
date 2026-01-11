@@ -35,13 +35,10 @@
 #include "KIM_ModelDriverHeaders.hpp"
 
 #include "polymlp_kim.h"
-#include "ndarray.hpp"
-
-using namespace std;
-using namespace model_driver_Tersoff;
-// using namespace model_driver_polymlp;
 
 #define DIMENSION 3
+
+using namespace std;
 
 typedef double VectorOfSizeDIM[DIMENSION];
 typedef double VectorOfSizeSix[6];
@@ -127,14 +124,13 @@ compute(
     const int * n_atoms;
     const int * atom_types;
     const int * contributing;
-    const double * atom_coords_ptr;
+    VectorOfSizeDIM const * atom_coords;
 
     double * energy;
     double * atom_energy;
-    // double * forces_ptr;
     VectorOfSizeDIM * forces;
     double * virial;
-    double * particle_virial_ptr;
+    VectorOfSizeSix * particle_virial;
 
     int error =
 
@@ -149,7 +145,7 @@ compute(
           KIM::COMPUTE_ARGUMENT_NAME::particleContributing, &contributing)
         ||
         model_compute_arguments->GetArgumentPointer(
-          KIM::COMPUTE_ARGUMENT_NAME::coordinates, &atom_coords_ptr)
+          KIM::COMPUTE_ARGUMENT_NAME::coordinates, (double const **) &atom_coords)
 
         // Output
         ||
@@ -159,9 +155,6 @@ compute(
         model_compute_arguments->GetArgumentPointer(
           KIM::COMPUTE_ARGUMENT_NAME::partialParticleEnergy, &atom_energy)
         ||
-        // model_compute_arguments->GetArgumentPointer(
-        //   KIM::COMPUTE_ARGUMENT_NAME::partialForces, &forces)
-        //   // KIM::COMPUTE_ARGUMENT_NAME::partialForces, &forces_ptr)
         model_compute_arguments->GetArgumentPointer(
           KIM::COMPUTE_ARGUMENT_NAME::partialForces, (double const **) &forces)
         ||
@@ -169,7 +162,8 @@ compute(
           KIM::COMPUTE_ARGUMENT_NAME::partialVirial, &virial)
         ||
         model_compute_arguments->GetArgumentPointer(
-          KIM::COMPUTE_ARGUMENT_NAME::partialParticleVirial, &particle_virial_ptr);
+          KIM::COMPUTE_ARGUMENT_NAME::partialParticleVirial, 
+          (double const **) &particle_virial);
 
     if (error) return error;
 
@@ -181,11 +175,11 @@ compute(
     if (error) return error;
 
     // Wrap some stuff for convenience.
-    Array2D<const double> atom_coords(atom_coords_ptr, *n_atoms, 3);
-    // Array2D<double> f(forces_ptr, *n_atoms, 3);
-    // Array2D<double>* forces = forces_ptr ? &f : NULL;
-    Array2D<double> v(particle_virial_ptr, *n_atoms, 6);
-    Array2D<double>* particle_virial = particle_virial_ptr ? &v : NULL;
+    //Array2D<const double> atom_coords(atom_coords_ptr, *n_atoms, 3);
+    //// Array2D<double> f(forces_ptr, *n_atoms, 3);
+    //// Array2D<double>* forces = forces_ptr ? &f : NULL;
+    //Array2D<double> v(particle_virial_ptr, *n_atoms, 6);
+    //Array2D<double>* particle_virial = particle_virial_ptr ? &v : NULL;
 
     // Do the compute.
     try {

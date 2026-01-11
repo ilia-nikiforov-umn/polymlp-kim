@@ -11,15 +11,12 @@
 #include "polymlp/polymlp_functions_interface.h"
 
 #include "KIM_ModelDriverHeaders.hpp"
-#include "ndarray.hpp"
 
 #define DIMENSION 3
 
 typedef double VectorOfSizeDIM[DIMENSION];
 typedef double VectorOfSizeSix[6];
 
-
-using namespace model_driver_Tersoff;
 
 class PolymlpKIM {
 
@@ -33,13 +30,12 @@ class PolymlpKIM {
         int n_atoms,
         const int * const atom_types,
         const int * const contributing,
-        const Array2D<const double>& atom_coords,
+        const VectorOfSizeDIM *& atom_coords,
         double* energy,
         double* atom_energy,
         VectorOfSizeDIM *& forces,
-        //Array2D<double>* forces,
         double* virial,
-        Array2D<double>* particle_virial,
+        VectorOfSizeSix *& particle_virial,
         bool compute_process_dEdr);
 
     void compute_anlmtp(
@@ -47,7 +43,7 @@ class PolymlpKIM {
         int n_atoms, 
         const int * const atom_types,
         const int * const contributing,
-        const Array2D<const double>& atom_coords,
+        const VectorOfSizeDIM *& atom_coords,
         vector2dc& anlmtp);
 
     void compute_sum_of_prod_anlmtp(
@@ -65,13 +61,12 @@ class PolymlpKIM {
         int n_atoms,
         const int * const atom_types,
         const int * const contributing,
-        const Array2D<const double>& atom_coords,
+        const VectorOfSizeDIM *& atom_coords,
         double* energy,
         double* atom_energy,
         VectorOfSizeDIM *& forces,
-        //Array2D<double>* forces,
         double* virial,
-        Array2D<double>* particle_virial,
+        VectorOfSizeSix *& particle_virial,
         bool compute_process_dEdr);
 
     void compute_antp(
@@ -79,7 +74,7 @@ class PolymlpKIM {
         int n_atoms, 
         const int * const atom_types,
         const int * const contributing,
-        const Array2D<const double>& atom_coords,
+        const VectorOfSizeDIM *& atom_coords,
         vector2d& antp);
 
     void compute_sum_of_prod_antp(
@@ -107,13 +102,12 @@ class PolymlpKIM {
         int n_atoms, 
         const int * const atom_types,
         const int * const contributing,
-        const Array2D<const double>& atom_coords,
+        const VectorOfSizeDIM *& atom_coords,
         double* energy, 
         double* atom_energy,
         VectorOfSizeDIM *& forces,
-        //Array2D<double>* forces,
         double* virial,
-        Array2D<double>* particle_virial,
+        VectorOfSizeSix *& particle_virial,
         bool compute_process_dEdr
     );
 
