@@ -41,11 +41,6 @@ using namespace std;
 using namespace model_driver_Tersoff;
 // using namespace model_driver_polymlp;
 
-#define DIMENSION 3
-
-typedef double VectorOfSizeDIM[DIMENSION];
-typedef double VectorOfSizeSix[6];
-
 
 extern "C" {
   // Can't be both static and extern.  But this is not needed: extern
@@ -131,8 +126,7 @@ compute(
 
     double * energy;
     double * atom_energy;
-    // double * forces_ptr;
-    VectorOfSizeDIM * forces;
+    double * forces_ptr;
     double * virial;
     double * particle_virial_ptr;
 
@@ -159,11 +153,8 @@ compute(
         model_compute_arguments->GetArgumentPointer(
           KIM::COMPUTE_ARGUMENT_NAME::partialParticleEnergy, &atom_energy)
         ||
-        // model_compute_arguments->GetArgumentPointer(
-        //   KIM::COMPUTE_ARGUMENT_NAME::partialForces, &forces)
-        //   // KIM::COMPUTE_ARGUMENT_NAME::partialForces, &forces_ptr)
         model_compute_arguments->GetArgumentPointer(
-          KIM::COMPUTE_ARGUMENT_NAME::partialForces, (double const **) &forces)
+          KIM::COMPUTE_ARGUMENT_NAME::partialForces, &forces_ptr)
         ||
         model_compute_arguments->GetArgumentPointer(
           KIM::COMPUTE_ARGUMENT_NAME::partialVirial, &virial)
@@ -182,8 +173,8 @@ compute(
 
     // Wrap some stuff for convenience.
     Array2D<const double> atom_coords(atom_coords_ptr, *n_atoms, 3);
-    // Array2D<double> f(forces_ptr, *n_atoms, 3);
-    // Array2D<double>* forces = forces_ptr ? &f : NULL;
+    Array2D<double> f(forces_ptr, *n_atoms, 3);
+    Array2D<double>* forces = forces_ptr ? &f : NULL;
     Array2D<double> v(particle_virial_ptr, *n_atoms, 6);
     Array2D<double>* particle_virial = particle_virial_ptr ? &v : NULL;
 

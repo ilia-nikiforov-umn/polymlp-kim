@@ -13,11 +13,6 @@
 #include "KIM_ModelDriverHeaders.hpp"
 #include "ndarray.hpp"
 
-#define DIMENSION 3
-
-typedef double VectorOfSizeDIM[DIMENSION];
-typedef double VectorOfSizeSix[6];
-
 
 using namespace model_driver_Tersoff;
 
@@ -26,6 +21,13 @@ class PolymlpKIM {
     PolymlpAPI polymlp;
     double cutoff;
     int n_atoms_contrib;
+
+    // Parse polymlp file.
+    void parse_polymlp(
+        const std::string& parse_polymlp,
+        double energy_conv,
+        double length_conv,
+        double inv_length_conv);
 
     // Compute properties using polymlp with polynomial invariants.
     void compute_gtinv(
@@ -36,8 +38,7 @@ class PolymlpKIM {
         const Array2D<const double>& atom_coords,
         double* energy,
         double* atom_energy,
-        VectorOfSizeDIM *& forces,
-        //Array2D<double>* forces,
+        Array2D<double>* forces,
         double* virial,
         Array2D<double>* particle_virial,
         bool compute_process_dEdr);
@@ -68,8 +69,7 @@ class PolymlpKIM {
         const Array2D<const double>& atom_coords,
         double* energy,
         double* atom_energy,
-        VectorOfSizeDIM *& forces,
-        //Array2D<double>* forces,
+        Array2D<double>* forces,
         double* virial,
         Array2D<double>* particle_virial,
         bool compute_process_dEdr);
@@ -110,8 +110,7 @@ class PolymlpKIM {
         const Array2D<const double>& atom_coords,
         double* energy, 
         double* atom_energy,
-        VectorOfSizeDIM *& forces,
-        //Array2D<double>* forces,
+        Array2D<double>* forces,
         double* virial,
         Array2D<double>* particle_virial,
         bool compute_process_dEdr

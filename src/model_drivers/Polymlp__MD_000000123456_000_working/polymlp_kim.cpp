@@ -17,7 +17,19 @@ PolymlpKIM::PolymlpKIM(
     double inv_length_conv,
     double // unused charge_conv
 ){
+    parse_polymlp(polymlp_file, energy_conv, length_conv, inv_length_conv);
+}
 
+
+PolymlpKIM::~PolymlpKIM(){}
+
+
+void PolymlpKIM::parse_polymlp(
+    const std::string& polymlp_file,
+    double energy_conv,
+    double length_conv,
+    double inv_length_conv)
+{
     // Parse polymlp file.
     std::vector<std::string> ele_strings;
     vector1d mass;
@@ -26,12 +38,8 @@ PolymlpKIM::PolymlpKIM(
     cutoff = fp.cutoff;
 
     // TODO: Unit conversion.
-
+    // TODO: Is it needed to set mass values ? 
 }
-
-
-PolymlpKIM::~PolymlpKIM(){}
-
 
 void PolymlpKIM::compute(
     const KIM::ModelComputeArguments& model_compute_arguments,
@@ -41,8 +49,7 @@ void PolymlpKIM::compute(
     const Array2D<const double>& atom_coords,
     double* energy, 
     double* atom_energy,
-    VectorOfSizeDIM *& forces,
-    //Array2D<double>* forces,
+    Array2D<double>* forces,
     double* virial,
     Array2D<double>* particle_virial,
     bool compute_process_dEdr)
@@ -68,12 +75,9 @@ void PolymlpKIM::compute(
     // Reset forces.
     if (forces){
         for (int i = 0; i != n_atoms; ++i) {
-            // (*forces)(i, 0) = 0.0;
-            // (*forces)(i, 1) = 0.0;
-            // (*forces)(i, 2) = 0.0;
-            forces[i][0] = 0.0;
-            forces[i][1] = 0.0;
-            forces[i][2] = 0.0;
+            (*forces)(i, 0) = 0.0;
+            (*forces)(i, 1) = 0.0;
+            (*forces)(i, 2) = 0.0;
         }
     }
     // Reset virial.
@@ -220,8 +224,7 @@ void PolymlpKIM::compute_gtinv(
     const Array2D<const double>& atom_coords,
     double* energy,
     double* atom_energy,
-    VectorOfSizeDIM *& forces,
-    //Array2D<double>* forces,
+    Array2D<double>* forces,
     double* virial,
     Array2D<double>* particle_virial,
     bool compute_process_dEdr)
@@ -336,18 +339,12 @@ void PolymlpKIM::compute_gtinv(
                     *energy += evdwl;
                 // TODO: Implement atomic energy
                 if (forces){
-                    // (*forces)(i, 0) += fx; 
-                    // (*forces)(i, 1) += fy; 
-                    // (*forces)(i, 2) += fz;
-                    // (*forces)(j, 0) -= fx; 
-                    // (*forces)(j, 1) -= fy; 
-                    // (*forces)(j, 2) -= fz;
-                    forces[i][0] += fx; 
-                    forces[i][1] += fy; 
-                    forces[i][2] += fz;
-                    forces[j][0] -= fx; 
-                    forces[j][1] -= fy; 
-                    forces[j][2] -= fz;
+                    (*forces)(i, 0) += fx; 
+                    (*forces)(i, 1) += fy; 
+                    (*forces)(i, 2) += fz;
+                    (*forces)(j, 0) -= fx; 
+                    (*forces)(j, 1) -= fy; 
+                    (*forces)(j, 2) -= fz;
                 }
                 vector1d val_tmp(6);
                 if (virial || particle_virial){
@@ -469,8 +466,7 @@ void PolymlpKIM::compute_pair(
     const Array2D<const double>& atom_coords,
     double* energy,
     double* atom_energy,
-    VectorOfSizeDIM *& forces,
-    //Array2D<double>* forces,
+    Array2D<double>* forces,
     double* virial,
     Array2D<double>* particle_virial,
     bool compute_process_dEdr)
@@ -567,18 +563,12 @@ void PolymlpKIM::compute_pair(
                     *energy += evdwl;
                 // TODO: Implement atomic energy
                 if (forces){
-                    forces[i][0] += fx; 
-                    forces[i][1] += fy; 
-                    forces[i][2] += fz;
-                    forces[j][0] -= fx; 
-                    forces[j][1] -= fy; 
-                    forces[j][2] -= fz;
-                    // (*forces)(i, 0) += fx; 
-                    // (*forces)(i, 1) += fy; 
-                    // (*forces)(i, 2) += fz;
-                    // (*forces)(j, 0) -= fx; 
-                    // (*forces)(j, 1) -= fy; 
-                    // (*forces)(j, 2) -= fz;
+                    (*forces)(i, 0) += fx; 
+                    (*forces)(i, 1) += fy; 
+                    (*forces)(i, 2) += fz;
+                    (*forces)(j, 0) -= fx; 
+                    (*forces)(j, 1) -= fy; 
+                    (*forces)(j, 2) -= fz;
                 }
                 vector1d val_tmp(6);
                 if (virial || particle_virial){
