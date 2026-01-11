@@ -23,7 +23,6 @@ PolymlpKIM::PolymlpKIM(
     cutoff = fp.cutoff;
 
     // TODO: Unit conversion.
-
 }
 
 
@@ -222,7 +221,6 @@ void PolymlpKIM::compute_gtinv(
     int error;       // KIM error code.
     int n_neigh;     // Number of neighbors of i.
     const int * neighbors;  // The indices of the neighbors.
-    // const bool eflag = energy || atom_energy; // Calculate energy?
 
     vector2dc anlmtp, prod_sum_e, prod_sum_f;
     compute_anlmtp(
@@ -326,7 +324,10 @@ void PolymlpKIM::compute_gtinv(
                 }
                 if (energy)
                     *energy += evdwl;
-                // TODO: Implement atomic energy
+                if (atom_energy){
+                    atom_energy[i] += 0.5 * evdwl;
+                    atom_energy[j] += 0.5 * evdwl;
+                }
                 if (forces){
                     forces[i][0] += fx; 
                     forces[i][1] += fy; 
@@ -465,7 +466,6 @@ void PolymlpKIM::compute_pair(
     int error;       // KIM error code.
     int n_neigh;     // Number of neighbors of i.
     const int * neighbors;  // The indices of the neighbors.
-    // const bool eflag = energy || atom_energy; // Calculate energy?
 
     vector2d antp, prod_sum_e, prod_sum_f;
     compute_antp(
@@ -550,7 +550,10 @@ void PolymlpKIM::compute_pair(
 
                 if (energy)
                     *energy += evdwl;
-                // TODO: Implement atomic energy
+                if (atom_energy){
+                    atom_energy[i] += 0.5 * evdwl;
+                    atom_energy[j] += 0.5 * evdwl;
+                }
                 if (forces){
                     forces[i][0] += fx; 
                     forces[i][1] += fy; 

@@ -52,8 +52,7 @@ class PolymlpKIM {
         const int * const atom_types,
         const int * const contributing,
         vector2dc& prod_sum_e, 
-        vector2dc& prod_sum_f
-    );
+        vector2dc& prod_sum_f);
 
     // Compute properties using polymlp with pairwise features.
     void compute_pair(
@@ -83,8 +82,7 @@ class PolymlpKIM {
         const int * const atom_types,
         const int * const contributing,
         vector2d& prod_sum_e, 
-        vector2d& prod_sum_f
-    );
+        vector2d& prod_sum_f);
 
     public:
 
@@ -108,8 +106,7 @@ class PolymlpKIM {
         VectorOfSizeDIM *& forces,
         double* virial,
         VectorOfSizeSix *& particle_virial,
-        bool compute_process_dEdr
-    );
+        bool compute_process_dEdr);
 
     double const * cutoff_ptr() const {
         return &cutoff;
