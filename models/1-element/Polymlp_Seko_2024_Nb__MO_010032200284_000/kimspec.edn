@@ -1,9 +1,0 @@
-{"domain" "openkim.org"
- "extended-id" "Polymlp_Seko_2024_Nb__MO_010032200284_000"
- "kim-api-version" "2.2"
- "model-driver" "Polymlp__MD_000000123456_000"
- "potential-type" "polymlp"
- "publication-year" "2024"
- "species" ["Nb"]
- "title" "Polynomial machine learning potential for Nb developed by Seko (2024) v000"
- }

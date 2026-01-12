@@ -1,9 +1,0 @@
-{"domain" "openkim.org"
- "extended-id" "Polymlp_Seko_2024_Ta__MO_010044100098_000"
- "kim-api-version" "2.2"
- "model-driver" "Polymlp__MD_000000123456_000"
- "potential-type" "polymlp"
- "publication-year" "2024"
- "species" ["Ta"]
- "title" "Polynomial machine learning potential for Ta developed by Seko (2024) v000"
- }
