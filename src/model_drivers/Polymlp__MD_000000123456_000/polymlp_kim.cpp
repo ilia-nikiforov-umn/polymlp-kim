@@ -19,10 +19,12 @@ PolymlpKIM::PolymlpKIM(
     std::vector<std::string> ele_strings;
     vector1d mass;
     polymlp.parse_polymlp_file(polymlp_file.c_str(), ele_strings, mass);
+
+    // Unit conversion.
+    polymlp.convert_unit(energy_conv, length_conv, inv_length_conv);
+
     const auto& fp = polymlp.get_fp();
     cutoff = fp.cutoff;
-
-    // TODO: Unit conversion.
 }
 
 
