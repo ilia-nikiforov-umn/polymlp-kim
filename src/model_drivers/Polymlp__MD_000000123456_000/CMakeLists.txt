@@ -38,7 +38,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 if(NOT DEFINED CMAKE_CXX_FLAGS_RELEASE)
-    set(CMAKE_CXX_FLAGS_RELEASE "-O2 -Wno-deprecated -Wsign-compare -DNDEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O2 -Wno-deprecated -DNDEBUG")
 endif()
 
 add_kim_api_model_driver_library(

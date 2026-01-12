@@ -174,13 +174,6 @@ compute(
 
     if (error) return error;
 
-    // Wrap some stuff for convenience.
-    //Array2D<const double> atom_coords(atom_coords_ptr, *n_atoms, 3);
-    //// Array2D<double> f(forces_ptr, *n_atoms, 3);
-    //// Array2D<double>* forces = forces_ptr ? &f : NULL;
-    //Array2D<double> v(particle_virial_ptr, *n_atoms, 6);
-    //Array2D<double>* particle_virial = particle_virial_ptr ? &v : NULL;
-
     // Do the compute.
     try {
       polymlp_kim->compute(

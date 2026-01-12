@@ -461,7 +461,7 @@ void PolymlpKIM::compute_pair(
     VectorOfSizeSix *& particle_virial,
     bool compute_process_dEdr)
 {
-    /* Compute properties using polymlp only with pair features. */
+    // Compute properties using polymlp only with pair features.
 
     int error;       // KIM error code.
     int n_neigh;     // Number of neighbors of i.
