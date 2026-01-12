@@ -1,9 +1,0 @@
-{"domain" "openkim.org"
- "extended-id" "Polymlp_Seko_2022_CaTi__MO_020038310060_000"
- "kim-api-version" "2.2"
- "model-driver" "Polymlp__MD_000000123456_000"
- "potential-type" "polymlp"
- "publication-year" "2022"
- "species" ["Ca" "Ti"]
- "title" "Polynomial machine learning potential for Ca-Ti developed by Seko (2022) v000"
- }

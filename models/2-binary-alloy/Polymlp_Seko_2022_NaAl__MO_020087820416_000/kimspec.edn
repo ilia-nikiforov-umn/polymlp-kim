@@ -1,9 +1,0 @@
-{"domain" "openkim.org"
- "extended-id" "Polymlp_Seko_2022_NaAl__MO_020087820416_000"
- "kim-api-version" "2.2"
- "model-driver" "Polymlp__MD_000000123456_000"
- "potential-type" "polymlp"
- "publication-year" "2022"
- "species" ["Na" "Al"]
- "title" "Polynomial machine learning potential for Na-Al developed by Seko (2022) v000"
- }

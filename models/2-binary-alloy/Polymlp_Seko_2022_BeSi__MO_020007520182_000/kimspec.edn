@@ -1,0 +1,9 @@
+{"domain" "openkim.org"
+ "extended-id" "Polymlp_Seko_2022_BeSi__MO_020007520182_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Be" "Si"]
+ "title" "Polynomial machine learning potential for Be-Si developed by Seko (2022) v000"
+ }

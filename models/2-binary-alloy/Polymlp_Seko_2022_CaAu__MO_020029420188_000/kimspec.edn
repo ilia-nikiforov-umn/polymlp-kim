@@ -1,9 +1,0 @@
-{"domain" "openkim.org"
- "extended-id" "Polymlp_Seko_2022_CaAu__MO_020029420188_000"
- "kim-api-version" "2.2"
- "model-driver" "Polymlp__MD_000000123456_000"
- "potential-type" "polymlp"
- "publication-year" "2022"
- "species" ["Ca" "Au"]
- "title" "Polynomial machine learning potential for Ca-Au developed by Seko (2022) v000"
- }

@@ -1,9 +1,0 @@
-{"domain" "openkim.org"
- "extended-id" "Polymlp_Seko_2022_GaSn__MO_020044220725_000"
- "kim-api-version" "2.2"
- "model-driver" "Polymlp__MD_000000123456_000"
- "potential-type" "polymlp"
- "publication-year" "2022"
- "species" ["Ga" "Sn"]
- "title" "Polynomial machine learning potential for Ga-Sn developed by Seko (2022) v000"
- }
