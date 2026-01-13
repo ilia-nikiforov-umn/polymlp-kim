@@ -9,11 +9,9 @@ PolymlpKIM::PolymlpKIM(
     const std::string& polymlp_file,
     // Conversion factors.
     double energy_conv,
-    double, // unused inv_energy_conv
     double length_conv,
-    double inv_length_conv,
-    double // unused charge_conv
-){
+    double inv_length_conv)
+{
 
     // Parse polymlp file.
     std::vector<std::string> ele_strings;
@@ -41,8 +39,7 @@ void PolymlpKIM::compute(
     double* atom_energy,
     VectorOfSizeDIM *& forces,
     double* virial,
-    VectorOfSizeSix *& particle_virial,
-    bool compute_process_dEdr)
+    VectorOfSizeSix *& particle_virial)
 {
     // Compute properties.
 
@@ -94,8 +91,7 @@ void PolymlpKIM::compute(
             atom_energy,
             forces,
             virial,
-            particle_virial,
-            compute_process_dEdr);
+            particle_virial);
     }
     else if (fp.feature_type == "pair"){
         compute_pair(
@@ -108,8 +104,7 @@ void PolymlpKIM::compute(
             atom_energy,
             forces,
             virial,
-            particle_virial,
-            compute_process_dEdr);
+            particle_virial);
     }
 }
 
@@ -216,8 +211,7 @@ void PolymlpKIM::compute_gtinv(
     double* atom_energy,
     VectorOfSizeDIM *& forces,
     double* virial,
-    VectorOfSizeSix *& particle_virial,
-    bool compute_process_dEdr)
+    VectorOfSizeSix *& particle_virial)
 {
     // Compute properties using polymlp with polynomial invariants.
     int error;       // KIM error code.
@@ -460,8 +454,7 @@ void PolymlpKIM::compute_pair(
     double* atom_energy,
     VectorOfSizeDIM *& forces,
     double* virial,
-    VectorOfSizeSix *& particle_virial,
-    bool compute_process_dEdr)
+    VectorOfSizeSix *& particle_virial)
 {
     // Compute properties using polymlp only with pair features.
 

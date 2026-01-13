@@ -35,8 +35,7 @@ class PolymlpKIM {
         double* atom_energy,
         VectorOfSizeDIM *& forces,
         double* virial,
-        VectorOfSizeSix *& particle_virial,
-        bool compute_process_dEdr);
+        VectorOfSizeSix *& particle_virial);
 
     void compute_anlmtp(
         const KIM::ModelComputeArguments& model_compute_arguments,
@@ -65,8 +64,7 @@ class PolymlpKIM {
         double* atom_energy,
         VectorOfSizeDIM *& forces,
         double* virial,
-        VectorOfSizeSix *& particle_virial,
-        bool compute_process_dEdr);
+        VectorOfSizeSix *& particle_virial);
 
     void compute_antp(
         const KIM::ModelComputeArguments& model_compute_arguments,
@@ -89,10 +87,8 @@ class PolymlpKIM {
     PolymlpKIM(
         const std::string& parse_polymlp,
         double energy_conv,
-        double, 
         double length_conv,
-        double inv_length_conv,
-        double);
+        double inv_length_conv);
     ~PolymlpKIM();
 
     void compute(
@@ -105,8 +101,7 @@ class PolymlpKIM {
         double* atom_energy,
         VectorOfSizeDIM *& forces,
         double* virial,
-        VectorOfSizeSix *& particle_virial,
-        bool compute_process_dEdr);
+        VectorOfSizeSix *& particle_virial);
 
     double const * cutoff_ptr() const {
         return &cutoff;

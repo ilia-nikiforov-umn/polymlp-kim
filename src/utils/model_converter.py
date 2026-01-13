@@ -86,21 +86,3 @@ def convert_polymlp_to_kim_model(
         print(" }", file=f)
 
     shutil.move(tmp_path, project)
-
-
-if __name__ == "__main__":
-    polymlp_file = sys.argv[1]
-    split = polymlp_file.split("/")
-    repository_id = split[-4]
-    polymlp_id = split[-2]
-    polymlp_year = repository_id.split("-")[-3]
-
-    project_id = 325
-
-    convert_polymlp_to_kim_model(
-        polymlp_file, 
-        repository_id,
-        polymlp_id,
-        polymlp_year,
-        project_id,
-    )

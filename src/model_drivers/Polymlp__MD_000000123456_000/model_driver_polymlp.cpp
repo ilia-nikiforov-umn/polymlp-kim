@@ -167,12 +167,11 @@ compute(
 
     if (error) return error;
 
-    int compute_process_dEdr;
-    error =
-        model_compute_arguments->IsCallbackPresent(
-            KIM::COMPUTE_CALLBACK_NAME::ProcessDEDrTerm, &compute_process_dEdr);
-
-    if (error) return error;
+    // int compute_process_dEdr;
+    // error =
+    //     model_compute_arguments->IsCallbackPresent(
+    //         KIM::COMPUTE_CALLBACK_NAME::ProcessDEDrTerm, &compute_process_dEdr);
+    // if (error) return error;
 
     // Do the compute.
     try {
@@ -186,8 +185,7 @@ compute(
           atom_energy,
           forces,
           virial,
-          particle_virial,
-          compute_process_dEdr);
+          particle_virial);
     } catch (const exception& e) {
       LOG_ERROR(string("compute: ") + e.what());
       return 1;
@@ -279,9 +277,7 @@ init_unit_conv(
     const KIM::TimeUnit time_unit,
     double& length_conv,
     double& inv_length_conv,
-    double& energy_conv,
-    double& inv_energy_conv,
-    double& charge_conv) {
+    double& energy_conv){
   int error;
 
   // Length ////////////////////////////////////////////////////////////
@@ -335,42 +331,8 @@ init_unit_conv(
     return error;
   }
 
-  // Inverse energy ////////////////////////////////////////////////////
-  error = model_driver_create->ConvertUnit(KIM::LENGTH_UNIT::A,
-                                           KIM::ENERGY_UNIT::eV,
-                                           KIM::CHARGE_UNIT::e,
-                                           KIM::TEMPERATURE_UNIT::K,
-                                           KIM::TIME_UNIT::ps,
-                                           length_unit, energy_unit,
-                                           charge_unit,
-                                           temperature_unit, time_unit,
-                                           0.0, -1.0, 0.0, 0.0, 0.0,
-                                           &inv_energy_conv);
-  if (error) {
-    LOG_ERROR("Error returned by KIM's ConvertUnit() when trying to "
-              "get inverse energy units.");
-    return error;
-  }
-
-  // Charge ////////////////////////////////////////////////////////////
-  error = model_driver_create->ConvertUnit(KIM::LENGTH_UNIT::A,
-                                           KIM::ENERGY_UNIT::eV,
-                                           KIM::CHARGE_UNIT::e,
-                                           KIM::TEMPERATURE_UNIT::K,
-                                           KIM::TIME_UNIT::ps,
-                                           length_unit, energy_unit,
-                                           charge_unit,
-                                           temperature_unit, time_unit,
-                                           0.0, 0.0, 1.0, 0.0, 0.0,
-                                           &charge_conv);
-  if (error) {
-    LOG_ERROR("Error returned by KIM's ConvertUnit() when trying to "
-              "get charge units.");
-    return error;
-  }
-
-  // KIM wants to know what happened, I guess. /////////////////////////
-  error = model_driver_create->SetUnits(length_unit, energy_unit, charge_unit,
+  error = model_driver_create->SetUnits(length_unit, energy_unit, 
+                                        KIM::CHARGE_UNIT::unused,
                                         KIM::TEMPERATURE_UNIT::unused,
                                         KIM::TIME_UNIT::unused);
   if (error) {
@@ -459,8 +421,6 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
   double length_conv;
   double inv_length_conv;
   double energy_conv;
-  double inv_energy_conv;
-  double charge_conv;
   error = init_unit_conv(model_driver_create,
                          length_unit, 
                          energy_unit, 
@@ -469,9 +429,7 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
                          time_unit,
                          length_conv,
                          inv_length_conv,
-                         energy_conv,
-                         inv_energy_conv,
-                         charge_conv);
+                         energy_conv);
   if (error) {
     return error; // already logged.
   }
@@ -482,10 +440,8 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
     polymlp_kim = new PolymlpKIM(
         param_filename, 
         energy_conv, 
-        inv_energy_conv,
         length_conv, 
-        inv_length_conv,
-        charge_conv);
+        inv_length_conv);
   } catch (const exception& e) {
     LOG_ERROR(string("model_driver_create: ") + e.what());
     return 1; // error
