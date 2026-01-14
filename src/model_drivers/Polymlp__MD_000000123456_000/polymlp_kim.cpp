@@ -219,6 +219,7 @@ void PolymlpKIM::compute_gtinv(
     const auto& type_pairs = maps.type_pairs;
     const auto& tp_to_params = maps.tp_to_params;
 
+    // TODO: More efficient implementation using thread local arrays.
     vector2d energy_array(n_atoms_contrib);
     vector2d fx_array(n_atoms_contrib);
     vector2d fy_array(n_atoms_contrib);
@@ -553,6 +554,8 @@ void PolymlpKIM::accumulate_properties(
     int error;              // KIM error code.
     int n_neigh;            // Number of neighbors of i.
     const int * neighbors;  // The indices of the neighbors.
+    const auto& fp = polymlp.get_fp();
+
     for (int i = 0; i != n_atoms; ++i){
         // Skip central ghost atoms.
         if (!contributing[i]) continue;
@@ -567,52 +570,54 @@ void PolymlpKIM::accumulate_properties(
         const double xtmp = atom_coords[i][0];
         const double ytmp = atom_coords[i][1];
         const double ztmp = atom_coords[i][2];
-        double delx, dely, delz;
         for (int jj = 0; jj != n_neigh; ++jj) {
             int j = neighbors[jj];
-            const double evdwl = energy_array[i][jj];
-            const double fx = fx_array[i][jj];
-            const double fy = fy_array[i][jj];
-            const double fz = fz_array[i][jj];
-            if (energy)
-                *energy += evdwl;
-            if (atom_energy){
-                atom_energy[i] += 0.5 * evdwl;
-                atom_energy[j] += 0.5 * evdwl;
-            }
-            if (forces){
-                forces[i][0] += fx; 
-                forces[i][1] += fy; 
-                forces[i][2] += fz;
-                forces[j][0] -= fx; 
-                forces[j][1] -= fy; 
-                forces[j][2] -= fz;
-            }
-            vector1d val_tmp(6);
-            if (virial || particle_virial){
-                delx = xtmp - atom_coords[j][0];
-                dely = ytmp - atom_coords[j][1];
-                delz = ztmp - atom_coords[j][2];
-
-                val_tmp[0] = delx * fx;
-                val_tmp[1] = dely * fy;
-                val_tmp[2] = delz * fz;
-                val_tmp[3] = dely * fz;
-                val_tmp[4] = delx * fz;
-                val_tmp[5] = delx * fy;
-                // lammps convension
-                // virial[3] += delx * fy;
-                // virial[5] += dely * fz;
-            }
-            if (virial){
-                for (int k = 0; k < 6; ++k){
-                    virial[k] += val_tmp[k];
+            const double delx = xtmp - atom_coords[j][0];
+            const double dely = ytmp - atom_coords[j][1];
+            const double delz = ztmp - atom_coords[j][2];
+            const double dis = sqrt(delx*delx + dely*dely + delz*delz);
+            if (dis < fp.cutoff){
+                const double evdwl = energy_array[i][jj];
+                const double fx = fx_array[i][jj];
+                const double fy = fy_array[i][jj];
+                const double fz = fz_array[i][jj];
+                if (energy)
+                    *energy += evdwl;
+                if (atom_energy){
+                    atom_energy[i] += 0.5 * evdwl;
+                    atom_energy[j] += 0.5 * evdwl;
                 }
-            }
-            if (particle_virial){
-                for (int k = 0; k < 6; ++k){
-                    particle_virial[i][k] += 0.5 * val_tmp[k];
-                    particle_virial[j][k] += 0.5 * val_tmp[k];
+                if (forces){
+                    forces[i][0] += fx; 
+                    forces[i][1] += fy; 
+                    forces[i][2] += fz;
+                    forces[j][0] -= fx; 
+                    forces[j][1] -= fy; 
+                    forces[j][2] -= fz;
+                }
+                vector1d val_tmp(6);
+                if (virial || particle_virial){
+
+                    val_tmp[0] = delx * fx;
+                    val_tmp[1] = dely * fy;
+                    val_tmp[2] = delz * fz;
+                    val_tmp[3] = dely * fz;
+                    val_tmp[4] = delx * fz;
+                    val_tmp[5] = delx * fy;
+                    // lammps convension
+                    // virial[3] += delx * fy;
+                    // virial[5] += dely * fz;
+                }
+                if (virial){
+                    for (int k = 0; k < 6; ++k){
+                        virial[k] += val_tmp[k];
+                    }
+                }
+                if (particle_virial){
+                    for (int k = 0; k < 6; ++k){
+                        particle_virial[i][k] += 0.5 * val_tmp[k];
+                        particle_virial[j][k] += 0.5 * val_tmp[k];
+                    }
                 }
             }
         }
