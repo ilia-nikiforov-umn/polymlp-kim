@@ -37,9 +37,7 @@ kim_api_items_setup_after_project(ITEM_TYPE "modelDriver")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-if(NOT DEFINED CMAKE_CXX_FLAGS_RELEASE)
-    set(CMAKE_CXX_FLAGS_RELEASE "-O2 -Wno-deprecated -DNDEBUG")
-endif()
+find_package(OpenMP)
 
 add_kim_api_model_driver_library(
   NAME                    ${PROJECT_NAME}
@@ -77,3 +75,10 @@ target_sources(${PROJECT_NAME} PRIVATE
     polymlp/polymlp_gtinv_data_order5.cpp
     polymlp/polymlp_gtinv_data_order6.cpp
 )
+
+if(OpenMP_CXX_FOUND)
+  target_link_libraries(
+      ${PROJECT_NAME}
+      PRIVATE OpenMP::OpenMP_CXX
+  )
+endif()

@@ -12,8 +12,6 @@
 
 #include "KIM_ModelDriverHeaders.hpp"
 
-#include <omp.h>
-
 #define DIMENSION 3
 
 typedef double VectorOfSizeDIM[DIMENSION];
@@ -39,31 +37,22 @@ class PolymlpKIM {
         double* virial,
         VectorOfSizeSix *& particle_virial);
 
-    void compute_sum_of_prod_anlmtp(
+    void compute_anlmtp(
         const KIM::ModelComputeArguments& model_compute_arguments,
         int n_atoms, 
         const int * const atom_types,
         const int * const contributing,
         const VectorOfSizeDIM *& atom_coords,
+        vector2dc& anlmtp);
+
+    void compute_sum_of_prod_anlmtp(
+        const vector2dc& anlmtp, 
+        int n_atoms, 
+        const int * const atom_types,
+        const int * const contributing,
         vector2dc& prod_sum_e, 
         vector2dc& prod_sum_f);
 
-    void accumulate_properties(
-        const KIM::ModelComputeArguments& model_compute_arguments,
-        int n_atoms, 
-        const int * const atom_types,
-        const int * const contributing,
-        const VectorOfSizeDIM *& atom_coords,
-        const vector2d& energy_array,
-        const vector2d& fx_array,
-        const vector2d& fy_array,
-        const vector2d& fz_array,
-        double* energy,
-        double* atom_energy,
-        VectorOfSizeDIM *& forces,
-        double* virial,
-        VectorOfSizeSix *& particle_virial);
- 
     // Compute properties using polymlp with pairwise features.
     void compute_pair(
         const KIM::ModelComputeArguments& model_compute_arguments,
@@ -77,12 +66,19 @@ class PolymlpKIM {
         double* virial,
         VectorOfSizeSix *& particle_virial);
 
-    void compute_sum_of_prod_antp(
+    void compute_antp(
         const KIM::ModelComputeArguments& model_compute_arguments,
         int n_atoms, 
         const int * const atom_types,
         const int * const contributing,
         const VectorOfSizeDIM *& atom_coords,
+        vector2d& antp);
+
+    void compute_sum_of_prod_antp(
+        const vector2d& antp, 
+        int n_atoms, 
+        const int * const atom_types,
+        const int * const contributing,
         vector2d& prod_sum_e, 
         vector2d& prod_sum_f);
 
