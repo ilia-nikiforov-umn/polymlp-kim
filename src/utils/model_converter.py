@@ -12,10 +12,14 @@ from pypolymlp.core.io_polymlp import convert_to_yaml, load_mlp
 
 def convert_polymlp_to_kim_model(
     polymlp_file: str,
-    repository_id: str,
     polymlp_id: str,
     polymlp_year: int,
+    performance_level: int,
     project_id: int,
+    repository_id: str,
+    time_single_core: float,
+    rmse_energy: float,
+    rmse_force: float,
     project_version: int = 0,
     model_driver: str = "Polymlp__MD_000000123456_000",
 ):
@@ -38,8 +42,8 @@ def convert_polymlp_to_kim_model(
     params, _ = load_mlp(polymlp_yaml)
     elements = params.elements
     system = "-".join(elements)
-    project = "Polymlp_Seko_" + str(polymlp_year) + "_" \
-            + "".join(elements) + "__MO_" \
+    project = "Polymlp_Seko_" + str(polymlp_year) + "p" + str(performance_level) \
+            + "_" + "".join(elements) + "__MO_" \
             + str(project_id).zfill(12) + "_" + str(project_version).zfill(3)
 
     with open(tmp_path + "polymlp.settings", "w") as f:
@@ -68,8 +72,28 @@ def convert_polymlp_to_kim_model(
         print("                  \"polymlp.yaml\"", file=f)
         print("  )", file=f)
 
+    description = (
+        "Polynomial machine learing potential (MLP) for", 
+        "-".join(elements),
+        "system. This potential is",
+        polymlp_id, 
+        "potential in",
+        repository_id,
+        "taken from Polynomial MLP Repository.",
+        "The RMS errors for energy and forces are",
+        str(np.round(rmse_energy, 3)),
+        "meV/atom and",
+        str(np.round(rmse_force, 4)),
+        "eV/angstrom, respectively.",
+        "The estimated computational cost required for a single core calculation is",
+        str(np.round(time_single_core, 2)),
+        "ms/atom/step.",
+    )
+    description = " ".join(description)
+
     with open(tmp_path + "kimspec.edn", "w") as f:
-        print("{\"domain\" \"openkim.org\"", file=f)
+        print("{\"description\" \"" + description + "\"", file=f)
+        print(" \"domain\" \"openkim.org\"", file=f)
         print(" \"extended-id\" \"" + project + "\"", file=f)
         print(" \"kim-api-version\" \"2.2\"", file=f)
         print(" \"model-driver\" \"" + model_driver + "\"", file=f)
