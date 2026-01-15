@@ -282,23 +282,43 @@ void PolymlpKIM::compute_gtinv(
                         valy = - (d1 * dely + fn[nlmtp.n_id] * ylm_dy[ylmkey]);
                         valz = - (d1 * delz + fn[nlmtp.n_id] * ylm_dz[ylmkey]);
 
-                        dc sum_e, sum_f;
+                        // dc sum_e, sum_f;
                         const int idx_i = nlmtp.ilocal_noconj_id;
                         const auto& prod_ei = prod_sum_e[icontrib][idx_i];
                         const auto& prod_fi = prod_sum_f[icontrib][idx_i];
+                        dc sum_e = prod_ei;
+                        dc sum_f = prod_fi;
                         if (contributing[j]){
                             const int jcontrib = map_full_to_contrib[j];
                             const int idx_j = nlmtp.jlocal_noconj_id;
-                            const auto& prod_ej = prod_sum_e[jcontrib][idx_j];
-                            const auto& prod_fj = prod_sum_f[jcontrib][idx_j];
-                            sum_e = 0.5 * (prod_ei + prod_ej * lm_attr.sign_j);
-                            sum_f = 0.5 * (prod_fi + prod_fj * lm_attr.sign_j);
+                            const auto prod_ej = prod_sum_e[jcontrib][idx_j] * lm_attr.sign_j;
+                            const auto prod_fj = prod_sum_f[jcontrib][idx_j]* lm_attr.sign_j;
+                            sum_e += prod_ej;
+                            sum_f += prod_fj;
+                            sum_e *= 0.5;
+                            sum_f *= 0.5;
+                            //sum_e = 0.5 * (prod_ei + prod_ej * lm_attr.sign_j);
+                            //sum_f = 0.5 * (prod_fi + prod_fj * lm_attr.sign_j);
+                            //sum_e = 0.5 * (prod_ei + prod_ej);
+                            //sum_f = 0.5 * (prod_fi + prod_fj);
                         }
-
+ 
+                        /*
+                        if (contributing[j]){
+                            const int jcontrib = map_full_to_contrib[j];
+                            const int idx_j = nlmtp.jlocal_noconj_id;
+                            const auto& prod_ej = prod_sum_e[jcontrib][idx_j] * lm_attr.sign_j;
+                            const auto& prod_fj = prod_sum_f[jcontrib][idx_j]* lm_attr.sign_j;
+                            //sum_e = 0.5 * (prod_ei + prod_ej * lm_attr.sign_j);
+                            //sum_f = 0.5 * (prod_fi + prod_fj * lm_attr.sign_j);
+                            sum_e = 0.5 * (prod_ei + prod_ej);
+                            sum_f = 0.5 * (prod_fi + prod_fj);
+                        }
                         else {
                             sum_e = prod_ei;
                             sum_f = prod_fi;
                         }
+                        */
                         if (lm_attr.m == 0){
                             evdwl += 0.5 * prod_real(val, sum_e);
                             fx += 0.5 * prod_real(valx, sum_f);
