@@ -25,6 +25,8 @@ class PolymlpKIM {
     PolymlpAPI polymlp;
     double cutoff;
     int n_atoms_contrib;
+    vector1i map_contrib_to_full;
+    std::map<int, int> map_full_to_contrib;
 
     // Compute properties using polymlp with polynomial invariants.
     void compute_gtinv(
