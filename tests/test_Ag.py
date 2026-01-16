@@ -103,3 +103,29 @@ def test_eval2():
     np.testing.assert_allclose(energy, e_true, atol=1e-10)
     np.testing.assert_allclose(forces, f_true, atol=1e-7)
     np.testing.assert_allclose(stress, s_true, atol=1e-7)
+
+
+def test_eval3():
+    """Test property calculations."""
+    model = "Polymlp_Seko_2024p1hybrid_Ag__MO_000000000000_000"
+    atoms = get_structure1()
+    energy, forces, stress = eval_using_kim(model, atoms)
+    print(energy)
+    print(forces)
+    print(stress)
+    e_true = -9.990874169902824
+    f_true = [[-0.241219  ,-0.52440161,-0.05992873],
+              [-0.00514723, 0.40081802, 0.02103461],
+              [ 0.11136887,-0.28496934, 0.0589867 ],
+              [ 0.13499736, 0.40855293,-0.02009258]]
+    s_true = [
+        7.39887587e+00, 
+        7.29192330e+00, 
+        7.20930295e+00, 
+        -1.59844219e-03,
+         -2.57000240e-01,
+         1.56510639e-01,
+    ]
+    np.testing.assert_allclose(energy, e_true, atol=1e-10)
+    np.testing.assert_allclose(forces, f_true, atol=1e-7)
+    np.testing.assert_allclose(stress, s_true, atol=1e-7)
