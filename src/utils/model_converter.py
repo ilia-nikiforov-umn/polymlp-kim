@@ -8,6 +8,7 @@ import numpy as np
 import tarfile
 
 from pypolymlp.core.io_polymlp import convert_to_yaml, load_mlp
+from pypolymlp.utils.kim_utils import generate_kim_files
 
 
 def convert_polymlp_to_kim_model(
@@ -41,39 +42,9 @@ def convert_polymlp_to_kim_model(
 
     params, _ = load_mlp(polymlp_yaml)
     elements = params.elements
-    system = "-".join(elements)
-    project = "Polymlp_Seko_" + str(polymlp_year) + "p" + str(performance_level) \
-            + "_" + "".join(elements) + "__MO_" \
-            + str(project_id).zfill(12) + "_" + str(project_version).zfill(3)
-
-    with open(tmp_path + "polymlp.settings", "w") as f:
-        print(" ".join(elements), file=f)
-        print(file=f)
-
-    np.set_printoptions(formatter={'str_kind': lambda x: f'"{x}"'})
-    with open(tmp_path + "CMakeLists.txt", "w") as f:
-        print("#", file=f)
-        print("# Author: Atsuto Seko", file=f)
-        print("#", file=f)
-        print(file=f)
-        print("cmake_minimum_required(VERSION 3.10)", file=f)
-        print(file=f)
-        print("list(APPEND CMAKE_PREFIX_PATH $ENV{KIM_API_CMAKE_PREFIX_DIR})", file=f)
-        print("find_package(KIM-API-ITEMS 2.2 REQUIRED CONFIG)", file=f)
-        print(file=f)
-        print("kim_api_items_setup_before_project(ITEM_TYPE \"portableModel\")", file=f)
-        print("project(" + project + ")", file=f)
-        print("kim_api_items_setup_after_project(ITEM_TYPE \"portableModel\")", file=f)
-        print(file=f)
-        print("add_kim_api_model_library(", file=f)
-        print("  NAME            ${PROJECT_NAME}", file=f)
-        print("  DRIVER_NAME     \"" + model_driver + "\"", file=f)
-        print("  PARAMETER_FILES \"polymlp.settings\"", file=f)
-        print("                  \"polymlp.yaml\"", file=f)
-        print("  )", file=f)
 
     description = (
-        "Polynomial machine learing potential (MLP) for", 
+        "Polynomial machine learning potential (MLP) for", 
         "-".join(elements),
         "system. This potential is",
         polymlp_id, 
@@ -91,22 +62,14 @@ def convert_polymlp_to_kim_model(
     )
     description = " ".join(description)
 
-    with open(tmp_path + "kimspec.edn", "w") as f:
-        print("{\"description\" \"" + description + "\"", file=f)
-        print(" \"domain\" \"openkim.org\"", file=f)
-        print(" \"extended-id\" \"" + project + "\"", file=f)
-        print(" \"kim-api-version\" \"2.2\"", file=f)
-        print(" \"model-driver\" \"" + model_driver + "\"", file=f)
-        print(" \"potential-type\" \"polymlp\"", file=f)
-        print(" \"publication-year\" \"" + str(polymlp_year) + "\"", file=f)
-        print(" \"species\"",  np.array(elements), file=f)
-        print(
-            " \"title\" \"Polynomial machine learning potential for",
-            system, 
-            "developed by Seko (" + str(polymlp_year) + ")",
-            "v" + str(project_version).zfill(3) + "\"", 
-            file=f,
-        )
-        print(" }", file=f)
-
+    project = generate_kim_files(
+        tmp_path,
+        elements,
+        polymlp_year=polymlp_year,
+        performance_level=performance_level,
+        project_id=project_id,
+        project_version=project_version,
+        description=description,
+        model_driver=model_driver,
+    )
     shutil.move(tmp_path, project)
