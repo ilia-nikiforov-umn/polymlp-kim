@@ -31,7 +31,7 @@ find_package(KIM-API-ITEMS 2.2 REQUIRED CONFIG)
 # End preamble
 
 kim_api_items_setup_before_project(ITEM_TYPE "modelDriver")
-project(Polymlp__MD_000000123456_000 LANGUAGES CXX)
+project(PolymlpHybrid__MD_000000123456_000 LANGUAGES CXX)
 kim_api_items_setup_after_project(ITEM_TYPE "modelDriver")
 
 set(CMAKE_CXX_STANDARD 11)

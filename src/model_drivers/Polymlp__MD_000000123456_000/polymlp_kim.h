@@ -22,8 +22,9 @@ typedef double VectorOfSizeSix[6];
 
 class PolymlpKIM {
 
+    std::vector<PolymlpAPI> polymlp_array;
     PolymlpAPI polymlp;
-    double cutoff;
+    double cutoff_max;
     int n_atoms_contrib;
     vector1i map_contrib_to_full;
     std::map<int, int> map_full_to_contrib;
@@ -91,7 +92,7 @@ class PolymlpKIM {
     public:
 
     PolymlpKIM(
-        const std::string& parse_polymlp,
+        const std::vector<std::string>& polymlp_files,
         double energy_conv,
         double length_conv,
         double inv_length_conv);
@@ -110,7 +111,7 @@ class PolymlpKIM {
         VectorOfSizeSix *& particle_virial);
 
     double const * cutoff_ptr() const {
-        return &cutoff;
+        return &cutoff_max;
     }
  
 };

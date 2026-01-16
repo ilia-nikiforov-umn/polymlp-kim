@@ -356,7 +356,7 @@ finish_create(KIM::ModelDriverCreate * const,
               const KIM::ChargeUnit,
               const KIM::TemperatureUnit,
               const KIM::TimeUnit,
-              const std::string&);
+              const std::vector<std::string>&);
 
 
 int
@@ -371,10 +371,6 @@ model_driver_create(KIM::ModelDriverCreate * const model_driver_create,
   // Get parameter files. //////////////////////////////////////////////
   int n_param_files;
   model_driver_create->GetNumberOfParameterFiles(&n_param_files);
-  if (n_param_files != 2) {
-    LOG_ERROR("This model driver requires exactly one parameter file");
-    return 1;
-  }
 
   const string * settings_filename;
   error = model_driver_create->GetParameterFileName(0, &settings_filename);
@@ -384,13 +380,18 @@ model_driver_create(KIM::ModelDriverCreate * const model_driver_create,
     return 1;
   }
 
-  const string * param_filename;
-  error = model_driver_create->GetParameterFileName(1, &param_filename);
-  if (error) {
-    LOG_ERROR("Error returned by KIM's GetParameterFileName() "
-              "for the first parameter file.");
-    return 1;
+  std::vector<std::string> param_filenames;
+  for (int i = 1; i < n_param_files; ++i){
+    const string * param;
+    error = model_driver_create->GetParameterFileName(i, &param);
+    if (error) {
+      LOG_ERROR("Error returned by KIM's GetParameterFileName() "
+                "for a parameter file.");
+      return 1;
+    }
+    param_filenames.emplace_back(*param);
   }
+
   error = read_settings(model_driver_create, *settings_filename);
 
   if (error) {
@@ -403,7 +404,7 @@ model_driver_create(KIM::ModelDriverCreate * const model_driver_create,
                        charge_unit,
                        temperature_unit,
                        time_unit,
-                       *param_filename);
+                       param_filenames);
 }
 
 static int
@@ -413,7 +414,7 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
               const KIM::ChargeUnit charge_unit,
               const KIM::TemperatureUnit temperature_unit,
               const KIM::TimeUnit time_unit,
-              const string& param_filename){
+              const std::vector<std::string>& param_filenames){
   int error;
 
   // Init unit conversion factors. /////////////////////////////////////
@@ -438,7 +439,7 @@ finish_create(KIM::ModelDriverCreate * const model_driver_create,
   PolymlpKIM* polymlp_kim;
   try {
     polymlp_kim = new PolymlpKIM(
-        param_filename, 
+        param_filenames, 
         energy_conv, 
         length_conv, 
         inv_length_conv);

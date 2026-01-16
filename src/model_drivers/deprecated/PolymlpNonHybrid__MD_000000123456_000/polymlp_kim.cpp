@@ -6,28 +6,23 @@
 
 
 PolymlpKIM::PolymlpKIM(
-    const std::vector<std::string>& polymlp_files,
+    const std::string& polymlp_file,
     // Conversion factors.
     double energy_conv,
     double length_conv,
     double inv_length_conv)
 {
 
-    polymlp_array.resize(polymlp_files.size());
-    int i = 0;
-    cutoff_max = 0.0;
-    for (auto& polymlp_file: polymlp_files){
-        std::vector<std::string> ele_strings;
-        vector1d mass;
-        // Parse polymlp file.
-        polymlp_array[i].parse_polymlp_file(polymlp_file.c_str(), ele_strings, mass);
-        // Unit conversion.
-        polymlp_array[i].convert_unit(energy_conv, length_conv, inv_length_conv);
+    // Parse polymlp file.
+    std::vector<std::string> ele_strings;
+    vector1d mass;
+    polymlp.parse_polymlp_file(polymlp_file.c_str(), ele_strings, mass);
 
-        const auto& fp = polymlp_array[i].get_fp();
-        if (fp.cutoff > cutoff_max) cutoff_max = fp.cutoff;
-        ++i;
-    }
+    // Unit conversion.
+    polymlp.convert_unit(energy_conv, length_conv, inv_length_conv);
+
+    const auto& fp = polymlp.get_fp();
+    cutoff = fp.cutoff;
 }
 
 
@@ -92,35 +87,32 @@ void PolymlpKIM::compute(
     }
     n_atoms_contrib = map_contrib_to_full.size();
 
-    for (size_t i = 0; i < polymlp_array.size(); ++i){
-        polymlp = polymlp_array[i];
-        const auto& fp = polymlp.get_fp();
-        if (fp.feature_type == "gtinv"){
-            compute_gtinv(
-                model_compute_arguments,
-                n_atoms,
-                atom_types,
-                contributing,
-                atom_coords,
-                energy,
-                atom_energy,
-                forces,
-                virial,
-                particle_virial);
-        }
-        else if (fp.feature_type == "pair"){
-            compute_pair(
-                model_compute_arguments,
-                n_atoms,
-                atom_types,
-                contributing,
-                atom_coords,
-                energy,
-                atom_energy,
-                forces,
-                virial,
-                particle_virial);
-        }
+    const auto& fp = polymlp.get_fp();
+    if (fp.feature_type == "gtinv"){
+        compute_gtinv(
+            model_compute_arguments,
+            n_atoms,
+            atom_types,
+            contributing,
+            atom_coords,
+            energy,
+            atom_energy,
+            forces,
+            virial,
+            particle_virial);
+    }
+    else if (fp.feature_type == "pair"){
+        compute_pair(
+            model_compute_arguments,
+            n_atoms,
+            atom_types,
+            contributing,
+            atom_coords,
+            energy,
+            atom_energy,
+            forces,
+            virial,
+            particle_virial);
     }
 }
 
@@ -554,7 +546,6 @@ void PolymlpKIM::accumulate_properties(
     int error;              // KIM error code.
     int n_neigh;            // Number of neighbors of i.
     const int * neighbors;  // The indices of the neighbors.
-    const auto& fp = polymlp.get_fp();
 
     for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
@@ -574,7 +565,7 @@ void PolymlpKIM::accumulate_properties(
             const double dely = ytmp - atom_coords[j][1];
             const double delz = ztmp - atom_coords[j][2];
             const double dis = sqrt(delx*delx + dely*dely + delz*delz);
-            if (dis < fp.cutoff){
+            if (dis < cutoff){
                 const double evdwl = energy_array[icontrib][jj];
                 const double fx = fx_array[icontrib][jj];
                 const double fy = fy_array[icontrib][jj];
