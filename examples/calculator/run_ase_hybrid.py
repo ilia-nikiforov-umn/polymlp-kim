@@ -9,7 +9,7 @@ from ase.build.supercells import make_supercell
 
 
 models = [
-    "PolymlpHybrid_Seko_2024p1_Ag__MO_000000000000_000"
+    "Polymlp_Seko_2024p1hybrid_Ag__MO_000000000000_000"
 ]
 
 axis = np.array(

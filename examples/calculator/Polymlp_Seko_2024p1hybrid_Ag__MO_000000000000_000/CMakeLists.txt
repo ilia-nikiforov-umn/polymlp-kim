@@ -8,12 +8,12 @@ list(APPEND CMAKE_PREFIX_PATH $ENV{KIM_API_CMAKE_PREFIX_DIR})
 find_package(KIM-API-ITEMS 2.2 REQUIRED CONFIG)
 
 kim_api_items_setup_before_project(ITEM_TYPE "portableModel")
-project(PolymlpHybrid_Seko_2024p1_Ag__MO_000000000000_000)
+project(Polymlp_Seko_2024p1hybrid_Ag__MO_000000000000_000)
 kim_api_items_setup_after_project(ITEM_TYPE "portableModel")
 
 add_kim_api_model_library(
   NAME            ${PROJECT_NAME}
-  DRIVER_NAME     "PolymlpHybrid__MD_000000123456_000"
+  DRIVER_NAME     "Polymlp__MD_000000123456_000"
   PARAMETER_FILES "polymlp.settings"
                   "polymlp.lammps.1"
                   "polymlp.lammps.2"
