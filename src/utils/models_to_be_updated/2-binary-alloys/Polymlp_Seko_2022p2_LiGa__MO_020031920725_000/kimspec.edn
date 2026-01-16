@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Li-Ga system. This potential is gtinv-725 potential in Li-Ga-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 4.393 meV/atom and 0.0515 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.48 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p2_LiGa__MO_020031920725_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Li" "Ga"]
+ "title" "Polynomial machine learning potential for Li-Ga developed by Seko (2022) v000"
+ }

@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Ca-Cu system. This potential is pair-60 potential in Ca-Cu-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 3.558 meV/atom and 0.0496 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.34 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p1_CaCu__MO_020015510060_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Ca" "Cu"]
+ "title" "Polynomial machine learning potential for Ca-Cu developed by Seko (2022) v000"
+ }

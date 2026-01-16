@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Al-Y system. This potential is gtinv-194 potential in Al-Y-2022-07-21 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 3.739 meV/atom and 0.0671 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 1.12 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p2_AlY__MO_020011420194_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Al" "Y"]
+ "title" "Polynomial machine learning potential for Al-Y developed by Seko (2022) v000"
+ }

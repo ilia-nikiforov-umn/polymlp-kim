@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Ag-Sn system. This potential is pair-51 potential in Ag-Sn-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 4.877 meV/atom and 0.0602 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.12 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p1_AgSn__MO_020002310051_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Ag" "Sn"]
+ "title" "Polynomial machine learning potential for Ag-Sn developed by Seko (2022) v000"
+ }

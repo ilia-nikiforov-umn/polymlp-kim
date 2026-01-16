@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Al-Ag system. This potential is pair-60 potential in Al-Ag-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 4.873 meV/atom and 0.0561 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.34 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p1_AlAg__MO_020002810060_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Al" "Ag"]
+ "title" "Polynomial machine learning potential for Al-Ag developed by Seko (2022) v000"
+ }

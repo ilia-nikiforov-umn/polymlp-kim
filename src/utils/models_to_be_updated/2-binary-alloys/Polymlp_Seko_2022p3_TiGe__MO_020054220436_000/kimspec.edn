@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Ti-Ge system. This potential is gtinv-436 potential in Ti-Ge-2022-10-13 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 4.646 meV/atom and 0.1086 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 2.45 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p3_TiGe__MO_020054220436_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Ti" "Ge"]
+ "title" "Polynomial machine learning potential for Ti-Ge developed by Seko (2022) v000"
+ }

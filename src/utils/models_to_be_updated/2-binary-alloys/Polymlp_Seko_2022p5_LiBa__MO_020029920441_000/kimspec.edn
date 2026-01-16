@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Li-Ba system. This potential is gtinv-441 potential in Li-Ba-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 1.059 meV/atom and 0.0234 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 3.03 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p5_LiBa__MO_020029920441_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Li" "Ba"]
+ "title" "Polynomial machine learning potential for Li-Ba developed by Seko (2022) v000"
+ }

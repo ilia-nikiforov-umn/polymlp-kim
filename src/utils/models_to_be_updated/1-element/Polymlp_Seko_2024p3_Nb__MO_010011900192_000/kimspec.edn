@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Nb system. This potential is polymlp-00192 potential in Nb-2024-06-05 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 3.604 meV/atom and 0.1231 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 2.62 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2024p3_Nb__MO_010011900192_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2024"
+ "species" ["Nb"]
+ "title" "Polynomial machine learning potential for Nb developed by Seko (2024) v000"
+ }

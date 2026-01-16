@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Mg-Ga system. This potential is gtinv-436 potential in Mg-Ga-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 0.993 meV/atom and 0.0214 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 2.45 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p5_MgGa__MO_020039520436_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Mg" "Ga"]
+ "title" "Polynomial machine learning potential for Mg-Ga developed by Seko (2022) v000"
+ }

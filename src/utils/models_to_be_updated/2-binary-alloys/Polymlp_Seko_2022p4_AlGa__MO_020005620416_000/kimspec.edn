@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Al-Ga system. This potential is gtinv-416 potential in Al-Ga-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 1.47 meV/atom and 0.028 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 1.19 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p4_AlGa__MO_020005620416_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Al" "Ga"]
+ "title" "Polynomial machine learning potential for Al-Ga developed by Seko (2022) v000"
+ }

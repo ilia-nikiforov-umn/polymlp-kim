@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Au system. This potential is polymlp-00064 potential in Au-2024-06-05 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 2.886 meV/atom and 0.0265 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.16 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2024p1_Au__MO_010001400064_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2024"
+ "species" ["Au"]
+ "title" "Polynomial machine learning potential for Au developed by Seko (2024) v000"
+ }

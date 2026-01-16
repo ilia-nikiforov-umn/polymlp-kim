@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for K-Pb system. This potential is gtinv-416 potential in K-Pb-2022-07-25 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 2.162 meV/atom and 0.0338 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 1.19 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p4_KPb__MO_020026920416_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["K" "Pb"]
+ "title" "Polynomial machine learning potential for K-Pb developed by Seko (2022) v000"
+ }

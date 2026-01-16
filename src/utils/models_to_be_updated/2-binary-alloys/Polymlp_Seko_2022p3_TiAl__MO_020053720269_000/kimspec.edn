@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Ti-Al system. This potential is gtinv-269 potential in Ti-Al-2022-06-22 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 2.155 meV/atom and 0.0763 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 1.46 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p3_TiAl__MO_020053720269_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Ti" "Al"]
+ "title" "Polynomial machine learning potential for Ti-Al developed by Seko (2022) v000"
+ }

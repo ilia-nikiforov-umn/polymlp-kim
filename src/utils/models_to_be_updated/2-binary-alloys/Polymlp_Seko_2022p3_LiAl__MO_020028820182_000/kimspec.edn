@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Li-Al system. This potential is gtinv-182 potential in Li-Al-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 2.649 meV/atom and 0.0335 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.52 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p3_LiAl__MO_020028820182_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Li" "Al"]
+ "title" "Polynomial machine learning potential for Li-Al developed by Seko (2022) v000"
+ }

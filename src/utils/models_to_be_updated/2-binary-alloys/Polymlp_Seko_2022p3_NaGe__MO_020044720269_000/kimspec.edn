@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Na-Ge system. This potential is gtinv-269 potential in Na-Ge-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 2.958 meV/atom and 0.0477 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 1.46 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p3_NaGe__MO_020044720269_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Na" "Ge"]
+ "title" "Polynomial machine learning potential for Na-Ge developed by Seko (2022) v000"
+ }

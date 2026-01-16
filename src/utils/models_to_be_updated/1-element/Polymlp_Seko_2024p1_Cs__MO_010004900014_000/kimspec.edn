@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Cs system. This potential is polymlp-00014 potential in Cs-2024-06-05 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 1.762 meV/atom and 0.0042 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.09 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2024p1_Cs__MO_010004900014_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2024"
+ "species" ["Cs"]
+ "title" "Polynomial machine learning potential for Cs developed by Seko (2024) v000"
+ }

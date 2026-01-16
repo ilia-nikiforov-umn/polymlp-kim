@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Cu-Ag-Au system. This potential is gtinv-182 potential in Cu-Ag-Au-2024-05-09 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 1.44 meV/atom and 0.0186 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.88 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2024p1_CuAgAu__MO_030000020182_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2024"
+ "species" ["Cu" "Ag" "Au"]
+ "title" "Polynomial machine learning potential for Cu-Ag-Au developed by Seko (2024) v000"
+ }

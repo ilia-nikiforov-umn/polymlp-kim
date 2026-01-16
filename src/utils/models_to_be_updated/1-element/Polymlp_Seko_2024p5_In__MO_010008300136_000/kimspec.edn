@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for In system. This potential is polymlp-00136 potential in In-2024-06-05 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 0.86 meV/atom and 0.0143 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 2.68 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2024p5_In__MO_010008300136_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2024"
+ "species" ["In"]
+ "title" "Polynomial machine learning potential for In developed by Seko (2024) v000"
+ }

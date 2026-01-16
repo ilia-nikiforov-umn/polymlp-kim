@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Na-Sr system. This potential is pair-49 potential in Na-Sr-2022-10-13 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 4.889 meV/atom and 0.0288 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.04 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p1_NaSr__MO_020047410049_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Na" "Sr"]
+ "title" "Polynomial machine learning potential for Na-Sr developed by Seko (2022) v000"
+ }

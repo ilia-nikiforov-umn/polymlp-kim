@@ -2,42 +2,82 @@
 
 from collections import defaultdict
 import numpy as np
-from sklearn.cluster import SpectralClustering
+from sklearn.cluster import KMeans
 
 
-def _get_representatives(time: np.ndarray, rmse_e: np.ndarray):
+# def _get_representatives(time: np.ndarray, score: np.ndarray):
+#     """Return representatives using a clustering."""
+# 
+#     data = np.log(time).reshape((-1, 1))
+#     if data.shape[0] <= 5:
+#         return np.arange(data.shape[0])
+#         
+#     clustering = SpectralClustering(
+#         n_clusters=5,
+#         assign_labels='discretize',
+#         random_state=0,
+#     ).fit(data)
+#     groups = defaultdict(list)
+#     for i, lab in enumerate(clustering.labels_):
+#         groups[lab].append(i)
+# 
+#     reps = []
+#     threshold = 0.1
+#     for g in groups.values():
+#         if len(g) == 1:
+#             reps.append(g[0])
+#         else:
+#             rmse = score[np.array(g)]
+#             diff_rmse = rmse[1:] - rmse[:-1]
+#             if np.any(np.abs(diff_rmse) > threshold):
+#                 t = np.log10(time[np.array(g)])
+#                 diff_t = t[1:] - t[:-1]
+#                 grads = diff_rmse / diff_t
+#                 idx = np.argmin(grads) + 1
+#             else:
+#                 idx = 0
+#             reps.append(g[idx])
+#     return np.array(reps)
+# 
+
+def _get_representatives(time: np.ndarray, score: np.ndarray):
     """Return representatives using a clustering."""
 
-    data = np.log(time).reshape((-1, 1))
+    data = score.reshape((-1, 1))
     if data.shape[0] <= 5:
         return np.arange(data.shape[0])
-        
-    clustering = SpectralClustering(
-        n_clusters=5,
-        assign_labels='discretize',
-        random_state=0,
-    ).fit(data)
+    print(data)
+
+    kmeans = KMeans(n_clusters=5, random_state=0)
+    labels = kmeans.fit_predict(data)
     groups = defaultdict(list)
-    for i, lab in enumerate(clustering.labels_):
+    for i, lab in enumerate(labels):
         groups[lab].append(i)
+    print(groups.values())
 
     reps = []
-    threshold = 0.1
+    threshold = 0.5
     for g in groups.values():
         if len(g) == 1:
             reps.append(g[0])
         else:
-            rmse = rmse_e[np.array(g)]
-            diff_rmse = rmse[1:] - rmse[:-1]
-            if np.any(np.abs(diff_rmse) > threshold):
-                t = np.log10(time[np.array(g)])
-                diff_t = t[1:] - t[:-1]
-                grads = diff_rmse / diff_t
-                idx = np.argmin(grads) + 1
+            labels = np.array(g)
+            y = score[labels]
+            t = np.log10(time[labels])
+            dy = y[-1] - y[0]
+            dt = t[-1] - t[0]
+            print(dy/dt)
+            if (dy / dt) > -threshold:
+                reps.append(g[0])
             else:
-                idx = 0
-            reps.append(g[idx])
-    return np.array(reps)
+                dy = y[1:] - y[:-1]
+                dt = t[1:] - t[:-1]
+                grads = dy / dt
+                idx = np.argmin(grads) + 1
+                reps.append(g[idx])
+    reps = np.sort(reps)
+    print(reps)
+    return reps
 
 
 def _screen_with_rmse(data: np.ndarray, e_thresholds: float = 5.0):
@@ -45,9 +85,11 @@ def _screen_with_rmse(data: np.ndarray, e_thresholds: float = 5.0):
     rmse_e = data[:, 2].astype(float)
     match = (rmse_e < e_thresholds)
     if np.count_nonzero(match) < 3:
-        match = (rmse_e < e_thresholds * 2.0)
+        match = (rmse_e < e_thresholds * 1.6)
         if np.count_nonzero(match) == 0:
-            raise RuntimeError("No optimal polymlp.")
+            match = (rmse_e < e_thresholds * 2.0)
+            if np.count_nonzero(match) == 0:
+                raise RuntimeError("No optimal polymlp.")
     return data[match]
 
 

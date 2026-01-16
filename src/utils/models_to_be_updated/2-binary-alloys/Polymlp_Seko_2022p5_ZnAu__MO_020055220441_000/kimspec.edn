@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Zn-Au system. This potential is gtinv-441 potential in Zn-Au-2022-10-13 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 0.991 meV/atom and 0.0207 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 3.03 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p5_ZnAu__MO_020055220441_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Zn" "Au"]
+ "title" "Polynomial machine learning potential for Zn-Au developed by Seko (2022) v000"
+ }

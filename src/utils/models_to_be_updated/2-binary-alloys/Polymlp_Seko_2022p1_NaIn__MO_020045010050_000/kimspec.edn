@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Na-In system. This potential is pair-50 potential in Na-In-2022-06-17 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 4.748 meV/atom and 0.0396 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.08 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p1_NaIn__MO_020045010050_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Na" "In"]
+ "title" "Polynomial machine learning potential for Na-In developed by Seko (2022) v000"
+ }

@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Zn-In system. This potential is gtinv-734 potential in Zn-In-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 3.501 meV/atom and 0.0364 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.35 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p1_ZnIn__MO_020056320734_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Zn" "In"]
+ "title" "Polynomial machine learning potential for Zn-In developed by Seko (2022) v000"
+ }

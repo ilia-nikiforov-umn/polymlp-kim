@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Li-In system. This potential is gtinv-203 potential in Li-In-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 1.423 meV/atom and 0.0243 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 2.86 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p5_LiIn__MO_020033220203_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Li" "In"]
+ "title" "Polynomial machine learning potential for Li-In developed by Seko (2022) v000"
+ }

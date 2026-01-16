@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Al-Sn system. This potential is gtinv-436 potential in Al-Sn-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 1.508 meV/atom and 0.0297 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 2.45 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p5_AlSn__MO_020010520436_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Al" "Sn"]
+ "title" "Polynomial machine learning potential for Al-Sn developed by Seko (2022) v000"
+ }

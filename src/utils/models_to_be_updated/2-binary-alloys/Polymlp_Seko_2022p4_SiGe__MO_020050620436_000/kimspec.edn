@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Si-Ge system. This potential is gtinv-436 potential in Si-Ge-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 2.534 meV/atom and 0.0534 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 2.45 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p4_SiGe__MO_020050620436_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Si" "Ge"]
+ "title" "Polynomial machine learning potential for Si-Ge developed by Seko (2022) v000"
+ }

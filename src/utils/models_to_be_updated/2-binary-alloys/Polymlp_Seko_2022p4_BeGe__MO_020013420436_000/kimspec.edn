@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Be-Ge system. This potential is gtinv-436 potential in Be-Ge-2022-07-21 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 2.673 meV/atom and 0.0556 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 2.45 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p4_BeGe__MO_020013420436_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Be" "Ge"]
+ "title" "Polynomial machine learning potential for Be-Ge developed by Seko (2022) v000"
+ }

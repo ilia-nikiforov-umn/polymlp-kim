@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Al-La system. This potential is gtinv-260 potential in Al-La-2022-06-12 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 3.309 meV/atom and 0.0679 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 1.17 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p3_AlLa__MO_020007520260_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Al" "La"]
+ "title" "Polynomial machine learning potential for Al-La developed by Seko (2022) v000"
+ }

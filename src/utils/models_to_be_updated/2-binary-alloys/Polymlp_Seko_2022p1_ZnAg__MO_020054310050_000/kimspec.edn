@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Zn-Ag system. This potential is pair-50 potential in Zn-Ag-2022-07-21 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 3.591 meV/atom and 0.042 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.08 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2022p1_ZnAg__MO_020054310050_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2022"
+ "species" ["Zn" "Ag"]
+ "title" "Polynomial machine learning potential for Zn-Ag developed by Seko (2022) v000"
+ }

@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Si system. This potential is polymlp-00102 potential in Si-2024-06-05 taken from Polynomial MLP Repository. The RMS errors for energy and forces are 3.868 meV/atom and 0.0642 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 0.62 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2024p1_Si__MO_010016900102_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2024"
+ "species" ["Si"]
+ "title" "Polynomial machine learning potential for Si developed by Seko (2024) v000"
+ }
