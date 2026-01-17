@@ -441,173 +441,81 @@ void PolymlpKIM::compute_pair(
     const auto& type_pairs = maps.type_pairs;
     const auto& tp_to_params = maps.tp_to_params;
 
-    // const int nthreads = omp_get_num_threads();
-    int nthreads = 1;
+    vector2d energy_array(n_atoms_contrib);
+    vector2d fx_array(n_atoms_contrib);
+    vector2d fy_array(n_atoms_contrib);
+    vector2d fz_array(n_atoms_contrib);
     #ifdef _OPENMP
-    nthreads = omp_get_max_threads();
+    #pragma omp parallel for schedule(guided)
     #endif
-    // const int nthreads = omp_get_max_threads();
-    vector1d energy_array(nthreads, 0.0);
-    vector2d atom_energy_array(nthreads, vector1d(n_atoms, 0.0));
-    vector3d f_array(nthreads, vector2d(n_atoms, vector1d(3, 0.0)));
-    vector2d virial_array(nthreads, vector1d(6, 0.0));
-    vector3d particle_virial_array(nthreads, vector2d(n_atoms, vector1d(6, 0.0)));
- 
-    #ifdef _OPENMP
-    #pragma omp parallel
-    #endif
-    {
-        const int tid = omp_get_thread_num(); 
-    //#ifdef _OPENMP
-    //#pragma omp parallel for schedule(guided)
-    //#endif
-        #ifdef _OPENMP
-        #pragma omp for schedule(guided)
-        #endif
-        for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
-            const int i = map_contrib_to_full[icontrib];
-            // Get neighbors.
-            int n_neigh;            // Number of neighbors of i.
-            const int * neighbors;  // The indices of the neighbors.
-            int error = model_compute_arguments.GetNeighborList(
-                0, i, &n_neigh, &neighbors);
-            if (error) {
-                throw std::runtime_error(
-                    "Error in KIM::ModelComputeArguments.GetNeighborList");
-            }
-            const int itype = atom_types[i];
-            const double xtmp = atom_coords[i][0];
-            const double ytmp = atom_coords[i][1];
-            const double ztmp = atom_coords[i][2];
+    for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
+        const int i = map_contrib_to_full[icontrib];
+        // Get neighbors.
+        int n_neigh;            // Number of neighbors of i.
+        const int * neighbors;  // The indices of the neighbors.
+        int error = model_compute_arguments.GetNeighborList(0, i, &n_neigh, &neighbors);
+        if (error) {
+            throw std::runtime_error(
+                "Error in KIM::ModelComputeArguments.GetNeighborList");
+        }
+        energy_array[icontrib].resize(n_neigh);
+        fx_array[icontrib].resize(n_neigh);
+        fy_array[icontrib].resize(n_neigh);
+        fz_array[icontrib].resize(n_neigh);
 
-            int tp;
-            double delx,dely,delz,dis,evdwl,fpair,fx,fy,fz;
-            vector1d fn,fn_d;
+        const int itype = atom_types[i];
+        const double xtmp = atom_coords[i][0];
+        const double ytmp = atom_coords[i][1];
+        const double ztmp = atom_coords[i][2];
 
-            const auto& maps_type = maps.maps_type[itype];
-            const auto& ntp_attrs = maps_type.ntp_attrs;
-            for (int jj = 0; jj != n_neigh; ++jj) {
-                int j = neighbors[jj];
-                delx = xtmp - atom_coords[j][0];
-                dely = ytmp - atom_coords[j][1];
-                delz = ztmp - atom_coords[j][2];
-                dis = sqrt(delx*delx + dely*dely + delz*delz);
-                if (dis < fp.cutoff){
-                    const int jtype = atom_types[j];
-                    tp = type_pairs[itype][jtype];
-                    const auto& params = tp_to_params[tp];
-                    get_fn_(dis, fp, params, fn, fn_d);
-                    evdwl = 0.0, fpair = 0.0;
-                    for (const auto& ntp: ntp_attrs){
-                        if (tp == ntp.tp){
-                            const int idx_i = ntp.ilocal_id;
-                            const auto& prod_ei = prod_sum_e[icontrib][idx_i];
-                            const auto& prod_fi = prod_sum_f[icontrib][idx_i];
-                            double val_e, val_f;
-                            if (contributing[j]){
-                                const int jcontrib = map_full_to_contrib[j];
-                                const int idx_j = ntp.jlocal_id;
-                                const auto& prod_ej = prod_sum_e[jcontrib][idx_j];
-                                const auto& prod_fj = prod_sum_f[jcontrib][idx_j];
-                                val_e = 0.5 * (prod_ei + prod_ej);
-                                val_f = 0.5 * (prod_fi + prod_fj);
-                            }
-                            else {
-                                val_e = prod_ei;
-                                val_f = prod_fi;
-                            }
-                            evdwl += fn[ntp.n_id] * val_e;
-                            fpair += fn_d[ntp.n_id] * val_f;
+        int tp;
+        double delx,dely,delz,dis,evdwl,fpair;
+        vector1d fn,fn_d;
+
+        const auto& maps_type = maps.maps_type[itype];
+        const auto& ntp_attrs = maps_type.ntp_attrs;
+        for (int jj = 0; jj != n_neigh; ++jj) {
+            int j = neighbors[jj];
+            delx = xtmp - atom_coords[j][0];
+            dely = ytmp - atom_coords[j][1];
+            delz = ztmp - atom_coords[j][2];
+            dis = sqrt(delx*delx + dely*dely + delz*delz);
+            if (dis < fp.cutoff){
+                const int jtype = atom_types[j];
+                tp = type_pairs[itype][jtype];
+                const auto& params = tp_to_params[tp];
+                get_fn_(dis, fp, params, fn, fn_d);
+                evdwl = 0.0, fpair = 0.0;
+                for (const auto& ntp: ntp_attrs){
+                    if (tp == ntp.tp){
+                        const int idx_i = ntp.ilocal_id;
+                        const auto& prod_ei = prod_sum_e[icontrib][idx_i];
+                        const auto& prod_fi = prod_sum_f[icontrib][idx_i];
+                        double val_e, val_f;
+                        if (contributing[j]){
+                            const int jcontrib = map_full_to_contrib[j];
+                            const int idx_j = ntp.jlocal_id;
+                            const auto& prod_ej = prod_sum_e[jcontrib][idx_j];
+                            const auto& prod_fj = prod_sum_f[jcontrib][idx_j];
+                            val_e = 0.5 * (prod_ei + prod_ej);
+                            val_f = 0.5 * (prod_fi + prod_fj);
                         }
-                    }
-                    fpair *= - 1.0 / dis;
-                    fx = fpair * delx;
-                    fy = fpair * dely;
-                    fz = fpair * delz;
-                    if (energy)
-                        energy_array[tid] += evdwl;
-                    if (atom_energy){
-                        atom_energy_array[tid][i] += 0.5 * evdwl;
-                        atom_energy_array[tid][j] += 0.5 * evdwl;
-                    }
-                    if (forces){
-                        f_array[tid][i][0] += fx; 
-                        f_array[tid][i][1] += fy; 
-                        f_array[tid][i][2] += fz;
-                        f_array[tid][j][0] -= fx; 
-                        f_array[tid][j][1] -= fy; 
-                        f_array[tid][j][2] -= fz;
-                    }
-                    vector1d val_tmp(6);
-                    if (virial || particle_virial){
-                        val_tmp[0] = delx * fx;
-                        val_tmp[1] = dely * fy;
-                        val_tmp[2] = delz * fz;
-                        val_tmp[3] = dely * fz;
-                        val_tmp[4] = delx * fz;
-                        val_tmp[5] = delx * fy;
-                        // lammps convension
-                        // virial[3] += delx * fy;
-                        // virial[5] += dely * fz;
-                    }
-                    if (virial){
-                        for (int k = 0; k < 6; ++k){
-                            virial_array[tid][k] += val_tmp[k];
+                        else {
+                            val_e = prod_ei;
+                            val_f = prod_fi;
                         }
-                    }
-                    if (particle_virial){
-                        for (int k = 0; k < 6; ++k){
-                            particle_virial_array[tid][i][k] += 0.5 * val_tmp[k];
-                            particle_virial_array[tid][j][k] += 0.5 * val_tmp[k];
-                        }
+                        evdwl += fn[ntp.n_id] * val_e;
+                        fpair += fn_d[ntp.n_id] * val_f;
                     }
                 }
+                fpair *= - 1.0 / dis;
+                energy_array[icontrib][jj] = evdwl;
+                fx_array[icontrib][jj] = fpair * delx;
+                fy_array[icontrib][jj] = fpair * dely;
+                fz_array[icontrib][jj] = fpair * delz;
             }
         }
     }
-
-    int used_threads = 1;
-    #ifdef _OPENMP
-    #pragma omp parallel
-    #endif
-    {
-        #ifdef _OPENMP
-        #pragma omp single
-        #endif
-        used_threads = omp_get_num_threads();
-    }
-        
-    for (int tid = 0; tid < used_threads; ++tid){
-        if (energy){
-            *energy += energy_array[tid];
-        }
-        if (atom_energy){
-            for (int i = 0; i < n_atoms; ++i){
-                atom_energy[i] += atom_energy_array[tid][i];
-            }
-        }
-        if (forces){
-            for (int i = 0; i < n_atoms; ++i){
-                for (int j = 0; j < 3; ++j){
-                    forces[i][j] += f_array[tid][i][j]; 
-                }
-            }
-        }
-        if (virial){
-            for (int i = 0; i < 6; ++i){
-                virial[i] += virial_array[tid][i];
-            }
-        }
-        if (particle_virial){
-            for (int i = 0; i < n_atoms; ++i){
-                for (int j = 0; j < 6; ++j){
-                    particle_virial[i][j] += particle_virial_array[tid][i][j]; 
-                }
-            }
-        }
-    }
-
-    /*
     accumulate_properties(
         model_compute_arguments,
         n_atoms,
@@ -623,7 +531,6 @@ void PolymlpKIM::compute_pair(
         forces,
         virial,
         particle_virial);
-    */
 
 }
 
