@@ -1,5 +1,7 @@
 """Converter of polynomial MLP to KIM model."""
 
+from typing import Union
+
 import sys
 import os
 import shutil
@@ -7,12 +9,12 @@ import shutil
 import numpy as np
 import tarfile
 
-from pypolymlp.core.io_polymlp import convert_to_yaml, load_mlp
-from pypolymlp.utils.kim_utils import generate_kim_files
+from pypolymlp.core.io_polymlp import convert_to_yaml
+from pypolymlp.utils.kim_utils import generate_kim_files, copy_mlps
 
 
 def convert_polymlp_to_kim_model(
-    polymlp_file: str,
+    polymlp_files: Union[str, list[str]],
     polymlp_id: str,
     polymlp_year: int,
     performance_level: int,
@@ -25,23 +27,8 @@ def convert_polymlp_to_kim_model(
     model_driver: str = "Polymlp__MD_000000123456_000",
 ):
     """Convert polymlp to KIM model."""
-
     tmp_path = "./Polymlp__MO_tmp/"
-    os.makedirs(tmp_path, exist_ok=True)
-
-    polymlp_yaml = tmp_path + "polymlp.yaml"
-    if ".lammps.tar.gz" in polymlp_file:
-        tarpath = "/".join(polymlp_file.split("/")[:-1])
-        with tarfile.open(polymlp_file) as tar:
-            tar.extractall(path=tarpath)
-        convert_to_yaml(polymlp_file.replace(".tar.gz",""), yaml=polymlp_yaml)
-    elif ".lammps" in polymlp_file:
-        convert_to_yaml(polymlp_file, yaml=polymlp_yaml)
-    else:
-        shutil.copy(polymlp_file, polymlp_yaml)
-
-    params, _ = load_mlp(polymlp_yaml)
-    elements = params.elements
+    elements = copy_mlps(polymlp_files, path=tmp_path)
 
     description = (
         "Polynomial machine learning potential (MLP) for", 

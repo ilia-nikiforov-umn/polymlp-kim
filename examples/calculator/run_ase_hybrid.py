@@ -9,6 +9,7 @@ from ase.build.supercells import make_supercell
 
 
 models = [
+    "Polymlp_Seko_2024p1hybrid_Ag__MO_110000000211_000",
     "Polymlp_Seko_2024p1hybrid_Ag__MO_000000000000_000"
 ]
 

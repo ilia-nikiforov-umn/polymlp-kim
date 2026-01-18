@@ -1,0 +1,10 @@
+{"domain" "openkim.org"
+ "description" "Polynomial machine learning potential (MLP) for Os system. This potential is polymlp-00284-hybrid-0004 potential in Os-2024-06-11-hybrid taken from Polynomial MLP Repository. The RMS errors for energy and forces are 2.859 meV/atom and 0.116 eV/angstrom, respectively. The estimated computational cost required for a single core calculation is 12.22 ms/atom/step."
+ "extended-id" "Polymlp_Seko_2024p2hybrid_Os__MO_110002828404_000"
+ "kim-api-version" "2.2"
+ "model-driver" "Polymlp__MD_000000123456_000"
+ "potential-type" "polymlp"
+ "publication-year" "2024"
+ "species" ["Os"]
+ "title" "Polynomial machine learning potential for Os developed by Seko (2024) v000"
+ }

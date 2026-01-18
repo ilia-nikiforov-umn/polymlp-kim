@@ -5,55 +5,18 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 
-# def _get_representatives(time: np.ndarray, score: np.ndarray):
-#     """Return representatives using a clustering."""
-# 
-#     data = np.log(time).reshape((-1, 1))
-#     if data.shape[0] <= 5:
-#         return np.arange(data.shape[0])
-#         
-#     clustering = SpectralClustering(
-#         n_clusters=5,
-#         assign_labels='discretize',
-#         random_state=0,
-#     ).fit(data)
-#     groups = defaultdict(list)
-#     for i, lab in enumerate(clustering.labels_):
-#         groups[lab].append(i)
-# 
-#     reps = []
-#     threshold = 0.1
-#     for g in groups.values():
-#         if len(g) == 1:
-#             reps.append(g[0])
-#         else:
-#             rmse = score[np.array(g)]
-#             diff_rmse = rmse[1:] - rmse[:-1]
-#             if np.any(np.abs(diff_rmse) > threshold):
-#                 t = np.log10(time[np.array(g)])
-#                 diff_t = t[1:] - t[:-1]
-#                 grads = diff_rmse / diff_t
-#                 idx = np.argmin(grads) + 1
-#             else:
-#                 idx = 0
-#             reps.append(g[idx])
-#     return np.array(reps)
-# 
-
-def _get_representatives(time: np.ndarray, score: np.ndarray):
+def _get_representatives(time: np.ndarray, score: np.ndarray, n_clusters: int = 5):
     """Return representatives using a clustering."""
 
     data = score.reshape((-1, 1))
-    if data.shape[0] <= 5:
+    if data.shape[0] <= n_clusters:
         return np.arange(data.shape[0])
-    print(data)
 
-    kmeans = KMeans(n_clusters=5, random_state=0)
+    kmeans = KMeans(n_clusters=n_clusters, random_state=0)
     labels = kmeans.fit_predict(data)
     groups = defaultdict(list)
     for i, lab in enumerate(labels):
         groups[lab].append(i)
-    print(groups.values())
 
     reps = []
     threshold = 0.5
@@ -66,7 +29,6 @@ def _get_representatives(time: np.ndarray, score: np.ndarray):
             t = np.log10(time[labels])
             dy = y[-1] - y[0]
             dt = t[-1] - t[0]
-            print(dy/dt)
             if (dy / dt) > -threshold:
                 reps.append(g[0])
             else:
@@ -76,7 +38,6 @@ def _get_representatives(time: np.ndarray, score: np.ndarray):
                 idx = np.argmin(grads) + 1
                 reps.append(g[idx])
     reps = np.sort(reps)
-    print(reps)
     return reps
 
 
@@ -97,6 +58,7 @@ def choose_distributed_mlps(
     data: np.ndarray,
     e_thresholds: float = 5.0,
     time_scale: float = 1.0,
+    n_clusters: int = 5,
 ):
     """Find mlps on convex hull and select better MLPs."""
     data = _screen_with_rmse(data, e_thresholds=e_thresholds)
@@ -105,7 +67,7 @@ def choose_distributed_mlps(
     rmse_f = data[:, 3].astype(float)
     score = rmse_e + rmse_f * 200
  
-    reps = _get_representatives(times, score)
+    reps = _get_representatives(times, score, n_clusters=n_clusters)
     data = data[reps]
 
     data[:, 0] = data[:, 0].astype(float) / time_scale

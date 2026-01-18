@@ -27,5 +27,8 @@ def get_polymlp_attrs(polymlp_file: str):
     split = polymlp_file.split("/")
     repository_id = split[-4]
     polymlp_id = split[-2]
-    polymlp_year = repository_id.split("-")[-3]
+    if "hybrid" in repository_id:
+        polymlp_year = repository_id.split("-")[-4]
+    else:
+        polymlp_year = repository_id.split("-")[-3]
     return repository_id, polymlp_id, polymlp_year
