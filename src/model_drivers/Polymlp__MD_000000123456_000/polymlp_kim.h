@@ -113,7 +113,10 @@ class PolymlpKIM {
     double const * cutoff_ptr() const {
         return &cutoff_max;
     }
- 
+
+    double prod_real(const dc val1, const dc val2){
+        return val1.real() * val2.real() - val1.imag() * val2.imag();
+    }
 };
 
 #endif
