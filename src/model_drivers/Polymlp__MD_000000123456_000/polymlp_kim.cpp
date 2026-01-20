@@ -3,6 +3,7 @@
 ------------------------------------------------------------------------- */
 
 #include "polymlp_kim.h"
+#include <cstring>
 
 
 PolymlpKIM::PolymlpKIM(
@@ -92,6 +93,22 @@ void PolymlpKIM::compute(
     }
     n_atoms_contrib = map_contrib_to_full.size();
 
+    // TODO: To enable OpenMP parallelization, neighbor lists for 
+    //       all contributing atoms are copied. This is a temporary solution.
+    neighbors_contrib.resize(n_atoms_contrib);
+    for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
+        const int i = map_contrib_to_full[icontrib];
+        int n_neigh;                 // Number of neighbors of i.
+        const int * neighbors;       // The indices of the neighbors.
+        int error = model_compute_arguments.GetNeighborList(0, i, &n_neigh, &neighbors);
+        if (error) {
+            throw std::runtime_error(
+                "Error in KIM::ModelComputeArguments.GetNeighborList");
+        }
+        auto& neigh = neighbors_contrib[icontrib];
+        neighbors_contrib[icontrib].assign(neighbors, neighbors + n_neigh);
+    }
+
     for (size_t i = 0; i < polymlp_array.size(); ++i){
         polymlp = polymlp_array[i];
         const auto& fp = polymlp.get_fp();
@@ -146,14 +163,9 @@ void PolymlpKIM::compute_sum_of_prod_anlmtp(
     #endif
     for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
-        // Get neighbors.
-        int n_neigh;            // Number of neighbors of i.
-        const int * neighbors;  // The indices of the neighbors.
-        int error = model_compute_arguments.GetNeighborList(0, i, &n_neigh, &neighbors);
-        if (error) {
-            throw std::runtime_error(
-                "Error in KIM::ModelComputeArguments.GetNeighborList");
-        }
+        const auto& neighbors = neighbors_contrib[icontrib];
+        const int n_neigh = neighbors.size();
+
         const int itype = atom_types[i];
         const double xtmp = atom_coords[i][0];
         const double ytmp = atom_coords[i][1];
@@ -227,7 +239,6 @@ void PolymlpKIM::compute_gtinv(
     const auto& type_pairs = maps.type_pairs;
     const auto& tp_to_params = maps.tp_to_params;
 
-    // TODO: More efficient implementation using thread local arrays.
     vector2d energy_array(n_atoms_contrib);
     vector2d fx_array(n_atoms_contrib);
     vector2d fy_array(n_atoms_contrib);
@@ -238,14 +249,9 @@ void PolymlpKIM::compute_gtinv(
     #endif
     for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
-        // Get neighbors.
-        int n_neigh;            // Number of neighbors of i.
-        const int * neighbors;  // The indices of the neighbors.
-        int error = model_compute_arguments.GetNeighborList(0, i, &n_neigh, &neighbors);
-        if (error) {
-            throw std::runtime_error(
-                "Error in KIM::ModelComputeArguments.GetNeighborList");
-        }
+        const auto& neighbors = neighbors_contrib[icontrib];
+        const int n_neigh = neighbors.size();
+
         energy_array[icontrib].resize(n_neigh);
         fx_array[icontrib].resize(n_neigh);
         fy_array[icontrib].resize(n_neigh);
@@ -367,14 +373,9 @@ void PolymlpKIM::compute_sum_of_prod_antp(
     #endif
     for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
-        // Get neighbors.
-        int n_neigh;            // Number of neighbors of i.
-        const int * neighbors;  // The indices of the neighbors.
-        int error = model_compute_arguments.GetNeighborList(0, i, &n_neigh, &neighbors);
-        if (error) {
-            throw std::runtime_error(
-                "Error in KIM::ModelComputeArguments.GetNeighborList");
-        }
+        const auto& neighbors = neighbors_contrib[icontrib];
+        const int n_neigh = neighbors.size();
+
         const int itype = atom_types[i];
         const double xtmp = atom_coords[i][0];
         const double ytmp = atom_coords[i][1];
@@ -450,14 +451,9 @@ void PolymlpKIM::compute_pair(
     #endif
     for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
-        // Get neighbors.
-        int n_neigh;            // Number of neighbors of i.
-        const int * neighbors;  // The indices of the neighbors.
-        int error = model_compute_arguments.GetNeighborList(0, i, &n_neigh, &neighbors);
-        if (error) {
-            throw std::runtime_error(
-                "Error in KIM::ModelComputeArguments.GetNeighborList");
-        }
+        const auto& neighbors = neighbors_contrib[icontrib];
+        const int n_neigh = neighbors.size();
+
         energy_array[icontrib].resize(n_neigh);
         fx_array[icontrib].resize(n_neigh);
         fy_array[icontrib].resize(n_neigh);
@@ -551,20 +547,11 @@ void PolymlpKIM::accumulate_properties(
     double* virial,
     VectorOfSizeSix *& particle_virial)
 {
-    int error;              // KIM error code.
-    int n_neigh;            // Number of neighbors of i.
-    const int * neighbors;  // The indices of the neighbors.
     const auto& fp = polymlp.get_fp();
-
     for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
-        // Get neighbors.
-        error = model_compute_arguments.GetNeighborList(0, i, &n_neigh, &neighbors);
-        if (error) {
-            throw std::runtime_error(
-                "Error in KIM::ModelComputeArguments.GetNeighborList");
-        }
-
+        const auto& neighbors = neighbors_contrib[icontrib];
+        const int n_neigh = neighbors.size();
         const double xtmp = atom_coords[i][0];
         const double ytmp = atom_coords[i][1];
         const double ztmp = atom_coords[i][2];

@@ -29,6 +29,8 @@ class PolymlpKIM {
     vector1i map_contrib_to_full;
     std::map<int, int> map_full_to_contrib;
 
+    vector2i neighbors_contrib;
+
     // Compute properties using polymlp with polynomial invariants.
     void compute_gtinv(
         const KIM::ModelComputeArguments& model_compute_arguments,
