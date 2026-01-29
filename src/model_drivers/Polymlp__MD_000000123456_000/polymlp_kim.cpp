@@ -568,10 +568,8 @@ void PolymlpKIM::accumulate_properties(
                 const double fz = fz_array[icontrib][jj];
                 if (energy)
                     *energy += evdwl;
-                if (atom_energy){
-                    atom_energy[i] += 0.5 * evdwl;
-                    atom_energy[j] += 0.5 * evdwl;
-                }
+                if (atom_energy)
+                    atom_energy[i] += evdwl;
                 if (forces){
                     forces[i][0] += fx; 
                     forces[i][1] += fy; 
@@ -582,16 +580,13 @@ void PolymlpKIM::accumulate_properties(
                 }
                 vector1d val_tmp(6);
                 if (virial || particle_virial){
-
+                    // 3: yz, 4: zx, 5: xy (3: xy, 4: zx, 5: yz in lammps)
                     val_tmp[0] = delx * fx;
                     val_tmp[1] = dely * fy;
                     val_tmp[2] = delz * fz;
                     val_tmp[3] = dely * fz;
                     val_tmp[4] = delx * fz;
                     val_tmp[5] = delx * fy;
-                    // lammps convension
-                    // virial[3] += delx * fy;
-                    // virial[5] += dely * fz;
                 }
                 if (virial){
                     for (int k = 0; k < 6; ++k){
@@ -600,8 +595,7 @@ void PolymlpKIM::accumulate_properties(
                 }
                 if (particle_virial){
                     for (int k = 0; k < 6; ++k){
-                        particle_virial[i][k] += 0.5 * val_tmp[k];
-                        particle_virial[j][k] += 0.5 * val_tmp[k];
+                        particle_virial[i][k] += val_tmp[k];
                     }
                 }
             }
