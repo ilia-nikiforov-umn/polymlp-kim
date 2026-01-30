@@ -1,7 +1,7 @@
 {"content-origin" "Ported from pypolymlp"
  "description" "Model driver that supports calculations using polynomial machine learning potentials including hybrid types."
  "domain" "openkim.org"
- "extended-id" "PolymlpHybrid__MD_000000123456_000"
+ "extended-id" "Polymlp__MD_000000123456_000"
  "kim-api-version" "2.2"
  "publication-year" "2026"
  "source-citations" [{"author" "Seko, A. and Togo, A. and Tanaka, I."
