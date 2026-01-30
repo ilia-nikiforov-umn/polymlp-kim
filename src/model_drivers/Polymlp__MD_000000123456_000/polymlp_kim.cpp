@@ -55,13 +55,13 @@ void PolymlpKIM::compute(
     }
     // Reset atomic energy.
     if (atom_energy){
-        for (int i = 0; i != n_atoms; ++i) {
+        for (int i = 0; i < n_atoms; ++i) {
             atom_energy[i] = 0.0;
         }
     }
     // Reset forces.
     if (forces){
-        for (int i = 0; i != n_atoms; ++i) {
+        for (int i = 0; i < n_atoms; ++i) {
             forces[i][0] = 0.0;
             forces[i][1] = 0.0;
             forces[i][2] = 0.0;
@@ -69,13 +69,13 @@ void PolymlpKIM::compute(
     }
     // Reset virial.
     if (virial){
-        for (int i = 0; i != 6; ++i)
+        for (int i = 0; i < 6; ++i)
             virial[i] = 0.0;
     }
     // Reset partial virial.
     if (particle_virial){
-        for (int i = 0; i != n_atoms; ++i)
-            for (int j = 0; j != 6; ++j)
+        for (int i = 0; i < n_atoms; ++i)
+            for (int j = 0; j < 6; ++j)
                 particle_virial[i][j] = 0.0;
     }
 
@@ -84,7 +84,7 @@ void PolymlpKIM::compute(
     map_contrib_to_full = vector1i({});
     map_full_to_contrib = std::map<int, int>();
     int icontrib(0);
-    for (int i = 0; i != n_atoms; ++i) {
+    for (int i = 0; i < n_atoms; ++i) {
         if (contributing[i]) {
             map_contrib_to_full.emplace_back(i);
             map_full_to_contrib[i] = icontrib;
@@ -96,7 +96,7 @@ void PolymlpKIM::compute(
     // TODO: To enable OpenMP parallelization, neighbor lists for 
     //       all contributing atoms are copied. This is a temporary solution.
     neighbors_contrib.resize(n_atoms_contrib);
-    for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
+    for (int icontrib = 0; icontrib < n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
         int n_neigh;                 // Number of neighbors of i.
         const int * neighbors;       // The indices of the neighbors.
@@ -161,7 +161,7 @@ void PolymlpKIM::compute_sum_of_prod_anlmtp(
     #ifdef _OPENMP
     #pragma omp parallel for schedule(guided)
     #endif
-    for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
+    for (int icontrib = 0; icontrib < n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
         const auto& neighbors = neighbors_contrib[icontrib];
         const int n_neigh = neighbors.size();
@@ -179,7 +179,7 @@ void PolymlpKIM::compute_sum_of_prod_anlmtp(
         const auto& nlmtp_attrs_noconj = maps_type.nlmtp_attrs_noconj;
         vector1d anlmtp_r(nlmtp_attrs_noconj.size(), 0.0);
         vector1d anlmtp_i(nlmtp_attrs_noconj.size(), 0.0);
-        for (int jj = 0; jj != n_neigh; ++jj) {
+        for (int jj = 0; jj < n_neigh; ++jj) {
             int j = neighbors[jj];
             delx = xtmp - atom_coords[j][0];
             dely = ytmp - atom_coords[j][1];
@@ -247,7 +247,7 @@ void PolymlpKIM::compute_gtinv(
     #ifdef _OPENMP
     #pragma omp parallel for schedule(guided)
     #endif
-    for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
+    for (int icontrib = 0; icontrib < n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
         const auto& neighbors = neighbors_contrib[icontrib];
         const int n_neigh = neighbors.size();
@@ -270,7 +270,7 @@ void PolymlpKIM::compute_gtinv(
 
         const auto& maps_type = maps.maps_type[itype];
         const auto& nlmtp_attrs_noconj = maps_type.nlmtp_attrs_noconj;
-        for (int jj = 0; jj != n_neigh; ++jj) {
+        for (int jj = 0; jj < n_neigh; ++jj) {
             int j = neighbors[jj];
             delx = xtmp - atom_coords[j][0];
             dely = ytmp - atom_coords[j][1];
@@ -371,7 +371,7 @@ void PolymlpKIM::compute_sum_of_prod_antp(
     #ifdef _OPENMP
     #pragma omp parallel for schedule(guided)
     #endif
-    for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
+    for (int icontrib = 0; icontrib < n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
         const auto& neighbors = neighbors_contrib[icontrib];
         const int n_neigh = neighbors.size();
@@ -389,7 +389,7 @@ void PolymlpKIM::compute_sum_of_prod_antp(
         const auto& ntp_attrs = maps_type.ntp_attrs;
 
         vector1d antp(ntp_attrs.size(), 0.0);
-        for (int jj = 0; jj != n_neigh; ++jj) {
+        for (int jj = 0; jj < n_neigh; ++jj) {
             int j = neighbors[jj];
             delx = xtmp - atom_coords[j][0];
             dely = ytmp - atom_coords[j][1];
@@ -449,7 +449,7 @@ void PolymlpKIM::compute_pair(
     #ifdef _OPENMP
     #pragma omp parallel for schedule(guided)
     #endif
-    for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
+    for (int icontrib = 0; icontrib < n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
         const auto& neighbors = neighbors_contrib[icontrib];
         const int n_neigh = neighbors.size();
@@ -470,7 +470,7 @@ void PolymlpKIM::compute_pair(
 
         const auto& maps_type = maps.maps_type[itype];
         const auto& ntp_attrs = maps_type.ntp_attrs;
-        for (int jj = 0; jj != n_neigh; ++jj) {
+        for (int jj = 0; jj < n_neigh; ++jj) {
             int j = neighbors[jj];
             delx = xtmp - atom_coords[j][0];
             dely = ytmp - atom_coords[j][1];
@@ -548,14 +548,14 @@ void PolymlpKIM::accumulate_properties(
     VectorOfSizeSix *& particle_virial)
 {
     const auto& fp = polymlp.get_fp();
-    for (int icontrib = 0; icontrib != n_atoms_contrib; ++icontrib) {
+    for (int icontrib = 0; icontrib < n_atoms_contrib; ++icontrib) {
         const int i = map_contrib_to_full[icontrib];
         const auto& neighbors = neighbors_contrib[icontrib];
         const int n_neigh = neighbors.size();
         const double xtmp = atom_coords[i][0];
         const double ytmp = atom_coords[i][1];
         const double ztmp = atom_coords[i][2];
-        for (int jj = 0; jj != n_neigh; ++jj) {
+        for (int jj = 0; jj < n_neigh; ++jj) {
             int j = neighbors[jj];
             const double delx = xtmp - atom_coords[j][0];
             const double dely = ytmp - atom_coords[j][1];
