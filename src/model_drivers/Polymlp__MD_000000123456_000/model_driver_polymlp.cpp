@@ -167,11 +167,11 @@ compute(
 
     if (error) return error;
 
-    // int compute_process_dEdr;
-    // error =
-    //     model_compute_arguments->IsCallbackPresent(
-    //         KIM::COMPUTE_CALLBACK_NAME::ProcessDEDrTerm, &compute_process_dEdr);
-    // if (error) return error;
+    int compute_process_dEdr;
+    error =
+        model_compute_arguments->IsCallbackPresent(
+            KIM::COMPUTE_CALLBACK_NAME::ProcessDEDrTerm, &compute_process_dEdr);
+    if (error) return error;
 
     // Do the compute.
     try {
@@ -185,7 +185,8 @@ compute(
           atom_energy,
           forces,
           virial,
-          particle_virial);
+          particle_virial,
+          compute_process_dEdr);
     } catch (const exception& e) {
       LOG_ERROR(string("compute: ") + e.what());
       return 1;

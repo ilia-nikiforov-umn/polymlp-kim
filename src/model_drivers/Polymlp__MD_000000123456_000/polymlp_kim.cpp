@@ -45,7 +45,8 @@ void PolymlpKIM::compute(
     double* atom_energy,
     VectorOfSizeDIM *& forces,
     double* virial,
-    VectorOfSizeSix *& particle_virial)
+    VectorOfSizeSix *& particle_virial,
+    bool compute_process_dEdr)
 {
     // Compute properties.
 
@@ -123,7 +124,8 @@ void PolymlpKIM::compute(
                 atom_energy,
                 forces,
                 virial,
-                particle_virial);
+                particle_virial,
+                compute_process_dEdr);
         }
         else if (fp.feature_type == "pair"){
             compute_pair(
@@ -136,7 +138,8 @@ void PolymlpKIM::compute(
                 atom_energy,
                 forces,
                 virial,
-                particle_virial);
+                particle_virial,
+                compute_process_dEdr);
         }
     }
 }
@@ -221,7 +224,8 @@ void PolymlpKIM::compute_gtinv(
     double* atom_energy,
     VectorOfSizeDIM *& forces,
     double* virial,
-    VectorOfSizeSix *& particle_virial)
+    VectorOfSizeSix *& particle_virial,
+    bool compute_process_dEdr)
 {
     // Compute properties using polymlp with polynomial invariants.
     vector2dc anlmtp, prod_sum_e, prod_sum_f;
@@ -326,6 +330,15 @@ void PolymlpKIM::compute_gtinv(
                         }
                     }
                 }
+                if (compute_process_dEdr){
+                    //TODO: Thread-safe ?
+                    // Since delx = x[i] - x[j], the current sign convention
+                    // is opposite to that used in ProcessDEDrTerm.
+                    const auto dEidr = - (fx * delx + fy * dely + fz * delz) / dis;
+                    const double dx[3] = {-delx, -dely, -delz};
+                    int error = model_compute_arguments.ProcessDEDrTerm(
+                        dEidr, dis, dx, i, j);
+                }
                 energy_array[icontrib][jj] = evdwl;
                 fx_array[icontrib][jj] = fx;
                 fy_array[icontrib][jj] = fy;
@@ -423,7 +436,8 @@ void PolymlpKIM::compute_pair(
     double* atom_energy,
     VectorOfSizeDIM *& forces,
     double* virial,
-    VectorOfSizeSix *& particle_virial)
+    VectorOfSizeSix *& particle_virial,
+    bool compute_process_dEdr)
 {
     // Compute properties using polymlp only with pair features.
 
@@ -503,6 +517,15 @@ void PolymlpKIM::compute_pair(
                         evdwl += fn[ntp.n_id] * val_e;
                         fpair += fn_d[ntp.n_id] * val_f;
                     }
+                }
+                if (compute_process_dEdr){
+                    //TODO: Thread-safe ?
+                    // Since delx = x[i] - x[j], the current sign convention
+                    // is opposite to that used in ProcessDEDrTerm.
+                    const auto dEidr = fpair; 
+                    const double dx[3] = {-delx, -dely, -delz};
+                    int error = model_compute_arguments.ProcessDEDrTerm(
+                        dEidr, dis, dx, i, j);
                 }
                 fpair *= - 1.0 / dis;
                 energy_array[icontrib][jj] = evdwl;

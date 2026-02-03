@@ -11,6 +11,7 @@
 #include "polymlp/polymlp_functions_interface.h"
 
 #include "KIM_ModelDriverHeaders.hpp"
+#include "KIM_LogMacros.hpp"
 
 #include <omp.h>
 
@@ -42,7 +43,8 @@ class PolymlpKIM {
         double* atom_energy,
         VectorOfSizeDIM *& forces,
         double* virial,
-        VectorOfSizeSix *& particle_virial);
+        VectorOfSizeSix *& particle_virial,
+        bool compute_process_dEdr);
 
     void compute_sum_of_prod_anlmtp(
         const KIM::ModelComputeArguments& model_compute_arguments,
@@ -80,7 +82,8 @@ class PolymlpKIM {
         double* atom_energy,
         VectorOfSizeDIM *& forces,
         double* virial,
-        VectorOfSizeSix *& particle_virial);
+        VectorOfSizeSix *& particle_virial,
+        bool compute_process_dEdr);
 
     void compute_sum_of_prod_antp(
         const KIM::ModelComputeArguments& model_compute_arguments,
@@ -110,7 +113,8 @@ class PolymlpKIM {
         double* atom_energy,
         VectorOfSizeDIM *& forces,
         double* virial,
-        VectorOfSizeSix *& particle_virial);
+        VectorOfSizeSix *& particle_virial,
+        bool compute_process_dEdr);
 
     double const * cutoff_ptr() const {
         return &cutoff_max;
