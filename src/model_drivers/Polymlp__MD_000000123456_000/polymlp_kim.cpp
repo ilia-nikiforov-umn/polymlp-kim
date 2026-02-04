@@ -309,7 +309,6 @@ void PolymlpKIM::compute_gtinv(
                     }
                 }
                 if (compute_process_dEdr){
-                    //TODO: Thread-safe ?
                     // Since delx = x[i] - x[j], the current sign convention
                     // is opposite to that used in ProcessDEDrTerm.
                     const auto dEidr = - (fx * delx + fy * dely + fz * delz) / dis;
@@ -505,7 +504,6 @@ void PolymlpKIM::compute_pair(
                     }
                 }
                 if (compute_process_dEdr){
-                    //TODO: Thread-safe ?
                     // Since delx = x[i] - x[j], the current sign convention
                     // is opposite to that used in ProcessDEDrTerm.
                     const auto dEidr = fpair; 
