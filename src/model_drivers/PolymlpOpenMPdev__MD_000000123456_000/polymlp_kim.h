@@ -14,6 +14,7 @@
 #include "KIM_LogMacros.hpp"
 
 #include <cstring>
+#include <omp.h>
 
 #define DIMENSION 3
 
@@ -26,10 +27,11 @@ class PolymlpKIM {
     std::vector<PolymlpAPI> polymlp_array;
     PolymlpAPI polymlp;
     double cutoff_max;
-
     int n_atoms_contrib;
     vector1i map_contrib_to_full;
     std::map<int, int> map_full_to_contrib;
+
+    vector2i neighbors_contrib;
 
     // Compute properties using polymlp with polynomial invariants.
     void compute_gtinv(
@@ -54,6 +56,22 @@ class PolymlpKIM {
         vector2dc& prod_sum_e, 
         vector2dc& prod_sum_f);
 
+    void accumulate_properties(
+        const KIM::ModelComputeArguments& model_compute_arguments,
+        int n_atoms, 
+        const int * const atom_types,
+        const int * const contributing,
+        const VectorOfSizeDIM *& atom_coords,
+        const vector2d& energy_array,
+        const vector2d& fx_array,
+        const vector2d& fy_array,
+        const vector2d& fz_array,
+        double* energy,
+        double* atom_energy,
+        VectorOfSizeDIM *& forces,
+        double* virial,
+        VectorOfSizeSix *& particle_virial);
+ 
     // Compute properties using polymlp with pairwise features.
     void compute_pair(
         const KIM::ModelComputeArguments& model_compute_arguments,
