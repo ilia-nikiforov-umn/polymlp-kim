@@ -49,6 +49,39 @@ def convert_polymlp_to_kim_model(
     )
     description = " ".join(description)
 
+    content_origin = (
+        "Polymlp Repository (Kyoto University)", 
+        "https://cms.mtl.kyoto-u.ac.jp/seko/mlp-repository/index.html"
+    )
+    content_origin = " ".join(content_origin)
+
+    user_id = "b3113743-4f85-48da-86e1-85acf6bb3388"
+    contributor_id = user_id
+    developer = [user_id]
+    maintainer_id = user_id
+
+    recordkey = ("MO", str(project_id).zfill(12), str(project_version).zfill(3))
+    recordkey = "_".join(recordkey)
+    citation1 = {
+        "article-number": "{011101}",
+        "author": "Seko, Atsuto",
+        "doi": "10.1063/5.0129045",
+        "journal": "{J. Appl. Phys.}",
+        "eissn": "{1089-7550}",
+        "issn": "{0021-8979}",
+        "orcid-numbers": "{Seko, Atsuto/0000-0002-2473-3837}",
+        "recordkey": recordkey + "a",
+        "recordprimary": "recordprimary",
+        "recordtype": "article",
+        "unique-id": "{WOS:000908391700010}",
+        "title": "{Tutorial: Systematic development of polynomial machine learning potentials for elemental and alloy systems}",
+        "volume": "{133}",
+        "number": "{1}",
+        "year": "{2023}",
+        "month": "{Jan}",
+    }
+    citations = [citation1]
+
     project = generate_kim_files(
         tmp_path,
         elements,
@@ -58,5 +91,11 @@ def convert_polymlp_to_kim_model(
         project_version=project_version,
         description=description,
         model_driver=model_driver,
+        content_origin=content_origin,
+        contributor_id=contributor_id,
+        developer=developer,
+        maintainer_id=maintainer_id,
+        citations=citations,
     )
+    shutil.copy('LICENSE', tmp_path)
     shutil.move(tmp_path, project)
