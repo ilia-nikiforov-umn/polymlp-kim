@@ -308,14 +308,14 @@ void PolymlpKIM::compute_gtinv(
                         }
                     }
                 }
-                if (compute_process_dEdr){
-                    // Since delx = x[i] - x[j], the current sign convention
-                    // is opposite to that used in ProcessDEDrTerm.
-                    const auto dEidr = - (fx * delx + fy * dely + fz * delz) / dis;
-                    const double dx[3] = {-delx, -dely, -delz};
-                    int error = model_compute_arguments.ProcessDEDrTerm(
-                        dEidr, dis, dx, i, j);
-                }
+                // if (compute_process_dEdr){
+                //     // Since delx = x[i] - x[j], the current sign convention
+                //     // is opposite to that used in ProcessDEDrTerm.
+                //     const auto dEidr = - (fx * delx + fy * dely + fz * delz) / dis;
+                //     const double dx[3] = {-delx, -dely, -delz};
+                //     int error = model_compute_arguments.ProcessDEDrTerm(
+                //         dEidr, dis, dx, i, j);
+                // }
                 if (energy)
                     *energy += evdwl;
                 if (atom_energy)
