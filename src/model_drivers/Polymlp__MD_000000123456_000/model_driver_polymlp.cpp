@@ -99,7 +99,8 @@ compute_arguments_create(
     ||
     model_compute_arguments_create->SetCallbackSupportStatus(
       KIM::COMPUTE_CALLBACK_NAME::ProcessDEDrTerm,
-      KIM::SUPPORT_STATUS::optional)
+      KIM::SUPPORT_STATUS::notSupported)
+      // KIM::SUPPORT_STATUS::optional)
     ||
     model_compute_arguments_create->SetCallbackSupportStatus(
       KIM::COMPUTE_CALLBACK_NAME::ProcessD2EDr2Term,
@@ -167,10 +168,11 @@ compute(
 
     if (error) return error;
 
-    int compute_process_dEdr;
-    error =
-        model_compute_arguments->IsCallbackPresent(
-            KIM::COMPUTE_CALLBACK_NAME::ProcessDEDrTerm, &compute_process_dEdr);
+    int compute_process_dEdr = 0;
+    // int compute_process_dEdr;
+    // error = model_compute_arguments->IsCallbackPresent(
+    //         KIM::COMPUTE_CALLBACK_NAME::ProcessDEDrTerm, &compute_process_dEdr);
+
     if (error) return error;
 
     // Do the compute.
