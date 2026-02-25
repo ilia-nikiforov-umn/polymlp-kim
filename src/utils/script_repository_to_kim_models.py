@@ -8,7 +8,7 @@ from model_selection import choose_distributed_mlps
 from utils import parse_summary_yaml, get_polymlp_attrs
 
 
-target = 2
+target = 3
 
 if target == 1:
     path_summary = "/home/seko/mlip/1-unary/"

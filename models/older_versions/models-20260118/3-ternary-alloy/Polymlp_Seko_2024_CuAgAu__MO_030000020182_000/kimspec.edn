@@ -1,9 +1,0 @@
-{"domain" "openkim.org"
- "extended-id" "Polymlp_Seko_2024_CuAgAu__MO_030000020182_000"
- "kim-api-version" "2.2"
- "model-driver" "Polymlp__MD_000000123456_000"
- "potential-type" "polymlp"
- "publication-year" "2024"
- "species" ["Cu" "Ag" "Au"]
- "title" "Polynomial machine learning potential for Cu-Ag-Au developed by Seko (2024) v000"
- }

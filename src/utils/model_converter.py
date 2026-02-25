@@ -24,7 +24,7 @@ def convert_polymlp_to_kim_model(
     rmse_energy: float,
     rmse_force: float,
     project_version: int = 0,
-    model_driver: str = "Polymlp__MD_000000123456_000",
+    model_driver: str = "Polymlp__MD_367995833009_000",
 ):
     """Convert polymlp to KIM model."""
     tmp_path = "./Polymlp__MO_tmp/"
