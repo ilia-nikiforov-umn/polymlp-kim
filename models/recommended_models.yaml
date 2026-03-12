@@ -1,0 +1,19 @@
+elements:
+  Ag: Polymlp_Seko_2024p3_Ag__MO_010000200019_000
+  Al: Polymlp_Seko_2024p3_Al__MO_010000700188_000
+  As: Polymlp_Seko_2024p1_As__MO_010001000136_000
+  Au: Polymlp_Seko_2024p2_Au__MO_010001500154_000
+  Ba: Polymlp_Seko_2024p2_Ba__MO_010002000183_000
+  Be: Polymlp_Seko_2024p2_Be__MO_010002500102_000
+  Bi: Polymlp_Seko_2024p2_Bi__MO_010003000184_000
+  Ca: Polymlp_Seko_2024p3_Ca__MO_010003600159_000
+  Cd: Polymlp_Seko_2024p3_Cd__MO_010004100154_000
+  Cr: Polymlp_Seko_2024p2_Cr__MO_010004500076_000
+  Cs: Polymlp_Seko_2024p3_Cs__MO_010005100238_000
+
+
+
+binary_alloys:
+
+ternary_alloys:
+  Cu-Ag-Au: Polymlp_Seko_2024p1_CuAgAu__MO_030000020182_000
