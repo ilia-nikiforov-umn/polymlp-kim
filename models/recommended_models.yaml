@@ -46,16 +46,10 @@ elements:
   Zn: Polymlp_Seko_2024p3_Zn__MO_010021800019_000
   Zr: Polymlp_Seko_2024p2_Zr__MO_010022200190_000
 
-
-
-  
-
-
-
-
-
-
 binary_alloys:
+  Ag-Au: Polymlp_Seko_2022p4_AgAu__MO_020000320182_000
+  Ag-Ba: Polymlp_Seko_2022p4_AgBa__MO_020000820257_000
+
 
 ternary_alloys:
   Cu-Ag-Au: Polymlp_Seko_2024p1_CuAgAu__MO_030000020182_000
