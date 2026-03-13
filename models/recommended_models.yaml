@@ -219,126 +219,127 @@ binary_alloys:
   K-Zn:
     model: Polymlp_Seko_2022p5_KZn__MO_020028020272_000
   Li-Ag:
-    model: 
+    model: Polymlp_Seko_2022p4_LiAg__MO_020028420257_000
   Li-Al:
-    model:
+    model: Polymlp_Seko_2022p3_LiAl__MO_020028820182_000
   Li-Au:
-    model:
+    model: Polymlp_Seko_2022p4_LiAu__MO_020029420257_000
   Li-Ba:
-    model:
+    model: Polymlp_Seko_2022p4_LiBa__MO_020029820257_000
   Li-Be:
-    model:
+    model: Polymlp_Seko_2022p2_LiBe__MO_020030120182_000
   Li-Bi:
-    model:
+    model: Polymlp_Seko_2022p2_LiBi__MO_020030420257_000
   Li-Ca:
-    model:
+    model: Polymlp_Seko_2022p4_LiCa__MO_020031120737_000
   Li-Cu:
-    model:
+    model: Polymlp_Seko_2022p5_LiCu__MO_020031720820_000
   Li-Ga:
-    model:
+    model: Polymlp_Seko_2022p4_LiGa__MO_020032120257_000
   Li-Ge:
-    model:
+    model: Polymlp_Seko_2022p2_LiGe__MO_020032420257_000
   Li-In:
-    model:
+    model: Polymlp_Seko_2022p4_LiIn__MO_020033120257_000
   Li-Mg:
-    model:
+    model: Polymlp_Seko_2022p4_LiMg__MO_020033620411_000
   Li-Pb:
-    model:
+    model: Polymlp_Seko_2022p2_LiPb__MO_020033920182_000
   Li-Si:
-    model:
+    model: Polymlp_Seko_2022p1_LiSi__MO_020034320182_000
   Li-Sn:
-    model:
+    model: Polymlp_Seko_2022p2_LiSn__MO_020034920257_000
   Li-Sr:
-    model:
+    model: Polymlp_Seko_2022p4_LiSr__MO_020035420257_000
   Li-Ti:
-    model:
+    model: Polymlp_Seko_2022p1_LiTi__MO_020035620257_000
   Li-Zn:
-    model:
+    model: Polymlp_Seko_2022p4_LiZn__MO_020036420257_000
   Mg-Ag:
-    model:
+    model: Polymlp_Seko_2022p4_MgAg__MO_020036920182_000
   Mg-Al:
-    model:
+    model: Polymlp_Seko_2022p4_MgAl__MO_020037420257_000
   Mg-Au:
-    model:
+    model: Polymlp_Seko_2022p4_MgAu__MO_020037920182_000
   Mg-Ca:
-    model:
+    model: Polymlp_Seko_2022p4_MgCa__MO_020038420182_000
   Mg-Cu:
-    model:
+    model: Polymlp_Seko_2022p4_MgCu__MO_020038910060_000
   Mg-Ga:
-    model:
+    model: Polymlp_Seko_2022p4_MgCu__MO_020038910060_000
   Mg-Ge:
-    model:
+    model: Polymlp_Seko_2022p2_MgGe__MO_020039720182_000
   Mg-In:
-    model:
+    model: Polymlp_Seko_2022p3_MgIn__MO_020040320182_000
   Mg-K:
-    model:
+    model: Polymlp_Seko_2022p5_MgK__MO_020041020416_000
   Mg-Sc:
-    model:
+    model: Polymlp_Seko_2022p2_MgSc__MO_020041220182_000
   Mg-Si:
-    model:
+    model: Polymlp_Seko_2022p2_MgSi__MO_020041720257_000
   Mg-Sn:
-    model:
+    model: Polymlp_Seko_2022p3_MgSn__MO_020042320182_000
   Mg-Ti:
-    model:
+    model: Polymlp_Seko_2022p1_MgTi__MO_020042620182_000
   Mg-Y:
-    model:
+    model: Polymlp_Seko_2022p4_MgY__MO_020043420257_000
   Na-Al:
-    model:
+    model: Polymlp_Seko_2022p3_NaAl__MO_020043820182_000
   Na-Ga:
-    model:
+    model: Polymlp_Seko_2022p3_NaGa__MO_020044320182_000
   Na-Ge:
+    model: Polymlp_Seko_2022p3_NaGe__MO_020044720269_000
   Na-In:
-    model:
+    model: Polymlp_Seko_2022p4_NaIn__MO_020045320257_000
   Na-Mg:
-    model:
+    model: Polymlp_Seko_2022p4_NaMg__MO_020045820182_000
   Na-Pb:
-    model:
+    model: Polymlp_Seko_2022p3_NaPb__MO_020046220182_000
   Na-Si:
-    model:
+    model: Polymlp_Seko_2022p3_NaSi__MO_020046720260_000
   Na-Sn:
-    model:
+    model: Polymlp_Seko_2022p3_NaSn__MO_020047220257_000
   Na-Sr:
-    model:
+    model: Polymlp_Seko_2022p5_NaSr__MO_020047820257_000
   Pd-Pt:
-    model:
+    model: Polymlp_Seko_2022p2_PdPt__MO_020048020257_000
   Si-Ag:
-    model:
+    model: Polymlp_Seko_2022p1_SiAg__MO_020048320182_000
   Si-Au:
-    model:
+    model: Polymlp_Seko_2022p2_SiAu__MO_020048920257_000
   Si-Cu:
-    model:
+    model: Polymlp_Seko_2022p1_SiCu__MO_020049320182_000
   Si-Ga:
-    model:
+    model: Polymlp_Seko_2022p2_SiGa__MO_020049920182_000
   Si-Ge:
-    model:
+    model: Polymlp_Seko_2022p2_SiGe__MO_020050420257_000
   Si-In:
-    model:
+    model: Polymlp_Seko_2022p1_SiIn__MO_020050820182_000
   Si-Pb:
-    model:
+    model: Polymlp_Seko_2022p2_SiPb__MO_020051420257_000
   Si-Sn:
-    model:
+    model: Polymlp_Seko_2022p1_SiSn__MO_020051720182_000
   Si-Zn:
-    model:
+    model: Polymlp_Seko_2022p2_SiZn__MO_020052120257_000
   Sn-Pb:
-    model:
+    model: Polymlp_Seko_2022p4_SnPb__MO_020052820182_000
   Sr-Pb:
-    model:
+    model: Polymlp_Seko_2022p2_SrPb__MO_020053120257_000
   Ti-Al:
-    model:
+    model: Polymlp_Seko_2022p1_TiAl__MO_020053520182_000
   Ti-Ge:
-    model:
+    model: Polymlp_Seko_2022p1_TiGe__MO_020054020269_000
   Zn-Ag:
-    model:
+    model: Polymlp_Seko_2022p3_ZnAg__MO_020054520182_000
   Zn-Au:
-    model:
+    model: Polymlp_Seko_2022p4_ZnAu__MO_020055120269_000
   Zn-Ga:
-    model:
+    model: Polymlp_Seko_2022p4_ZnGa__MO_020055620257_000
   Zn-Ge:
-    model:
+    model: Polymlp_Seko_2022p2_ZnGe__MO_020055920182_000
   Zn-In:
-    model:
+    model: Polymlp_Seko_2022p3_ZnIn__MO_020056520182_000
   Zn-Sn:
-    model:
+    model: Polymlp_Seko_2022p3_ZnSn__MO_020057020182_000
 
 ternary_alloys:
   Cu-Ag-Au: 
