@@ -1,55 +1,345 @@
 elements:
-  Ag: Polymlp_Seko_2024p3_Ag__MO_010000200019_000
-  Al: Polymlp_Seko_2024p3_Al__MO_010000700188_000
-  As: Polymlp_Seko_2024p1_As__MO_010001000136_000
-  Au: Polymlp_Seko_2024p2_Au__MO_010001500154_000
-  Ba: Polymlp_Seko_2024p2_Ba__MO_010002000183_000
-  Be: Polymlp_Seko_2024p2_Be__MO_010002500102_000
-  Bi: Polymlp_Seko_2024p2_Bi__MO_010003000184_000
-  Ca: Polymlp_Seko_2024p3_Ca__MO_010003600159_000
-  Cd: Polymlp_Seko_2024p3_Cd__MO_010004100154_000
-  Cr: Polymlp_Seko_2024p2_Cr__MO_010004500076_000
-  Cs: Polymlp_Seko_2024p3_Cs__MO_010005100238_000
-  Cu: Polymlp_Seko_2024p2_Cu__MO_010005500067_000
-  Ga: Polymlp_Seko_2024p3_Ga__MO_010006100188_000
-  Ge: Polymlp_Seko_2024p3_Ge__MO_010006600048_000
-  Hf: Polymlp_Seko_2024p2_Hf__MO_010007000185_000
-  Hg: Polymlp_Seko_2024p3_Hg__MO_010007600155_000
-  In: Polymlp_Seko_2024p3_In__MO_010008100246_000
-  Ir: Polymlp_Seko_2024p2_Ir__MO_010008500076_000
-  K:  Polymlp_Seko_2024p4_K__MO_010009200246_000
-  La: Polymlp_Seko_2024p2_La__MO_010009500155_000
-  Li: Polymlp_Seko_2024p3_Li__MO_010010100183_000
-  Mg: Polymlp_Seko_2024p2_Mg__MO_010010500067_000
-  Mo: Polymlp_Seko_2024p1hybrid_Mo__MO_110002310506_000
-  Na: Polymlp_Seko_2024p2_Na__MO_010011300159_000
-  Nb: Polymlp_Seko_2024p1_Nb__MO_010011700098_000
-  Os: Polymlp_Seko_2024p1_Os__MO_010012200071_000
-  P:  Polymlp_Seko_2024p2_P__MO_010012700020_000
-  Pb: Polymlp_Seko_2024p3_Pb__MO_010013300188_000
-  Pd: Polymlp_Seko_2024p3_Pd__MO_010013800068_000
-  Pt: Polymlp_Seko_2024p3_Pt__MO_010014300097_000
-  Rb: Polymlp_Seko_2024p3_Rb__MO_010014800209_000
-  Re: Polymlp_Seko_2024p3_Re__MO_010015300100_000
-  Rh: Polymlp_Seko_2024p3_Rh__MO_010015800071_000
-  Ru: Polymlp_Seko_2024p1_Ru__MO_010016100192_000
-  Sc: Polymlp_Seko_2024p3_Sc__MO_010016600098_000
-  Si: Polymlp_Seko_2024p2_Si__MO_010017000189_000
-  Sn: Polymlp_Seko_2024p3_Sn__MO_010017600188_000
-  Sr: Polymlp_Seko_2024p3_Sr__MO_010018100183_000
-  Ta: Polymlp_Seko_2024p1_Ta__MO_010018400071_000
-  Te: Polymlp_Seko_2024p1_Te__MO_010018900165_000
-  Tl: Polymlp_Seko_2024p3_Tl__MO_010019900180_000
-  V:  Polymlp_Seko_2024p2_V__MO_010020300098_000
-  W:  Polymlp_Seko_2024p1_W__MO_010020700100_000
-  Y:  Polymlp_Seko_2024p1_Y__MO_010021100161_000
-  Zn: Polymlp_Seko_2024p3_Zn__MO_010021800019_000
-  Zr: Polymlp_Seko_2024p2_Zr__MO_010022200190_000
+  Ag: 
+    model: Polymlp_Seko_2024p3_Ag__MO_010000200019_000
+  Al: 
+    model: Polymlp_Seko_2024p3_Al__MO_010000700188_000
+  As: 
+    model: Polymlp_Seko_2024p1_As__MO_010001000136_000
+  Au: 
+    model: Polymlp_Seko_2024p2_Au__MO_010001500154_000
+  Ba: 
+    model: Polymlp_Seko_2024p2_Ba__MO_010002000183_000
+  Be: 
+    model: Polymlp_Seko_2024p2_Be__MO_010002500102_000
+  Bi: 
+    model: Polymlp_Seko_2024p2_Bi__MO_010003000184_000
+  Ca: 
+    model: Polymlp_Seko_2024p3_Ca__MO_010003600159_000
+  Cd: 
+    model: Polymlp_Seko_2024p3_Cd__MO_010004100154_000
+  Cr: 
+    model: Polymlp_Seko_2024p2_Cr__MO_010004500076_000
+  Cs: 
+    model: Polymlp_Seko_2024p3_Cs__MO_010005100238_000
+  Cu: 
+    model: Polymlp_Seko_2024p2_Cu__MO_010005500067_000
+  Ga: 
+    model: Polymlp_Seko_2024p3_Ga__MO_010006100188_000
+  Ge: 
+    model: Polymlp_Seko_2024p3_Ge__MO_010006600048_000
+  Hf: 
+    model: Polymlp_Seko_2024p2_Hf__MO_010007000185_000
+  Hg: 
+    model: Polymlp_Seko_2024p3_Hg__MO_010007600155_000
+  In: 
+    model: Polymlp_Seko_2024p3_In__MO_010008100246_000
+  Ir: 
+    model: Polymlp_Seko_2024p2_Ir__MO_010008500076_000
+  K:  
+    model: Polymlp_Seko_2024p4_K__MO_010009200246_000
+  La: 
+    model: Polymlp_Seko_2024p2_La__MO_010009500155_000
+  Li: 
+    model: Polymlp_Seko_2024p3_Li__MO_010010100183_000
+  Mg: 
+    model: Polymlp_Seko_2024p2_Mg__MO_010010500067_000
+  Mo: 
+    model: Polymlp_Seko_2024p1hybrid_Mo__MO_110002310506_000
+  Na: 
+    model: Polymlp_Seko_2024p2_Na__MO_010011300159_000
+  Nb: 
+    model: Polymlp_Seko_2024p1_Nb__MO_010011700098_000
+  Os: 
+    model: Polymlp_Seko_2024p1_Os__MO_010012200071_000
+  P:  
+    model: Polymlp_Seko_2024p2_P__MO_010012700020_000
+  Pb: 
+    model: Polymlp_Seko_2024p3_Pb__MO_010013300188_000
+  Pd: 
+    model: Polymlp_Seko_2024p3_Pd__MO_010013800068_000
+  Pt: 
+    model: Polymlp_Seko_2024p3_Pt__MO_010014300097_000
+  Rb: 
+    model: Polymlp_Seko_2024p3_Rb__MO_010014800209_000
+  Re: 
+    model: Polymlp_Seko_2024p3_Re__MO_010015300100_000
+  Rh: 
+    model: Polymlp_Seko_2024p3_Rh__MO_010015800071_000
+  Ru: 
+    model: Polymlp_Seko_2024p1_Ru__MO_010016100192_000
+  Sc: 
+    model: Polymlp_Seko_2024p3_Sc__MO_010016600098_000
+  Si: 
+    model: Polymlp_Seko_2024p2_Si__MO_010017000189_000
+  Sn: 
+    model: Polymlp_Seko_2024p3_Sn__MO_010017600188_000
+  Sr: 
+    model: Polymlp_Seko_2024p3_Sr__MO_010018100183_000
+  Ta: 
+    model: Polymlp_Seko_2024p1_Ta__MO_010018400071_000
+  Te: 
+    model: Polymlp_Seko_2024p1_Te__MO_010018900165_000
+  Tl: 
+    model: Polymlp_Seko_2024p3_Tl__MO_010019900180_000
+  V:  
+    model: Polymlp_Seko_2024p2_V__MO_010020300098_000
+  W:  
+    model: Polymlp_Seko_2024p1_W__MO_010020700100_000
+  Y:  
+    model: Polymlp_Seko_2024p1_Y__MO_010021100161_000
+  Zn: 
+    model: Polymlp_Seko_2024p3_Zn__MO_010021800019_000
+  Zr: 
+    model: Polymlp_Seko_2024p2_Zr__MO_010022200190_000
 
 binary_alloys:
-  Ag-Au: Polymlp_Seko_2022p4_AgAu__MO_020000320182_000
-  Ag-Ba: Polymlp_Seko_2022p4_AgBa__MO_020000820257_000
-
+  Ag-Au: 
+    model: Polymlp_Seko_2022p4_AgAu__MO_020000320182_000
+  Ag-Ba: 
+    model: Polymlp_Seko_2022p4_AgBa__MO_020000820257_000
+    notes: Less reliable for Ba-rich compositions
+  Ag-In: 
+    model: Polymlp_Seko_2022p4_AgIn__MO_020001320182_000
+  Ag-La: 
+    model: Polymlp_Seko_2022p3_AgLa__MO_020001720257_000
+  Ag-Pb: 
+    model: Polymlp_Seko_2022p3_AgPb__MO_020002020182_000
+  Ag-Sn: 
+    model: Polymlp_Seko_2022p3_AgSn__MO_020002520182_000
+  Al-Ag: 
+    model: Polymlp_Seko_2022p2_AlAg__MO_020002920182_000
+  Al-Au: 
+    model: Polymlp_Seko_2022p1_AlAu__MO_020003320182_000
+  Al-Ba:
+    model: Polymlp_Seko_2022p4_AlBa__MO_020004120260_000
+    notes: Less reliable for Ba-rich compositions
+  Al-Ca:
+    model: Polymlp_Seko_2022p3_AlCa__MO_020004520269_000
+  Al-Cu:
+    model: Polymlp_Seko_2022p2_AlCu__MO_020004920182_000
+  Al-Ga:
+    model: Polymlp_Seko_2022p3_AlGa__MO_020005520257_000
+  Al-Ge:
+    model: Polymlp_Seko_2022p1_AlGe__MO_020005820764_000
+  Al-In:
+    model: Polymlp_Seko_2022p4_AlIn__MO_020006620182_000
+  Al-K:
+    model: Polymlp_Seko_2022p3_AlK__MO_020007020257_000
+  Al-La:
+    model: Polymlp_Seko_2022p2_AlLa__MO_020007420257_000
+  Al-Nb:
+    model: Polymlp_Seko_2022p3_AlNb__MO_020008020260_000
+  Al-Pb:
+    model: Polymlp_Seko_2022p4_AlPb__MO_020008620411_000
+  Al-Pt:
+    model: Polymlp_Seko_2022p2_AlPt__MO_020008920257_000
+  Al-Sc:
+    model: Polymlp_Seko_2022p1_AlSc__MO_020009320257_000
+  Al-Si:
+    model: Polymlp_Seko_2022p1_AlSi__MO_020009620182_000
+  Al-Sn:
+    model: Polymlp_Seko_2022p3_AlSn__MO_020010320182_000
+  Al-Sr:
+    model: Polymlp_Seko_2022p2_AlSr__MO_020010720257_000
+  Al-V:
+    model: Polymlp_Seko_2022p1_AlV__MO_020011120135_000
+  Al-Y:
+    model: Polymlp_Seko_2022p1_AlY__MO_020011320182_000
+  Al-Zn:
+    model: Polymlp_Seko_2022p2_AlZn__MO_020011820182_000
+  Al-Zr:
+    model: Polymlp_Seko_2022p1_AlZr__MO_020012220257_000
+  Be-Al:
+    model: Polymlp_Seko_2022p3_BeAl__MO_020012920194_000
+  Be-Ge:
+    model: Polymlp_Seko_2022p1_BeGe__MO_020013120182_000
+  Be-Si:
+    model: Polymlp_Seko_2022p1_BeSi__MO_020013520182_000
+  Be-Sn:
+    model: Polymlp_Seko_2022p2_BeSn__MO_020014120257_000
+  Ca-Ag:
+    model: Polymlp_Seko_2022p5_CaAg__MO_020014920416_000
+  Ca-Au:
+    model: Polymlp_Seko_2022p4_CaAu__MO_020015320257_000
+  Ca-Cu:
+    model: Polymlp_Seko_2022p3_CaCu__MO_020015720182_000
+  Ca-Ga:
+    model: Polymlp_Seko_2022p2_CaGa__MO_020016120257_000
+  Ca-Ge:
+    model: Polymlp_Seko_2022p3_CaGe__MO_020016720416_000
+  Ca-In:
+    model: Polymlp_Seko_2022p5_CaIn__MO_020017420272_000
+  Ca-La:
+    model: Polymlp_Seko_2022p3_CaLa__MO_020017720257_000
+  Ca-Pb:
+    model: Polymlp_Seko_2022p3_CaPb__MO_020018020257_000
+  Ca-Sc:
+    model: Polymlp_Seko_2022p2_CaSc__MO_020018320411_000
+  Ca-Sn:
+    model: Polymlp_Seko_2022p3_CaSn__MO_020018920269_000
+  Ca-Ti:
+    model: Polymlp_Seko_2022p1_CaTi__MO_020019220182_000
+  Ca-Zn:
+    model: Polymlp_Seko_2022p4_CaZn__MO_020020020257_000
+  Cu-Ag:
+    model: Polymlp_Seko_2022p4_CuAg__MO_020020520182_000
+  Cu-Au:
+    model: Polymlp_Seko_2022p4_CuAu__MO_020021020182_000
+  Cu-Zn:
+    model: Polymlp_Seko_2022p4_CuZn__MO_020021520411_000
+  Ga-Ag:
+    model: Polymlp_Seko_2022p3_GaAg__MO_020021920257_000
+  Ga-Sn:
+    model: Polymlp_Seko_2022p3_GaSn__MO_020022420182_000
+  Ge-In:
+    model: Polymlp_Seko_2022p3_GeIn__MO_020022920411_000
+  Ge-Pb:
+    model: Polymlp_Seko_2022p3_GePb__MO_020023420257_000
+  Ge-Sn:
+    model: Polymlp_Seko_2022p2_GeSn__MO_020023820257_000
+  Ge-Sr:
+    model: Polymlp_Seko_2022p2_GeSr__MO_020024220257_000
+  K-Ag:
+    model: Polymlp_Seko_2022p4_KAg__MO_020024620260_000
+  K-Au:
+    model: Polymlp_Seko_2022p2_KAu__MO_020024920257_000
+  K-Cu:
+    model: Polymlp_Seko_2022p3_KCu__MO_020025420257_000
+  K-Ge:
+    model: Polymlp_Seko_2022p1_KGe__MO_020025620257_000
+    notes: Less reliable
+  K-In:
+    model: Polymlp_Seko_2022p4_KIn__MO_020026420260_000
+  K-Pb:
+    model: Polymlp_Seko_2022p3_KPb__MO_020026820257_000
+    notes: Less reliable for K-rich compositions
+  K-Sn:
+    model: Polymlp_Seko_2022p2_KSn__MO_020027220257_000
+    notes: Less reliable for K-rich compositions
+  K-Zn:
+    model: Polymlp_Seko_2022p5_KZn__MO_020028020272_000
+  Li-Ag:
+    model: 
+  Li-Al:
+    model:
+  Li-Au:
+    model:
+  Li-Ba:
+    model:
+  Li-Be:
+    model:
+  Li-Bi:
+    model:
+  Li-Ca:
+    model:
+  Li-Cu:
+    model:
+  Li-Ga:
+    model:
+  Li-Ge:
+    model:
+  Li-In:
+    model:
+  Li-Mg:
+    model:
+  Li-Pb:
+    model:
+  Li-Si:
+    model:
+  Li-Sn:
+    model:
+  Li-Sr:
+    model:
+  Li-Ti:
+    model:
+  Li-Zn:
+    model:
+  Mg-Ag:
+    model:
+  Mg-Al:
+    model:
+  Mg-Au:
+    model:
+  Mg-Ca:
+    model:
+  Mg-Cu:
+    model:
+  Mg-Ga:
+    model:
+  Mg-Ge:
+    model:
+  Mg-In:
+    model:
+  Mg-K:
+    model:
+  Mg-Sc:
+    model:
+  Mg-Si:
+    model:
+  Mg-Sn:
+    model:
+  Mg-Ti:
+    model:
+  Mg-Y:
+    model:
+  Na-Al:
+    model:
+  Na-Ga:
+    model:
+  Na-Ge:
+  Na-In:
+    model:
+  Na-Mg:
+    model:
+  Na-Pb:
+    model:
+  Na-Si:
+    model:
+  Na-Sn:
+    model:
+  Na-Sr:
+    model:
+  Pd-Pt:
+    model:
+  Si-Ag:
+    model:
+  Si-Au:
+    model:
+  Si-Cu:
+    model:
+  Si-Ga:
+    model:
+  Si-Ge:
+    model:
+  Si-In:
+    model:
+  Si-Pb:
+    model:
+  Si-Sn:
+    model:
+  Si-Zn:
+    model:
+  Sn-Pb:
+    model:
+  Sr-Pb:
+    model:
+  Ti-Al:
+    model:
+  Ti-Ge:
+    model:
+  Zn-Ag:
+    model:
+  Zn-Au:
+    model:
+  Zn-Ga:
+    model:
+  Zn-Ge:
+    model:
+  Zn-In:
+    model:
+  Zn-Sn:
+    model:
 
 ternary_alloys:
-  Cu-Ag-Au: Polymlp_Seko_2024p1_CuAgAu__MO_030000020182_000
+  Cu-Ag-Au: 
+    model: Polymlp_Seko_2024p1_CuAgAu__MO_030000020182_000
