@@ -77,6 +77,8 @@ elements:
     model: Polymlp_Seko_2024p3_Sr__MO_010018100183_000
   Ta: 
     model: Polymlp_Seko_2024p1_Ta__MO_010018400071_000
+  Ti: 
+    model: Polymlp_Seko_2024p2_Ti__MO_010019300103_000
   Te: 
     model: Polymlp_Seko_2024p1_Te__MO_010018900165_000
   Tl: 
