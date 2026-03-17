@@ -102,5 +102,4 @@ with open("dois.txt") as f, open("kimid_to_doi.txt", "w") as f_kimid_to_doi:
         if disclaimer != "":
             kimspec_dict["disclaimer"] = disclaimer 
         kim_edn.dump(kimspec_dict, new_kimspec_path,indent=1)
-        add_kimprovenance_entry(new_path, "4ad03136-ed7f-4316-b586-1e94ccceb311", "initial-creation", "")
         print(f"{new_extended_id} {doi.strip()}", file=f_kimid_to_doi)
